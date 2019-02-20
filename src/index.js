@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
-import RouterBoard from './containers/RouterBoard';
+import RouterBoard from './RouterBoard';
 
 ReactDOM.render(
   <div className="container-fluid">

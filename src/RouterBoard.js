@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
-import Landing from '../components/Landing';
+import Landing from './containers/Landing/Landing';
 
 class RouterBoard extends Component {
   constructor() {
@@ -17,7 +17,7 @@ class RouterBoard extends Component {
         <h1>TuneS</h1>
         <Router>
           <Route
-            path="/landing"
+            path="/"
             exact render={() =>
             <Landing /> } 
           />
