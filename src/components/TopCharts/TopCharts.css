@@ -1,0 +1,17 @@
+.tab-content table {
+    color: rgb(20, 146, 103);
+}
+.nav-pills > li > a.active {
+    background-color: rgb(20, 146, 103) !important;
+    color: white !important;
+}
+
+.nav-pills > li > a {
+    color: rgb(140, 140, 140) !important;
+    font-size: 14px;
+}
+
+.ranking {
+    color: rgba(140, 140, 140, 0.5);
+    font-weight: bolder;
+}
