@@ -1,0 +1,26 @@
+.navbar {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    font-size: smaller;
+    line-height: 1em;
+}
+
+.navbar-custom {
+    background-color: rgba(85, 87, 83, 1);
+}
+/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+    color: rgba(255,255,255,.8);
+}
+/* change the link color */
+.navbar-custom .navbar-nav .nav-link {
+    color: rgba(255,255,255,.5);
+}
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: #ffffff;
+}
+
+
