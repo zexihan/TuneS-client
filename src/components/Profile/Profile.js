@@ -9,8 +9,7 @@ class Profile extends Component {
       id: "",
       username: "",
       password: "",
-      firstname: "",
-      lastname: "",
+      gender: "",
       phone: "",
       email: "",
       role: "",
@@ -27,8 +26,7 @@ class Profile extends Component {
   //         id: user.id,
   //         username: user.username,
   //         password: user.password,
-  //         firstname: user.firstName,
-  //         lastname: user.lastName,
+  //         gender: user.gender,
   //         phone: user.phone,
   //         email: user.email,
   //         role: user.role,
@@ -50,8 +48,7 @@ class Profile extends Component {
     //     id: this.state.id,
     //     username: this.state.username,
     //     password: this.state.password,
-    //     firstName: this.state.firstname,
-    //     lastName: this.state.lastname,
+    //     gender: this.state.gender,
     //     phone: this.state.phone,
     //     email: this.state.email,
     //     role: this.state.role,
@@ -61,8 +58,7 @@ class Profile extends Component {
     //   this.props.userService.updateUser(user).then(user => {
     //     if (user.id !== -1) {
     //       this.setState({
-    //         firstname: user.firstName,
-    //         lastname: user.lastName,
+    //         gender: user.gender,
     //         phone: user.phone,
     //         email: user.email,
     //         role: user.role,
@@ -130,31 +126,16 @@ class Profile extends Component {
               </div>
             </div>
             <div className="form-group row">
-              <label htmlFor="firstname" className="col-sm-2 col-form-label">
-                First Name
+              <label htmlFor="gender" className="col-sm-2 col-form-label">
+                Gender
               </label>
               <div className="col-sm-10">
                 <input
                   className="form-control"
                   type="text"
-                  id="firstname"
-                  name="firstname"
-                  value={this.state.firstname}
-                  onChange={this.onChange}
-                />
-              </div>
-            </div>
-            <div className="form-group row">
-              <label htmlFor="lastname" className="col-sm-2 col-form-label">
-                Last Name
-              </label>
-              <div className="col-sm-10">
-                <input
-                  className="form-control"
-                  type="text"
-                  id="lastname"
-                  name="lastname"
-                  value={this.state.lastname}
+                  id="gender"
+                  name="gender"
+                  value={this.state.gender}
                   onChange={this.onChange}
                 />
               </div>
@@ -204,9 +185,10 @@ class Profile extends Component {
                   <option value="">
                     ----Please select a role--------------
                   </option>
-                  <option value="FACULTY">Faculty</option>
-                  <option value="STUDENT">Student</option>
-                  <option value="ADMIN">Admin</option>
+                  <option value="ARTIST">Artist</option>
+                  <option value="MEMBER">Member</option>
+                  <option value="COMPANY">Company</option>
+                  <option value="ADVERTISER">Advertiser</option>
                 </select>
               </div>
             </div>

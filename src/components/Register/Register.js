@@ -111,7 +111,7 @@ class Register extends Component {
               <div className="col-sm-10">
                 <button
                   type="button"
-                  className="btn btn-primary btn-block"
+                  className="btn btn-success btn-block"
                   onClick={this.onRegister}
                 >
                   Sign up
@@ -129,6 +129,13 @@ class Register extends Component {
             <Link to="/login" className="btn btn-outline-info btn-block">
               LOG IN
             </Link>
+          </div>
+          <div className="row my-3">
+            <div className="col text-right">
+              <Link className="text-info" to="/">
+                Back to Home
+              </Link>
+            </div>
           </div>
         </div>
       </div>

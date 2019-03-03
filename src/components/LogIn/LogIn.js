@@ -112,7 +112,7 @@ class LogIn extends Component {
             </div>
             <div className="row mb-3">
               <div className="col text-center">
-                <Link className="forgetpassword" to="/forgetpassword">
+                <Link className="text-green" to="/forgetpassword">
                   Forgot your password?
                 </Link>
               </div>
@@ -140,6 +140,13 @@ class LogIn extends Component {
             <Link to="/register" className="btn btn-outline-info btn-block">
               SIGN UP FOR TUNES
             </Link>
+          </div>
+          <div className="row my-3">
+            <div className="col text-right">
+              <Link className="text-info" to="/">
+                Back to Home
+              </Link>
+            </div>
           </div>
         </div>
       </div>
