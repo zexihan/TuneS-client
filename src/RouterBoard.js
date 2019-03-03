@@ -6,6 +6,7 @@ import Register from "./components/Register/Register";
 import Profile from "./components/Profile/Profile";
 import User from "./components/User/User";
 import Configure from "./components/Configure/Configure";
+import Footer from "./components/Layout/Footer";
 
 class RouterBoard extends Component {
   constructor() {
@@ -15,18 +16,16 @@ class RouterBoard extends Component {
 
   render() {
     return (
-      <div>
-        <h1>TuneS</h1>
-        <Router>
-          <div>
-            <Route path="/login" exact component={LogIn} />
-            <Route path="/register" exact component={Register} />
-            <Route path="/profile" exact component={Profile} />
-            <Route path="/user" exact component={User} />
-            <Route path="/configure" exact component={Configure} />
-          </div>
-        </Router>
-      </div>
+      <Router>
+        <div>
+          <Route path="/login" exact component={LogIn} />
+          <Route path="/register" exact component={Register} />
+          <Route path="/profile" exact component={Profile} />
+          <Route path="/user" exact component={User} />
+          <Route path="/configure" exact component={Configure} />
+          <Footer />
+        </div>
+      </Router>
     );
   }
 }

@@ -12,13 +12,13 @@ class LogIn extends Component {
     };
   }
 
-  componentDidMount = () => {
-    this.props.userService.getProfile().then(user => {
-      if (user.id !== -1) {
-        this.props.history.replace("/profile");
-      }
-    });
-  };
+  // componentDidMount = () => {
+  //   this.props.userService.getProfile().then(user => {
+  //     if (user.id !== -1) {
+  //       this.props.history.replace("/profile");
+  //     }
+  //   });
+  // };
 
   onHideError = () => {
     this.setState({
@@ -31,17 +31,18 @@ class LogIn extends Component {
   };
 
   onLogin = e => {
-    const user = {
-      username: this.state.username,
-      password: this.state.password
-    };
-    this.props.userService.logIn(user).then(user => {
-      if (user.id !== -1) {
-        this.props.history.push("/profile");
-      } else {
-        this.setState({ showError: true });
-      }
-    });
+    // const user = {
+    //   username: this.state.username,
+    //   password: this.state.password
+    // };
+    // this.props.userService.logIn(user).then(user => {
+    //   if (user.id !== -1) {
+    //     this.props.history.push("/profile");
+    //   } else {
+    //     this.setState({ showError: true });
+    //   }
+    // });
+    this.props.history.push("/profile");
   };
 
   render() {
@@ -51,7 +52,7 @@ class LogIn extends Component {
           <h1 className="my-2 logo-tomato">
             <i className="fas fa-sign-in-alt" /> Sign In
           </h1>
-          <form>
+          <form className="mt-4">
             <div className="form-group row">
               {this.state.showError && (
                 <label htmlFor="alert" className="col-sm-2 col-form-label" />
@@ -89,11 +90,11 @@ class LogIn extends Component {
                   name="username"
                   value={this.state.username}
                   onChange={this.onChange}
-                  placeholder="Use this username to log in: alice"
+                  placeholder=""
                 />
               </div>
             </div>
-            <div className="form-group row">
+            <div className="form-group row mb-1">
               <label htmlFor="password" className="col-sm-2 col-form-label">
                 Password
               </label>
@@ -105,31 +106,41 @@ class LogIn extends Component {
                   name="password"
                   value={this.state.password}
                   onChange={this.onChange}
-                  placeholder="Use this password to log in: Alice"
+                  placeholder=""
                 />
               </div>
             </div>
-            <div className="row">
+            <div className="row mb-3">
+              <div className="col text-center">
+                <Link className="forgetpassword" to="/forgetpassword">
+                  Forgot your password?
+                </Link>
+              </div>
+            </div>
+            <div className="row mb-3">
               <div className="col-sm-2" />
               <div className="col-sm-10">
                 <button
                   type="button"
-                  className="btn btn-primary btn-block"
+                  className="btn btn-success btn-block"
                   onClick={this.onLogin}
                 >
-                  Sign in
+                  LOG IN
                 </button>
-                <div className="row">
-                  <div className="col">
-                    <Link to="/forgetpassword">Forgot Password?</Link>
-                  </div>
-                  <div className="col">
-                    <Link to="/register">Sign up</Link>
-                  </div>
-                </div>
               </div>
             </div>
           </form>
+          <div className="divider" />
+          <div className="row">
+            <div className="col text-center my-2 ">
+              <strong>Don't have an account?</strong>
+            </div>
+          </div>
+          <div>
+            <Link to="/register" className="btn btn-outline-info btn-block">
+              SIGN UP FOR TUNES
+            </Link>
+          </div>
         </div>
       </div>
     );

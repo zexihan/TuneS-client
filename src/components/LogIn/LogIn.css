@@ -3,9 +3,29 @@
 }
 
 .content {
-  margin-top: 0px;
-  margin-right: auto;
-  margin-bottom: 0px;
-  margin-left: auto;
+  margin: 0 auto;
   max-width: 450px;
+}
+
+.forgetpassword {
+  color: #1db954;
+}
+
+a,
+a:focus,
+a:hover {
+  text-decoration: none;
+}
+
+a {
+  background-color: transparent;
+}
+
+.divider {
+  border-top: 1px solid #d9dadc;
+  display: block;
+  line-height: 1px;
+  margin: 15px 0;
+  position: relative;
+  text-align: center;
 }
