@@ -1,14 +1,16 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import Landing from './containers/Landing/Landing';
+import LogIn from "./components/LogIn/LogIn";
+import Register from "./components/Register/Register";
+import Profile from "./components/Profile/Profile";
+import User from "./components/User/User";
+import Configure from "./components/Configure/Configure";
 
 class RouterBoard extends Component {
   constructor() {
     super();
-    this.state = {
-
-    }
+    this.state = {};
   }
 
   render() {
@@ -16,11 +18,13 @@ class RouterBoard extends Component {
       <div>
         <h1>TuneS</h1>
         <Router>
-          <Route
-            path="/"
-            exact render={() =>
-            <Landing /> } 
-          />
+          <div>
+            <Route path="/login" exact component={LogIn} />
+            <Route path="/register" exact component={Register} />
+            <Route path="/profile" exact component={Profile} />
+            <Route path="/user" exact component={User} />
+            <Route path="/configure" exact component={Configure} />
+          </div>
         </Router>
       </div>
     );
