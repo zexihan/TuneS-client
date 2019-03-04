@@ -68,6 +68,7 @@ class Profile extends Component {
     //       });
     //     }
     //   });
+    console.log("updated");
     this.props.history.replace("/profile");
   };
 

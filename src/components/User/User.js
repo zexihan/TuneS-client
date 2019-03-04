@@ -57,7 +57,7 @@ class User extends Component {
                   className="btn btn-light mt-2"
                   onClick={this.followHandler}
                 >
-                  Follow
+                  Subscribe
                 </button>
               </div>
               <div className="col-3">
@@ -74,10 +74,19 @@ class User extends Component {
           </div>
           <div className="col-md-3 d-none d-md-block" />
           <div className="col-md-9 col-12 d-block">
+            <div id="recent-posts">
+              <div className="row mt-2">
+                <div className="col">
+                  <span>Recent Posts</span>
+                </div>
+              </div>
+              <hr className="left-hr" />
+              <div className="row mt-1 ml-2">posts</div>
+            </div>
             <div id="followed-artists">
               <div className="row mt-2">
                 <div className="col">
-                  <h6>Followed Artists</h6>
+                  <span>Followed Artists</span>
                 </div>
               </div>
               <hr className="left-hr" />
@@ -90,7 +99,7 @@ class User extends Component {
             <div id="followed-albums">
               <div className="row mt-2">
                 <div className="col">
-                  <h6>Followed Albums</h6>
+                  <span>Followed Albums (Published Albums)</span>
                 </div>
               </div>
               <hr className="left-hr" />
@@ -103,7 +112,7 @@ class User extends Component {
             <div id="saved-songs">
               <div className="row mt-2">
                 <div className="col">
-                  <h6>Saved Songs</h6>
+                  <span>Saved Songs (Published Songs)</span>
                 </div>
               </div>
               <hr className="left-hr" />
@@ -132,15 +141,32 @@ class User extends Component {
             </div>
           </div>
           <div className="col-md-3 d-none d-md-block">
-            <div id="friends">
-              <h6>Friends</h6>
+            <div id="friends" className="mt-2">
+              <span>Friends (Followers)</span>
               <ul className="list-group">
                 {this.state.friends.slice(0, 4).map(friend => (
-                  <li key={friend.id} className="list-group-item">
-                    <Link to={`/user/${friend.id}`}>{friend.username}</Link>
-                    <i className="far fa-comments float-right" />
+                  <li
+                    key={friend.id}
+                    className="list-group-item d-flex justify-content-between align-items-center"
+                  >
+                    <Link to={`/user/${friend.id}`} className="ml-1">
+                      {friend.username}
+                    </Link>
+                    <span className="badge badge-primary badge-pill">
+                      {friend.id}
+                    </span>
+                    <i className="far fa-comments" />
                   </li>
                 ))}
+              </ul>
+            </div>
+            <div id="liked-items" className="user-block mt-4">
+              <div className="user-block-title">
+                <span className="ml-2">Liked items</span>
+              </div>
+              <ul className="mt-1" type="circle">
+                <li>item 1</li>
+                <li>item 2</li>
               </ul>
             </div>
           </div>

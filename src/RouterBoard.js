@@ -5,7 +5,7 @@ import LogIn from "./components/LogIn/LogIn";
 import Register from "./components/Register/Register";
 import Profile from "./components/Profile/Profile";
 import User from "./components/User/User";
-import Configure from "./components/Configure/Configure";
+import ProfileEditor from "./components/ProfileEditor/ProfileEditor";
 import Footer from "./components/Layout/Footer";
 
 class RouterBoard extends Component {
@@ -22,7 +22,7 @@ class RouterBoard extends Component {
           <Route path="/register" exact component={Register} />
           <Route path="/profile" exact component={Profile} />
           <Route path="/user" exact component={User} />
-          <Route path="/configure" exact component={Configure} />
+          <Route path="/profile-editor" exact component={ProfileEditor} />
           <Footer />
         </div>
       </Router>
