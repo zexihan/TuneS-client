@@ -1,0 +1,32 @@
+.logo-tomato {
+    color: tomato;
+}
+
+.content {
+    margin: 0 auto;
+    max-width: 450px;
+    min-height: 655px;
+}
+
+.text-green {
+    color: #1db954;
+}
+
+a,
+a:focus,
+a:hover {
+    text-decoration: none;
+}
+
+a {
+    background-color: transparent;
+}
+
+.divider {
+    border-top: 1px solid #d9dadc;
+    display: block;
+    line-height: 1px;
+    margin: 15px 0;
+    position: relative;
+    text-align: center;
+}

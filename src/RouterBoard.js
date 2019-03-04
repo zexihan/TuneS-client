@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Landing from './views/Landing';
 import Searching from './views/Searching';
 import SubjectPage from './views/SubjectPage';
+import Register from './views/Register';
+import Login from './views/Login';
 import NavBar from './components/NavBar';
 
 class RouterBoard extends Component {
@@ -34,6 +36,16 @@ class RouterBoard extends Component {
               path="/subject"
               exact render={props =>
               <SubjectPage {...props} /> }
+            />
+            <Route
+              path="/register"
+              exact render={props =>
+              <Register {...props} /> }
+            />
+            <Route
+              path="/login"
+              exact render={props =>
+              <Login {...props} /> }
             />
           </div>
         </Router>
