@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 
-class SubjectPage extends Component {
+class Subject extends Component {
   render() {
     return (
       <div className="container-fluid" style={{padding: "15px"}}>
@@ -53,4 +53,4 @@ class SubjectPage extends Component {
   }
 }
 
-export default SubjectPage;
+export default Subject;
