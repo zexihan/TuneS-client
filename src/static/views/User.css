@@ -1,0 +1,37 @@
+.color-tomato {
+    color: tomato;
+}
+
+.user-content {
+    width: 1000px;
+}
+
+.user-block {
+    margin: 0;
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 0;
+}
+
+table {
+    font-size: 12px;
+}
+
+.user-block-title {
+    padding: 0;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    background: #eaf1f2;
+    height: 25px;
+    font-weight: 700;
+    line-height: 25px;
+}
+
+.list-group-item {
+    padding: 3px;
+}
+
+.left-hr {
+    border-top: 3px solid rgb(20, 146, 103);
+    margin: 0;
+}
