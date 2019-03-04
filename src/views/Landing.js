@@ -17,8 +17,7 @@ class Landing extends Component {
     super(props);
     this.state = {
       searchText: ""
-    }
-    searchService.authorize();
+    };
   }
 
   search = async () => {
