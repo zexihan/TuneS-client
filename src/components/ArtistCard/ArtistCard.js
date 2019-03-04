@@ -3,7 +3,7 @@ import React from "react";
 import "./ArtistCard.css";
 
 const ArtistCard = () => (
-  <div className="card mx-3 my-3">
+  <div className="card col-2 ml-3 my-1">
     <img
       src="https://i.scdn.co/image/21303055050d3fd59b398c9fbe04c94250cc8246"
       className="card-img-top"

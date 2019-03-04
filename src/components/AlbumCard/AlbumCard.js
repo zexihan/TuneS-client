@@ -3,7 +3,7 @@ import React from "react";
 import "./AlbumCard.css";
 
 const AlbumCard = () => (
-  <div className="card mx-3 my-3">
+  <div className="card col-2 ml-3 my-1">
     <img
       src="https://blog.spoongraphics.co.uk/wp-content/uploads/2017/album-art/8.jpg"
       className="card-img-top"

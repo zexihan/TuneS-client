@@ -6,10 +6,7 @@
   width: 1000px;
 }
 
-.bd-sidebar {
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
-  border-right-width: 1px;
-  border-right-style: solid;
-  border-right-color: rgba(0, 0, 0, 0.1);
-  border-color: darkturquoise;
+.left-hr {
+  border-top: 3px solid rgb(20, 146, 103);
+  margin: 0;
 }
