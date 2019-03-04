@@ -6,6 +6,9 @@ import Searching from './views/Searching';
 import User from './views/User';
 import Subject from './views/Subject';
 import Profile from './views/Profile';
+import ProfileEditor from './views/ProfileEditor';
+import Register from './views/Register';
+import Login from './views/Login';
 import NavBar from './components/NavBar';
 
 class RouterBoard extends Component {
@@ -37,15 +40,31 @@ class RouterBoard extends Component {
               exact render={props =>
               <Subject {...props} /> }
             />
-<<<<<<< HEAD
-            <Route path="/user" exact component={User} />
-=======
+            <Route
+              path="/user"
+              exact render={props =>
+              <User {...props} /> }
+            />
             <Route
               path="/profile"
               exact render={props =>
               <Profile {...props} /> }
             />
->>>>>>> profile
+            <Route
+              path="/profile-editor"
+              exact render={props =>
+              <ProfileEditor {...props} /> }
+            />
+            <Route
+              path="/register"
+              exact render={props =>
+              <Register {...props} /> }
+            />
+            <Route
+              path="/login"
+              exact render={props =>
+              <Login {...props} /> }
+            />
           </div>
         </Router>
       </div>

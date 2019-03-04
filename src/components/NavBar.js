@@ -10,7 +10,7 @@ class NavBar extends Component {
   render() {
     return (
       <nav className="navbar navbar-custom navbar-expand-lg">
-        <a className="navbar-brand" href="#">TuneS</a>
+        <a className="navbar-brand" href="/">TuneS</a>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
@@ -26,10 +26,10 @@ class NavBar extends Component {
           </ul>
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" href="#">Sign in <span className="sr-only">(current)</span></a>
+              <Link className="nav-link" to={`/login`}>Sign in</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Sign up</a>
+              <Link className="nav-link" to={`/register`}>Sign up</Link>
             </li>
           </ul>
         </div>
