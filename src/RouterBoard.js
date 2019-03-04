@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Landing from './views/Landing';
 import Searching from './views/Searching';
-import SubjectPage from './views/SubjectPage';
 import User from './views/User';
+import Subject from './views/Subject';
 import NavBar from './components/NavBar';
 
 class RouterBoard extends Component {
@@ -34,7 +34,7 @@ class RouterBoard extends Component {
             <Route
               path="/subject"
               exact render={props =>
-              <SubjectPage {...props} /> }
+              <Subject {...props} /> }
             />
             <Route path="/user" exact component={User} />
           </div>
