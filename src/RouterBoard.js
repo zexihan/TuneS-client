@@ -5,6 +5,7 @@ import Landing from './views/Landing';
 import Searching from './views/Searching';
 import User from './views/User';
 import Subject from './views/Subject';
+import Profile from './views/Profile';
 import NavBar from './components/NavBar';
 
 class RouterBoard extends Component {
@@ -36,7 +37,15 @@ class RouterBoard extends Component {
               exact render={props =>
               <Subject {...props} /> }
             />
+<<<<<<< HEAD
             <Route path="/user" exact component={User} />
+=======
+            <Route
+              path="/profile"
+              exact render={props =>
+              <Profile {...props} /> }
+            />
+>>>>>>> profile
           </div>
         </Router>
       </div>
