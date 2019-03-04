@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './ArtistCard.css';
+import '../static/components/ArtistCard.css';
 
 const ArtistCard = () => (
   <div className="card mx-3 my-3">

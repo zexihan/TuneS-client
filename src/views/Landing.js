@@ -3,12 +3,12 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import { Link } from 'react-router-dom';
 
-import './Landing.css';
+import '../static/views/Landing.css';
 
-import AlbumCard from '../../components/AlbumCard/AlbumCard';
-import ArtistCard from '../../components/ArtistCard/ArtistCard';
-import TopCharts from '../../components/TopCharts/TopCharts';
-import SearchService from '../../services/SearchService';
+import AlbumCard from '../components/AlbumCard';
+import ArtistCard from '../components/ArtistCard';
+import TopCharts from '../components/Landing/TopCharts';
+import SearchService from '../services/SearchService';
 
 let searchService = SearchService.getInstance();
 
@@ -18,6 +18,7 @@ class Landing extends Component {
     this.state = {
       searchText: ""
     }
+    searchService.authorize();
   }
 
   search = async () => {
@@ -43,7 +44,7 @@ class Landing extends Component {
             <div className="input-group my-2">
               <input type="text" id="search" className="form-control" placeholder="Search..." onChange={this.searchFieldChanged} />
               <div className="input-group-append">
-                <Link to={{pathname: "/search", search: "?query=" + this.state.searchText}}>
+                <Link to={{pathname: "/subject_search", search: "?query=" + this.state.searchText}}>
                   <button className="btn btn-outline-secondary" type="button" onClick={this.search}>
                     <i className="fas fa-search" />
                   </button>

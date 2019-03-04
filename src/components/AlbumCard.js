@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './AlbumCard.css';
+import '../static/components/AlbumCard.css';
 
 const AlbumCard = () => (
   <div className="card mx-3 my-3">

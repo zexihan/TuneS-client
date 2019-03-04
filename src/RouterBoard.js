@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import Landing from './containers/Landing/Landing';
-import Searching from './containers/Searching/Searching';
-import NavBar from './components/NavBar/NavBar';
+import Landing from './views/Landing';
+import Searching from './views/Searching';
+import SubjectPage from './views/SubjectPage';
+import NavBar from './components/NavBar';
 
 class RouterBoard extends Component {
   constructor(props) {
@@ -25,9 +26,14 @@ class RouterBoard extends Component {
                 <Landing {...props} /> }
             />
             <Route
-              path="/search"
+              path="/subject_search"
               exact render={props =>
                 <Searching {...props} /> }
+            />
+            <Route
+              path="/subject"
+              exact render={props =>
+              <SubjectPage {...props} /> }
             />
           </div>
         </Router>

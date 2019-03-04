@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './TopCharts.css';
+import '../../static/components/TopCharts.css';
 
 const TopCharts = () => (
   <div>
