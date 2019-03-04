@@ -5,6 +5,7 @@
 .content {
   margin: 0 auto;
   max-width: 450px;
+  min-height: 655px;
 }
 
 .divider {

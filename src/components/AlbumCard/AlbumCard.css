@@ -1,0 +1,21 @@
+.card {
+  width: 9rem;
+}
+
+.card-body {
+  padding: 10px;
+}
+
+.card-text {
+  margin: 0;
+}
+
+.albumcard-album {
+  font-size: 16px;
+  color: rgb(20, 146, 103);
+}
+
+.albumcard-artist {
+  font-size: 14px;
+  color: rgb(140, 140, 140);
+}

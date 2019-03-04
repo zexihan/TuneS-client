@@ -8,6 +8,7 @@ class Profile extends Component {
     this.state = {
       id: "",
       username: "",
+      portrait: "",
       password: "",
       gender: "",
       phone: "",
@@ -126,6 +127,22 @@ class Profile extends Component {
               </div>
             </div>
             <div className="form-group row">
+              <label htmlFor="portrait" className="col-sm-2 col-form-label">
+                Portrait
+              </label>
+              <div className="col-sm-10">
+                <input
+                  className="form-control"
+                  type="text"
+                  id="portrait"
+                  name="portrait"
+                  src={this.state.portrait}
+                  onChange={this.onChange}
+                  alt="portrait"
+                />
+              </div>
+            </div>
+            <div className="form-group row">
               <label htmlFor="gender" className="col-sm-2 col-form-label">
                 Gender
               </label>
@@ -186,7 +203,7 @@ class Profile extends Component {
                     ----Please select a role--------------
                   </option>
                   <option value="ARTIST">Artist</option>
-                  <option value="MEMBER">Member</option>
+                  <option value="USER">User</option>
                   <option value="COMPANY">Company</option>
                   <option value="ADVERTISER">Advertiser</option>
                 </select>

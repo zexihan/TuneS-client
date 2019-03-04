@@ -1,0 +1,21 @@
+.card {
+  width: 9rem;
+}
+
+.card-body {
+  padding: 10px;
+}
+
+.card-text {
+  margin: 0;
+}
+
+.artistcard-artist {
+  font-size: 16px;
+  color: rgb(20, 146, 103);
+}
+
+.artistcard-genre {
+  font-size: 14px;
+  color: rgb(140, 140, 140);
+}
