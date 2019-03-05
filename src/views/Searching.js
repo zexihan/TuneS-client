@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import queryString from 'query-string';
 import {Link} from "react-router-dom";
 
+import SearchService from '../services/SearchService';
+let searchService = SearchService.getInstance();
+
 class Searching extends Component {
   constructor(props) {
     super(props);
@@ -9,7 +12,6 @@ class Searching extends Component {
       query: queryString.parse(this.props.location.search).query,
       searchText: queryString.parse(this.props.location.search).query
     };
-
   }
 
   componentDidMount = () => {
@@ -22,11 +24,12 @@ class Searching extends Component {
     }
   }
 
-  search = () => {
+  search = async () => {
     this.setState({
       query: this.state.searchText
     });
     console.log("search");
+    let resList = await searchService.query(this.state.query);
   }
 
   searchFieldChanged = (event) => {
@@ -34,7 +37,6 @@ class Searching extends Component {
     this.setState({
       searchText: event.target.value
     });
-
   }
 
   render() {
@@ -52,7 +54,7 @@ class Searching extends Component {
                    value={this.state.searchText}
                    onChange={this.searchFieldChanged} />
             <div className="input-group-append">
-              <Link to={{pathname: "/search", search: "?query=" + this.state.searchText}}>
+              <Link to={{pathname: "/subject_search", search: "?query=" + this.state.searchText}}>
                 <button className="btn btn-outline-secondary" type="button" onClick={this.search}>
                   <i className="fas fa-search" />
                 </button>

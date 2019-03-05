@@ -8,8 +8,8 @@ import '../static/views/Landing.css';
 import AlbumCard from '../components/AlbumCard';
 import ArtistCard from '../components/ArtistCard';
 import TopCharts from '../components/Landing/TopCharts';
-import SearchService from '../services/SearchService';
 
+import SearchService from '../services/SearchService';
 let searchService = SearchService.getInstance();
 
 class Landing extends Component {
@@ -21,8 +21,8 @@ class Landing extends Component {
   }
 
   search = async () => {
-    console.log("search");
     let resList = await searchService.query(this.state.searchText);
+    console.log(await resList);
   }
 
   searchFieldChanged = (event) => {
