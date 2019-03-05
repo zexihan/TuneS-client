@@ -1,9 +1,9 @@
 class SearchService {
   //remote
-  //API_URL = "https://tune-server.herokuapp.com/api";
+  API_URL = "https://tune-server.herokuapp.com/api";
 
   //local
-  API_URL = "http://localhost:5000/api";
+  //API_URL = "http://localhost:5000/api";
   static myInstance = null;
   static getInstance() {
     if (SearchService.myInstance == null) {
