@@ -77,6 +77,7 @@ class Searching extends Component {
                   <i className="fas fa-search" />
                 </button>
               </Link>
+              {/*this maybe why this is "flash", not a good pattern to have two actions in one click?*/}
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+//subject: json.items[0]
 import '../../static/components/SubjectItem.css';
 
 const SubjectItem = ({subject, type}) => (
@@ -10,7 +10,7 @@ const SubjectItem = ({subject, type}) => (
     </div>
     <div className="col m-2">
       <div className="row mb-3">
-        <Link to={`/${type}/${subject.id}`} className="subject-title">{subject.name}</Link>
+        <Link to={`/subject/${type}/${subject.id}`} className="subject-title">{subject.name}</Link>
       </div>
       <div className="row">
         <p className="subject-pop">{subject.popularity}</p>
