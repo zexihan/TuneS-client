@@ -1,5 +1,5 @@
 class SearchService {
-  API_URL = "http://localhost:8050/api";
+  API_URL = "https://tune-server.herokuapp.com/api";
   static myInstance = null;
   static getInstance() {
     if (SearchService.myInstance == null) {
