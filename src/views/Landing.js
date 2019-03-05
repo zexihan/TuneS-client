@@ -16,13 +16,16 @@ class Landing extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchText: ""
+      searchText: "",
+      type: "track"
     };
   }
 
   search = async () => {
     let resList = await searchService.query(this.state.searchText);
     console.log(await resList);
+    let subjects = await resList.tracks.items;
+    this.props.search(subjects);
   }
 
   searchFieldChanged = (event) => {
@@ -43,7 +46,7 @@ class Landing extends Component {
             <div className="input-group my-2">
               <input type="text" id="search" className="form-control" placeholder="Search..." onChange={this.searchFieldChanged} />
               <div className="input-group-append">
-                <Link to={{pathname: "/subject_search", search: "?query=" + this.state.searchText}}>
+                <Link to={{pathname: "/subject_search", search: "?query=" + this.state.searchText + "&type=" + this.state.type}}>
                   <button className="btn btn-outline-secondary" type="button" onClick={this.search}>
                     <i className="fas fa-search" />
                   </button>

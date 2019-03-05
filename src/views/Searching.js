@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
-import {Link} from "react-router-dom";
+import { Link } from 'react-router-dom';
+
+import SubjectList from '../components/Searching/SubjectList';
 
 import SearchService from '../services/SearchService';
 let searchService = SearchService.getInstance();
@@ -10,18 +12,29 @@ class Searching extends Component {
     super(props);
     this.state = {
       query: queryString.parse(this.props.location.search).query,
-      searchText: queryString.parse(this.props.location.search).query
+      searchText: queryString.parse(this.props.location.search).query,
+      subjects: this.props.subjects,
+      type: "track"
     };
   }
 
-  componentDidMount = () => {
-    console.log(this.state.query);
+  async componentDidMount() {
+    if (this.state.subjects.length === 0) {
+      let resList = await searchService.query(this.state.searchText);
+      console.log(await resList);
+      let subjects = await resList.tracks.items;
+      this.props.search(subjects);
+    }
+    console.log("!!!!!!!");
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.location !== this.props.location) {
       console.log("URL changed!");
     }
+    this.setState({
+      subjects: nextProps.subjects
+    })
   }
 
   search = async () => {
@@ -29,7 +42,12 @@ class Searching extends Component {
       query: this.state.searchText
     });
     console.log("search");
-    let resList = await searchService.query(this.state.query);
+    let resList = await searchService.query(this.state.searchText);
+    let subjects = await resList.tracks.items;
+    this.setState({
+      subjects
+    });
+    console.log(this.state.subjects);
   }
 
   searchFieldChanged = (event) => {
@@ -97,7 +115,7 @@ class Searching extends Component {
 
       <div className="row">
         <div className="col mx-5">
-          <p>results</p>
+          <SubjectList subjects={this.state.subjects} type={this.state.type} />
         </div>
       </div>
     </div>

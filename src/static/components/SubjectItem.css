@@ -1,0 +1,18 @@
+.subject-image {
+    max-width: 120px;
+}
+
+.subject-title {
+    font-size: 18px;
+    color: rgb(44, 108, 160);
+}
+
+.subject-pop {
+    font-size: 14px;
+    color: rgb(255, 162, 40);
+}
+
+.subject-detail {
+    font-size: 14px;
+    color: rgb(142, 142, 142);
+}

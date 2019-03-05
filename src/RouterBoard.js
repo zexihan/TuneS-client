@@ -15,8 +15,15 @@ class RouterBoard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      subjects: []
     }
+  }
+
+  search = (subjects) => {
+    this.setState({
+      subjects
+    });
+    console.log(subjects);
   }
 
   render() {
@@ -28,12 +35,12 @@ class RouterBoard extends Component {
             <Route
               path="/"
               exact render={props =>
-                <Landing {...props} /> }
+                <Landing {...props} search={this.search} /> }
             />
             <Route
               path="/subject_search"
               exact render={props =>
-                <Searching {...props} /> }
+                <Searching {...props} search={this.search} subjects={this.state.subjects} /> }
             />
             <Route
               path="/subject"
