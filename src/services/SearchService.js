@@ -12,8 +12,8 @@ class SearchService {
     return this.myInstance;
   }
 
-  query = async (searchText) => {
-    let res = await fetch(this.API_URL + "/search/" + searchText);
+  query = async (searchText, searchType) => {
+    let res = await fetch(this.API_URL + "/search/" + searchText + "/type/" + searchType);
     let resList = await res.json();
     console.log(resList);
     return resList;

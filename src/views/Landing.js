@@ -22,9 +22,24 @@ class Landing extends Component {
   }
 
   search = async () => {
-    let resList = await searchService.query(this.state.searchText);
+    let resList = await searchService.query(this.state.searchText, this.state.searchType);
     console.log(await resList);
-    let subjects = await resList.tracks.items;
+    var subjects = [];
+    switch(this.state.searchType) {
+      case "track": {
+        subjects = await resList.tracks.items;
+        break;
+      }
+      case "artist": {
+        subjects = await resList.artists.items;
+        break;
+      }
+      case "album": {
+        subjects = await resList.albums.items;
+        break;
+      }
+    }
+    console.log(subjects);
     this.props.search(subjects);
   }
 

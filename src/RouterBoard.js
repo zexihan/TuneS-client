@@ -40,7 +40,7 @@ class RouterBoard extends Component {
             <Route
               path="/subject_search"
               exact render={props =>
-                <Searching {...props} search={this.search} subjects={this.state.subjects} /> }
+                <Searching {...props} subjects={this.state.subjects} /> }
             />
             <Route
               path="/subject/track/:id"

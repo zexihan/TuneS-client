@@ -13,17 +13,36 @@ class Searching extends Component {
     this.state = {
       query: queryString.parse(this.props.location.search).query,
       searchText: queryString.parse(this.props.location.search).query,
-      subjects: this.props.subjects,
-      searchType: "track"
+      subjects: "",
+      preSearchType: queryString.parse(this.props.location.search).type,
+      searchType: queryString.parse(this.props.location.search).type
     };
   }
 
   async componentDidMount() {
+    console.log("componentDidMount");
     if (this.state.subjects.length === 0) {
-      let resList = await searchService.query(this.state.searchText);
+      let resList = await searchService.query(this.state.searchText, this.state.searchType);
       console.log(await resList);
-      let subjects = await resList.tracks.items;
-      this.props.search(subjects);
+      let subjects = [];
+      switch(this.state.searchType) {
+        case "track": {
+          subjects = await resList.tracks.items;
+          break;
+        }
+        case "artist": {
+          subjects = await resList.artists.items;
+          break;
+        }
+        case "album": {
+          subjects = await resList.albums.items;
+          break;
+        }
+      }
+      // this.props.search(subjects);
+      this.setState({
+        subjects
+      });
     }
     console.log("!!!!!!!");
   }
@@ -39,13 +58,28 @@ class Searching extends Component {
 
   search = async () => {
     this.setState({
-      query: this.state.searchText
+      query: this.state.searchText,
     });
     console.log("search");
-    let resList = await searchService.query(this.state.searchText);
-    let subjects = await resList.tracks.items;
+    let resList = await searchService.query(this.state.searchText, this.state.preSearchType);
+    let subjects = [];
+    switch (this.state.preSearchType) {
+      case "track": {
+        subjects = await resList.tracks.items;
+        break;
+      }
+      case "artist": {
+        subjects = await resList.artists.items;
+        break;
+      }
+      case "album": {
+        subjects = await resList.albums.items;
+        break;
+      }
+    }
     this.setState({
-      subjects
+      subjects: subjects,
+      searchType: this.state.preSearchType
     });
     console.log(this.state.subjects);
   }
@@ -59,9 +93,10 @@ class Searching extends Component {
 
   onSearchTypeChanged = (e) => {
     this.setState({
-      searchType: e.target.value
+      preSearchType: e.target.value
     });
-    console.log(e.target.value);
+    console.log("preSearchType:" + e.target.value);
+    console.log("searchType:" + this.state.searchType);
   }
 
   render() {
@@ -79,7 +114,7 @@ class Searching extends Component {
                    value={this.state.searchText}
                    onChange={this.onSearchFieldChanged} />
             <div className="input-group-append">
-              <Link to={{pathname: "/subject_search", search: "?query=" + this.state.searchText}}>
+              <Link to={{pathname: "/subject_search", search: "?query=" + this.state.searchText + "&type=" + this.state.preSearchType}}>
                 <button className="btn btn-outline-secondary" type="button" onClick={this.search}>
                   <i className="fas fa-search" />
                 </button>
@@ -91,23 +126,23 @@ class Searching extends Component {
         <div className="my-auto mx-3">
           <div className="form-check form-check-inline">
             <input onChange={this.onSearchTypeChanged} className="form-check-input" type="radio" name="inlineRadioOptions"
-                   id="radio-track" value="track" checked={this.state.searchType === "track"} />
+                   id="radio-track" value="track" checked={this.state.preSearchType === "track"} />
             <label className="form-check-label" htmlFor="radio-track">Track</label>
           </div>
           <div className="form-check form-check-inline">
             <input onChange={this.onSearchTypeChanged} className="form-check-input" type="radio" name="inlineRadioOptions"
-                   id="radio-artist" value="artist" checked={this.state.searchType === "artist"} />
+                   id="radio-artist" value="artist" checked={this.state.preSearchType === "artist"} />
             <label className="form-check-label" htmlFor="radio-artist">Artist</label>
           </div>
           <div className="form-check form-check-inline">
             <input onChange={this.onSearchTypeChanged} className="form-check-input" type="radio" name="inlineRadioOptions"
-                   id="radio-album" value="album" checked={this.state.searchType === "album"} />
+                   id="radio-album" value="album" checked={this.state.preSearchType === "album"} />
             <label className="form-check-label" htmlFor="radio-album">Album</label>
           </div>
         </div>
       </div>
 
-      <hr className="search-hr"/>
+      <hr className="search-hr" />
 
       <div className="row navs py-1">
         <div className="col">
@@ -134,15 +169,16 @@ class Searching extends Component {
 
       <div className="row">
         <div className="col mx-5 my-4">
-          <h2 id="search-string">Searching: {this.state.query}</h2>
+          <h2 id="search-string">Search {this.state.searchType}: {this.state.query}</h2>
         </div>
       </div>
-
-      <div className="row">
-        <div className="col mx-5">
-          <SubjectList subjects={this.state.subjects} type={this.state.searchType} />
+      {this.state.subjects.length ? (
+        <div className="row">
+          <div className="col mx-5">
+            <SubjectList subjects={this.state.subjects} type={this.state.searchType} />
+          </div>
         </div>
-      </div>
+      ) : (null)}
     </div>
 
     );

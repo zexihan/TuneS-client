@@ -6,7 +6,8 @@ class SubjectList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      subjects: this.props.subjects
+      subjects: this.props.subjects,
+      type: this.props.type
     };
   }
 
@@ -27,7 +28,6 @@ class SubjectList extends Component {
             <SubjectItem subject={subject} type={this.props.type} key={subject.id} />
           );
         })}
-
       </div>
     );
   }
