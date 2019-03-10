@@ -14,7 +14,7 @@ class Searching extends Component {
       query: queryString.parse(this.props.location.search).query,
       searchText: queryString.parse(this.props.location.search).query,
       subjects: this.props.subjects,
-      type: "track"
+      searchType: "track"
     };
   }
 
@@ -50,27 +50,34 @@ class Searching extends Component {
     console.log(this.state.subjects);
   }
 
-  searchFieldChanged = (event) => {
-    console.log(event.target.value);
+  onSearchFieldChanged = (e) => {
+    console.log(e.target.value);
     this.setState({
-      searchText: event.target.value
+      searchText: e.target.value
     });
+  }
+
+  onSearchTypeChanged = (e) => {
+    this.setState({
+      searchType: e.target.value
+    });
+    console.log(e.target.value);
   }
 
   render() {
     return (
     <div className="container-fluid">
-      <div className="row pt-5 pb-4" id="search-area">
-        <div className="col-4 text-right">
+      <div className="row d-flex justify-content-center py-4" id="search-area">
+        <div className="my-auto mx-3">
           <h1 id="brand">TuneS</h1>
         </div>
-        <div className="col-8">
-          <div className="input-group my-2">
+        <div className="my-auto mx-3">
+          <div className="input-group my-2"  style={{width: "100%"}}>
             <input type="text"
                    id="search"
                    className="form-control"
                    value={this.state.searchText}
-                   onChange={this.searchFieldChanged} />
+                   onChange={this.onSearchFieldChanged} />
             <div className="input-group-append">
               <Link to={{pathname: "/subject_search", search: "?query=" + this.state.searchText}}>
                 <button className="btn btn-outline-secondary" type="button" onClick={this.search}>
@@ -79,6 +86,23 @@ class Searching extends Component {
               </Link>
               {/*this maybe why this is "flash", not a good pattern to have two actions in one click?*/}
             </div>
+          </div>
+        </div>
+        <div className="my-auto mx-3">
+          <div className="form-check form-check-inline">
+            <input onChange={this.onSearchTypeChanged} className="form-check-input" type="radio" name="inlineRadioOptions"
+                   id="radio-track" value="track" checked={this.state.searchType === "track"} />
+            <label className="form-check-label" htmlFor="radio-track">Track</label>
+          </div>
+          <div className="form-check form-check-inline">
+            <input onChange={this.onSearchTypeChanged} className="form-check-input" type="radio" name="inlineRadioOptions"
+                   id="radio-artist" value="artist" checked={this.state.searchType === "artist"} />
+            <label className="form-check-label" htmlFor="radio-artist">Artist</label>
+          </div>
+          <div className="form-check form-check-inline">
+            <input onChange={this.onSearchTypeChanged} className="form-check-input" type="radio" name="inlineRadioOptions"
+                   id="radio-album" value="album" checked={this.state.searchType === "album"} />
+            <label className="form-check-label" htmlFor="radio-album">Album</label>
           </div>
         </div>
       </div>
