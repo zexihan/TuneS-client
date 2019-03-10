@@ -36,7 +36,7 @@ export default class Subject extends Component {
       this.state.loaded === true &&
       <div className="container-fluid">
         <div className="background-image" style={{backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + this.state.track.album.images[0].url + ')'}} />
-        <div className="content mt-5">
+        <div className="subject-content mt-5">
           <div className="row">
             <div className="col-6">
               <h1 className="title">{this.state.track.name}</h1>
