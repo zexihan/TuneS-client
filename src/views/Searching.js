@@ -140,7 +140,7 @@ class Searching extends Component {
 
       <div className="row">
         <div className="col mx-5">
-          <SubjectList subjects={this.state.subjects} type={this.state.type} />
+          <SubjectList subjects={this.state.subjects} type={this.state.searchType} />
         </div>
       </div>
     </div>

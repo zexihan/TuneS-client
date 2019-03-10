@@ -53,7 +53,7 @@ class Landing extends Component {
             <div className="input-group" style={{width: "100%"}}>
               <input type="text" id="search" className="form-control" placeholder="Search..." onChange={this.onSearchFieldChanged} />
               <div className="input-group-append">
-                <Link to={{pathname: "/subject_search", search: "?query=" + this.state.searchText + "&type=" + this.state.type}}>
+                <Link to={{pathname: "/subject_search", search: "?query=" + this.state.searchText + "&type=" + this.state.searchType}}>
                   <button className="btn btn-outline-secondary" type="button" onClick={this.search}>
                     <i className="fas fa-search" />
                   </button>
