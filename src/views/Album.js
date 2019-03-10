@@ -6,55 +6,66 @@ import '../static/views/Subject.css';
 import SearchService from '../services/SearchService';
 let searchService = SearchService.getInstance();
 
-export default class Subject extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {loaded: false};
-    }
+class Album extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: false,
+      album: {}
+    };
+  }
 
-    // track: { album: { images:
-    //     [{url: "https://cdn.pixabay.com/photo/2015/02/22/17/56/loading-645268_1280.jpg"}] }//no internet image
-    // }
-    componentDidMount() {
-        const callback = (res) => {
-          this.setState({track: res, loaded: true});
-          console.log("trackMount", this.state.track)
-        };
-        searchService.getTrack(this.props.match.params.id, callback)
-    }
+  // track: { album: { images:
+  //     [{url: "https://cdn.pixabay.com/photo/2015/02/22/17/56/loading-645268_1280.jpg"}] }//no internet image
+  // }
+  componentDidMount() {
+    const callback = (res) => {
+      this.setState({album: res, loaded: true});
+      console.log("albumMount", this.state.album)
+    };
+    searchService.getAlbum(this.props.match.params.id, callback)
+  }
 
-    componentWillReceiveProps(nextProps) {
-        const callback = (res) => {
-          this.setState({track: res});
-          console.log("trackUpdate", this.state.track)
-        };
-        searchService.getTrack(this.props.match.params.id, callback)
-    }
+  componentWillReceiveProps(nextProps) {
+    const callback = (res) => {
+      this.setState({album: res});
+      console.log("albumUpdate", this.state.album)
+    };
+    searchService.getAlbum(this.props.match.params.id, callback)
+  }
 
   render() {
     return (
       this.state.loaded === true &&
       <div className="container-fluid">
-        <div className="background-image" style={{backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + this.state.track.album.images[0].url + ')'}} />
+        <div className="background-image" style={{backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + this.state.album.images[0].url + ')'}} />
         <div className="content subject-content mt-5">
           <div className="row">
             <div className="col-6">
-              <h1 className="title">{this.state.track.name}</h1>
-              <div>Artist: {this.state.track.artists[0].name}</div>
-              <div>Released: {this.state.track.album.release_date}</div>
-              <div>Popularity: {this.state.track.popularity}/100</div>
+              <h1 className="title">{this.state.album.name}</h1>
+              <div>Artist: {this.state.album.artists[0].name}</div>
+              <div>Released: {this.state.album.release_date}</div>
+              <div>Total tracks: {this.state.album.total_tracks}</div>
+              <div>Popularity: {this.state.album.popularity}/100</div>
               <div>Reviewed by: 0 TuneSers</div>
               <div><Link to={"/login"}>Log in</Link> or <Link to={"/login"}>sign up</Link> to review</div>
             </div>
             <div className="col-6">
               <div className='float-right embed-container'>
-                <iframe src={"https://embed.spotify.com/?uri=spotify:track:" + this.state.track.id}
+                <iframe src={"https://embed.spotify.com/?uri=spotify:album:" + this.state.album.id}
                         width="350px" height="350px" frameBorder="0" allowtransparency="true" allow="encrypted-media"/>
               </div>
             </div>
           </div>
-
-          <div className="row comments mt-3 mb-5">
+          <div className="row comments my-5">
+            <div className="col">
+              <h4>Tracks</h4>
+              {this.state.album.tracks.items.map(track => (
+                <div key={track.id}>&middot; <Link to={`/track/${track.id}`}>{track.name}</Link></div>
+              ))}
+            </div>
+          </div>
+          <div className="row comments my-5">
             <div className="col">
               <div className="row mb-2">
                 <div className="col">
@@ -97,3 +108,4 @@ export default class Subject extends Component {
   }
 }
 
+export default Album;

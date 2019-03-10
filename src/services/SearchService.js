@@ -31,6 +31,33 @@ class SearchService {
       // alert("error check connection/ try refresh");
       console.log(error)})
   }
+
+  getAlbum = (id, callback) => {
+    fetch(this.API_URL+"/album/" + id, {credentials: 'include'}).then(function(res){
+      if( !(res.ok) ){
+        throw Error(res.statusText)
+      }
+      return res
+    }).then(function(response){
+      return response.json()
+    }).then(callback).catch(function(error){
+      // alert("error check connection/ try refresh");
+      console.log(error)})
+  }
+
+  getArtist = (id, callback) => {
+    fetch(this.API_URL+"/artist/" + id, {credentials: 'include'}).then(function(res){
+      if( !(res.ok) ){
+        throw Error(res.statusText)
+      }
+      return res
+    }).then(function(response){
+      return response.json()
+    }).then(callback).catch(function(error){
+      // alert("error check connection/ try refresh");
+      console.log(error)})
+  }
+
 }
 
 export default SearchService;

@@ -4,7 +4,9 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Landing from './views/Landing';
 import Searching from './views/Searching';
 import User from './views/User';
-import Subject from './views/Subject';
+import Track from './views/Track';
+import Artist from './views/Artist';
+import Album from './views/Album';
 import Profile from './views/Profile';
 import ProfileEditor from './views/ProfileEditor';
 import Register from './views/Register';
@@ -43,9 +45,19 @@ class RouterBoard extends Component {
                 <Searching {...props} subjects={this.state.subjects} /> }
             />
             <Route
-              path="/subject/track/:id"
+              path="/track/:id"
               exact render={props =>
-              <Subject {...props} /> }
+              <Track {...props} /> }
+            />
+            <Route
+              path="/artist/:id"
+              exact render={props =>
+              <Artist {...props} /> }
+            />
+            <Route
+              path="/album/:id"
+              exact render={props =>
+              <Album {...props} /> }
             />
             <Route
               path="/user"

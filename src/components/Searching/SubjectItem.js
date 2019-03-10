@@ -6,14 +6,18 @@ import '../../static/components/SubjectItem.css';
 const SubjectItem = ({subject, type}) => {
   switch (type) {
     case "track": {
+      var imageURL = "https://carwad.net/sites/default/files/pics-of-musical-notes-146477-1383627.png";
+      if (subject.album.images && subject.album.images.length) {
+        imageURL = subject.album.images[0].url;
+      }
       return (
         <div className="row my-3">
           <div className="col-auto">
-            <img className="subject-image" src={subject.album.images[0].url}/>
+            <img className="subject-image" src={imageURL} />
           </div>
           <div className="col m-2">
             <div className="row mb-3">
-              <Link to={`/subject/${type}/${subject.id}`} className="subject-title">{subject.name}</Link>
+              <Link to={`/${type}/${subject.id}`} className="subject-title">{subject.name}</Link>
             </div>
             <div className="row">
               <p className="subject-pop">{subject.popularity}</p>
@@ -41,7 +45,7 @@ const SubjectItem = ({subject, type}) => {
           </div>
           <div className="col m-2">
             <div className="row mb-3">
-              <Link to={`/subject/${type}/${subject.id}`} className="subject-title">{subject.name}</Link>
+              <Link to={`/${type}/${subject.id}`} className="subject-title">{subject.name}</Link>
             </div>
             <div className="row">
               <p className="subject-pop">Followers: {followers}</p>
@@ -62,7 +66,7 @@ const SubjectItem = ({subject, type}) => {
           </div>
           <div className="col m-2">
             <div className="row mb-3">
-              <Link to={`/subject/${type}/${subject.id}`} className="subject-title">{subject.name}</Link>
+              <Link to={`/${type}/${subject.id}`} className="subject-title">{subject.name}</Link>
             </div>
             <div className="row">
               <p className="subject-pop">{subject.popularity}</p>
