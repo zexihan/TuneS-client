@@ -1,9 +1,9 @@
 class SearchService {
-  //remote
-  API_URL = "https://tune-server.herokuapp.com/api";
+  // remote
+  // API_URL = "https://tune-server.herokuapp.com/api";
 
   //local
-  //API_URL = "http://localhost:5000/api";
+  API_URL = "http://localhost:5000/api";
   static myInstance = null;
   static getInstance() {
     if (SearchService.myInstance == null) {
@@ -20,16 +20,16 @@ class SearchService {
   }
 
   getTrack = (id, callback) => {
-      fetch(this.API_URL+"/track/" + id, {credentials: 'include'}).then(function(res){
-          if( !(res.ok) ){
-              throw Error(res.statusText)
-          }
-          return res
-      }).then(function(response){
-          return response.json()
-      }).then(callback).catch(function(error){
-        // alert("error check connection/ try refresh");
-        console.log(error)})
+    fetch(this.API_URL+"/track/" + id, {credentials: 'include'}).then(function(res){
+      if( !(res.ok) ){
+        throw Error(res.statusText)
+      }
+      return res
+    }).then(function(response){
+      return response.json()
+    }).then(callback).catch(function(error){
+      // alert("error check connection/ try refresh");
+      console.log(error)})
   }
 }
 

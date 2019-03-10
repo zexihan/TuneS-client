@@ -25,15 +25,45 @@
 .content {
     overflow: auto;
     position: relative;
+    color: white;
 }
 
 .content p {
-       margin: 15px;
-       background: rgba(255, 255, 255, 0.3);
-       padding: 5px;
-       box-shadow: 0 0 5px gray;
-   }
 
-.content .show {
-    background: rgba(255, 255, 255, 0.3);
+}
+
+.content .title {
+
+}
+
+hr {
+    border-top: 1px solid white;
+}
+
+a {
+    color: #FAD689;
+}
+a:hover {
+    color: #FAD689;
+}
+
+.background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+
+    display: block;
+    background: rgba(0,0,0,.6);
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+
+    -webkit-filter: blur(20px);
+    -moz-filter: blur(20px);
+    -o-filter: blur(20px);
+    -ms-filter: blur(20px);
+    filter: blur(20px);
 }

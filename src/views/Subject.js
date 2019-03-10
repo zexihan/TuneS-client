@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
-import {Link} from "react-router-dom";
-import '../static/views/background.css';
-import SearchService from '../services/SearchService';
+import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 
+import '../static/views/Subject.css';
+
+import SearchService from '../services/SearchService';
 let searchService = SearchService.getInstance();
 
 export default class Subject extends Component {
@@ -15,103 +16,82 @@ export default class Subject extends Component {
     //     [{url: "https://cdn.pixabay.com/photo/2015/02/22/17/56/loading-645268_1280.jpg"}] }//no internet image
     // }
     componentDidMount() {
-        const callback = (res) =>{ this.setState({track: res, loaded: true}); console.log("trackMount", this.state.track) }
+        const callback = (res) => {
+          this.setState({track: res, loaded: true});
+          console.log("trackMount", this.state.track)
+        };
         searchService.getTrack(this.props.match.params.id, callback)
     }
 
     componentWillReceiveProps(nextProps) {
-        const callback = (res) =>{ this.setState({track: res}); console.log("trackUpdate", this.state.track) }
+        const callback = (res) => {
+          this.setState({track: res});
+          console.log("trackUpdate", this.state.track)
+        };
         searchService.getTrack(this.props.match.params.id, callback)
     }
 
   render() {
     return (
-        this.state.loaded===true &&
-      <div className="container-fluid" style={{padding: "15px"}}>
-              <div style={
-                  {
-
-                      content: "",
-                      position: "fixed",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      zIndex: -1,
-
-                  display: "block",
-                  backgroundImage: 'url('+this.state.track.album.images[0].url+')',
-                  backgroundSize: "cover",
-                  width: "100%",
-                  height: "100%",
-
-                  WebkitFilter: "blur(5px)",
-                  MozFilter: "blur(5px)",
-                  OFilter: "blur(5px)",
-                  MsFilter: "blur(5px)",
-                  filter: "blur(5px)",
-              }
-              } />
-              <div className="content">
-
-                  <div className="row">
-                      <div className="col-md-4">
-                <h3 className="show">Track: {this.state.track.name}</h3>
-                      </div>
-                      <div className="col-md-4">
-                      <div className="show"><b>By:</b> {this.state.track.artists[0].name}</div>
-                      <div className="show"><b>Released</b>: {this.state.track.album.release_date}</div>
-                      </div>
-                  </div>
-
-                <div className="row" style={{margin: "10px"}}>
-
-                    <div className="col-md-4">
-                        <div className="show">Loop Album below</div>
-                        <iframe src={"https://open.spotify.com/embed/album/"+this.state.track.album.id} width="300px" height="180px" frameborder="0"
-                                allowtransparency="true" allow="encrypted-media"></iframe>
-                    </div>
-                    <div className="col-md-3">
-                    </div>
-
-                  <div className="col-md-4 show">
-
-                    <br/>
-                    <div ><b>TuneScore</b>: 9.0</div>
-                    <div ><b>Reviewed by</b>: 999 TuneSers</div>
-                    <Link  to={"/login"}> log in or sign up to review and be a TuneSocializer</Link>
-                  </div>
-
-
-                </div>
-                <br/>
-
-                  <div className="show">
-                <h4>Comments</h4>
-
-                <div style={{margin: "8px"}}>
-                  <Link to={"/user"}>Zexi</Link> scores: 9.8
-                  <p> miss MJ ~~~ Jackson has been referred to as the "King of Pop" because, throughout his career, he
-                    transformed the art of music videos and paved the way for modern pop music. For much of Jackson's career, he
-                    had an unparalleled worldwide influence over the younger generation. His music and videos, such as Thriller,
-                    fostered racial diversity in MTV's roster and steered its focus from rock to pop music and R&B, shaping the
-                    channel into a form that proved enduring. Jackson's work continues to influence numerous artists of various
-                    music genres</p>
-                  <button className="btn-secondary"> reply</button>
-                </div>
-                <div style={{margin: "8px"}}>
-                  <Link to={"/user"}>michael yang</Link> scores: 9.9
-                  <p> Love this song </p>
-                  <button className="btn-secondary"> reply</button>
-                </div>
-                <div style={{margin: "8px"}}>
-                  <Link to={"/user"}>Tao</Link> scores: 9.7
-                  <p> Great! </p>
-                  <button className="btn-secondary"> reply</button>
-                </div>
-                  </div>
-
+      this.state.loaded === true &&
+      <div className="container-fluid">
+        <div className="background-image" style={{backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + this.state.track.album.images[0].url + ')'}} />
+        <div className="content mt-5">
+          <div className="row">
+            <div className="col-6">
+              <h1 className="title">{this.state.track.name}</h1>
+              <div>Artist: {this.state.track.artists[0].name}</div>
+              <div>Released: {this.state.track.album.release_date}</div>
+              <div>Popularity: {this.state.track.popularity}/100</div>
+              <div>Reviewed by: 0 TuneSers</div>
+              <div><Link to={"/login"}>Log in</Link> or <Link to={"/login"}>sign up</Link> to review</div>
+            </div>
+            <div className="col-6">
+              <div className='float-right embed-container'>
+                <iframe src={"https://embed.spotify.com/?uri=spotify:track:" + this.state.track.id}
+                        width="350px" height="350px" frameBorder="0" allowtransparency="true" allow="encrypted-media"/>
+              </div>
+            </div>
           </div>
+
+          <div className="row comments mt-3 mb-5">
+            <div className="col">
+              <div className="row mb-2">
+                <div className="col">
+                  <h4>Comments</h4>
+                </div>
+                <div className="col">
+                  <div className="float-right">
+                    <button className="btn btn-dark"><i className="fas fa-pen"></i> Reply</button>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <Link to={"/user"}>Zexi</Link> scores: 9.8 2019-03-03
+                <p> miss MJ ~~~ Jackson has been referred to as the "King of Pop" because, throughout his career, he
+                  transformed the art of music videos and paved the way for modern pop music. For much of Jackson's
+                  career, he
+                  had an unparalleled worldwide influence over the younger generation. His music and videos, such as
+                  Thriller,
+                  fostered racial diversity in MTV's roster and steered its focus from rock to pop music and R&B, shaping
+                  the
+                  channel into a form that proved enduring. Jackson's work continues to influence numerous artists of
+                  various
+                  music genres</p>
+              </div>
+              <hr />
+              <div>
+                <Link to={"/user"}>Zhongheng</Link> scores: 9.9 2019-03-03
+                <p> Love this song </p>
+              </div>
+              <hr />
+              <div>
+                <Link to={"/user"}>Tao</Link> scores: 9.7 2019-03-03
+                <p> Great! </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
