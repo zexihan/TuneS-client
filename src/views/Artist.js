@@ -82,12 +82,12 @@ class Artist extends Component {
                   various
                   music genres</p>
               </div>
-              <hr />
+              <hr className="comment-hr" />
               <div>
                 <Link to={"/user"}>Zhongheng</Link> scores: 9.9 2019-03-03
                 <p> Love this song </p>
               </div>
-              <hr />
+              <hr className="comment-hr" />
               <div>
                 <Link to={"/user"}>Tao</Link> scores: 9.7 2019-03-03
                 <p> Great! </p>
