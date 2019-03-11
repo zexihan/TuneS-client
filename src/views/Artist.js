@@ -11,7 +11,8 @@ class Artist extends Component {
     super(props);
     this.state = {
       loaded: false,
-      artist: {}
+      artist: {},
+      comments: ""
     };
   }
 
@@ -32,6 +33,17 @@ class Artist extends Component {
       console.log("artistUpdate", this.state.artist)
     };
     searchService.getSubject("artist", this.props.match.params.id, callback)
+  }
+
+  onCommentsChanged = (e) => {
+    this.setState({
+      comments: e.target.value
+    });
+    console.log(e.target.value);
+  }
+
+  onAddClicked = () => {
+    console.log(this.state.comments);
   }
 
   render() {

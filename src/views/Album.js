@@ -11,7 +11,8 @@ class Album extends Component {
     super(props);
     this.state = {
       loaded: false,
-      album: {}
+      album: {},
+      comments: ""
     };
   }
 
@@ -32,6 +33,17 @@ class Album extends Component {
       console.log("albumUpdate", this.state.album)
     };
     searchService.getSubject("album", this.props.match.params.id, callback)
+  }
+
+  onCommentsChanged = (e) => {
+    this.setState({
+      comments: e.target.value
+    });
+    console.log(e.target.value);
+  }
+
+  onAddClicked = () => {
+    console.log(this.state.comments);
   }
 
   render() {
