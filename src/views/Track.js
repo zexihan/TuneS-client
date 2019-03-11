@@ -43,6 +43,7 @@ class Track extends Component {
   }
 
   onAddClicked = () => {
+      searchService.addComment()
     console.log(this.state.comments);
   }
 

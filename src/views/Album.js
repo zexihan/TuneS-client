@@ -8,11 +8,12 @@ let searchService = SearchService.getInstance();
 
 class Album extends Component {
   constructor(props) {
+      console.log("constrcuted")
     super(props);
     this.state = {
       loaded: false,
       album: {},
-      comments: ""
+      comment: ""
     };
   }
 
@@ -20,33 +21,48 @@ class Album extends Component {
   //     [{url: "https://cdn.pixabay.com/photo/2015/02/22/17/56/loading-645268_1280.jpg"}] }//no internet image
   // }
   componentDidMount() {
+    console.log('x')
     const callback = (res) => {
-      this.setState({album: res, loaded: true});
-      console.log("albumMount", this.state.album)
+      searchService.getComments("album", this.props.match.params.id).then( comments=> {
+          console.log("get", comments)
+          this.setState({album: res, loaded: true, comments: comments})
+      }
+    )
+      //console.log("albumMount", this.state.album)
     };
     searchService.getSubject("album", this.props.match.params.id, callback)
+
   }
 
   componentWillReceiveProps(nextProps) {
+      console.log('y')
     const callback = (res) => {
-      this.setState({album: res});
-      console.log("albumUpdate", this.state.album)
+      searchService.getComments("album", this.props.match.params.id).then( comments=> {
+              console.log(comments);
+              this.setState({album: res,  comments: comments})
+          }
+      )
+      //console.log("albumUpdate", this.state.album)
     };
     searchService.getSubject("album", this.props.match.params.id, callback)
   }
 
   onCommentsChanged = (e) => {
     this.setState({
-      comments: e.target.value
+      comment: e.target.value
     });
     console.log(e.target.value);
   }
 
   onAddClicked = () => {
-    console.log(this.state.comments);
+      const callback = (res) => { console.log(res, "rev"); this.props.history.push("/album/" + this.props.match.params.id)} //to render new reviews
+    searchService.addComment("album", this.props.match.params.id, this.state.comment).then(res=>callback())
+    //console.log(this.state.comment);
   }
 
   render() {
+    console.log("loaded")
+      console.log('dc',this.state.comments)
     return (
       this.state.loaded === true &&
       <div className="container-fluid">
@@ -86,7 +102,7 @@ class Album extends Component {
 
               <div className="row my-2">
                 <div className="col">
-                  <textarea onChange={this.onCommentsChanged} className="form-control" id="commentTextarea" rows="2" placeholder="Your comments" />
+                  <textarea onChange={this.onCommentsChanged} value={this.state.comment} className="form-control" id="commentTextarea" rows="2" placeholder="Your comments" />
                 </div>
               </div>
               <div className="row">
@@ -101,35 +117,20 @@ class Album extends Component {
 
               <h5>Latest comments</h5>
 
-              <hr className="comment-hr" />
 
-              <div>
-                <Link to={"/user"}>Zexi</Link> scores: 9.8 2019-03-03
-                <p> miss MJ ~~~ Jackson has been referred to as the "King of Pop" because, throughout his career, he
-                  transformed the art of music videos and paved the way for modern pop music. For much of Jackson's
-                  career, he
-                  had an unparalleled worldwide influence over the younger generation. His music and videos, such as
-                  Thriller,
-                  fostered racial diversity in MTV's roster and steered its focus from rock to pop music and R&B, shaping
-                  the
-                  channel into a form that proved enduring. Jackson's work continues to influence numerous artists of
-                  various
-                  music genres</p>
-              </div>
+                {this.state.comments.map(comment=>
+                    ( <div>
+                      <hr className="comment-hr" />
 
-              <hr className="comment-hr" />
+                      <div>
+                        Anonymous scores: 9.7 {comment.updatedAt.slice(0, -5).split('T')[0]} &nbsp;
+                      {comment.updatedAt.slice(0, -5).split('T')[1]}&nbsp;UTC&nbsp;time
+                        <p> {comment.content} </p>
+                      </div>
+                    </div> )
+                )
+                }
 
-              <div>
-                <Link to={"/user"}>Zhongheng</Link> scores: 9.9 2019-03-03
-                <p> Love this song </p>
-              </div>
-
-              <hr className="comment-hr" />
-
-              <div>
-                <Link to={"/user"}>Tao</Link> scores: 9.7 2019-03-03
-                <p> Great! </p>
-              </div>
             </div>
           </div>
         </div>

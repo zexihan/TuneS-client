@@ -3,7 +3,7 @@ class LandingService {
   // API_URL = "https://tune-server.herokuapp.com/api";
 
   //local
-  API_URL = "http://localhost:5000/api";
+  API_URL = "http://localhost:5010/api";
   static myInstance = null;
   static getInstance() {
     if (LandingService.myInstance == null) {
