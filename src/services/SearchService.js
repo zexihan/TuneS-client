@@ -32,7 +32,6 @@ class SearchService {
       // alert("error check connection/ try refresh");
       console.log(error)})
   }
-
 }
 
 export default SearchService;
