@@ -23,7 +23,7 @@ class Album extends Component {
       this.setState({album: res, loaded: true});
       console.log("albumMount", this.state.album)
     };
-    searchService.getAlbum(this.props.match.params.id, callback)
+    searchService.getSubject("album", this.props.match.params.id, callback)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -31,7 +31,7 @@ class Album extends Component {
       this.setState({album: res});
       console.log("albumUpdate", this.state.album)
     };
-    searchService.getAlbum(this.props.match.params.id, callback)
+    searchService.getSubject("album", this.props.match.params.id, callback)
   }
 
   render() {
@@ -43,7 +43,7 @@ class Album extends Component {
           <div className="row">
             <div className="col-6">
               <h1 className="title">{this.state.album.name}</h1>
-              <div>Artist: {this.state.album.artists[0].name}</div>
+              <div>Artist: <Link to={`/artist/${this.state.album.artists[0].id}`}>{this.state.album.artists[0].name}</Link></div>
               <div>Released: {this.state.album.release_date}</div>
               <div>Total tracks: {this.state.album.total_tracks}</div>
               <div>Popularity: {this.state.album.popularity}/100</div>

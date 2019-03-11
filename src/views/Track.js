@@ -23,7 +23,7 @@ class Track extends Component {
           this.setState({track: res, loaded: true});
           console.log("trackMount", this.state.track)
         };
-        searchService.getTrack(this.props.match.params.id, callback)
+        searchService.getSubject("track", this.props.match.params.id, callback)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -31,7 +31,7 @@ class Track extends Component {
           this.setState({track: res});
           console.log("trackUpdate", this.state.track)
         };
-        searchService.getTrack(this.props.match.params.id, callback)
+        searchService.getSubject("track", this.props.match.params.id, callback)
     }
 
   render() {
@@ -44,7 +44,7 @@ class Track extends Component {
             <div className="col-6">
               <h1 className="title">{this.state.track.name}</h1>
               <div>Album: <Link to={`/album/${this.state.track.album.id}`}>{this.state.track.album.name}</Link></div>
-              <div>Artist: {this.state.track.artists[0].name}</div>
+              <div>Artist: <Link to={`/artist/${this.state.track.artists[0].id}`}>{this.state.track.artists[0].name}</Link></div>
               <div>Released: {this.state.track.album.release_date}</div>
               <div>Popularity: {this.state.track.popularity}/100</div>
               <div>Reviewed by: 0 TuneSers</div>
@@ -58,7 +58,7 @@ class Track extends Component {
             </div>
           </div>
 
-          <div className="row comments mt-3 mb-5">
+          <div className="row comments my-5">
             <div className="col">
               <div className="row mb-2">
                 <div className="col">
