@@ -45,14 +45,14 @@ class Artist extends Component {
               <h1 className="title">{this.state.artist.name}</h1>
               <div>Popularity: {this.state.artist.popularity}/100</div>
               <div>Followers: {this.state.artist.followers.total}</div>
-              <div>Genres: {this.state.artist.genres.map(genre => <div>&middot; {genre}</div>)}</div>
+              <div>Genres: {this.state.artist.genres.map(genre => <div key={genre}>&middot; {genre}</div>)}</div>
               <div>Reviewed by: 0 TuneSers</div>
               <div><Link to={"/login"}>Log in</Link> or <Link to={"/login"}>sign up</Link> to review</div>
             </div>
             <div className="col-6">
               <div className='float-right embed-container'>
                 <iframe src={"https://embed.spotify.com/?uri=spotify:artist:" + this.state.artist.id}
-                        width="350px" height="350px" frameBorder="0" allowTransparency="true" allow="encrypted-media"/>
+                        width="350px" height="350px" frameBorder="0" allowtransparency="true" allow="encrypted-media"/>
               </div>
             </div>
           </div>
