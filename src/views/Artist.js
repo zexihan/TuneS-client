@@ -59,16 +59,29 @@ class Artist extends Component {
 
           <div className="row comments my-5">
             <div className="col">
-              <div className="row mb-2">
+              <h4>Comments</h4>
+
+              <hr className="comment-hr" />
+
+              <div className="row my-2">
                 <div className="col">
-                  <h4>Comments</h4>
+                  <textarea onChange={this.onCommentsChanged} className="form-control" id="commentTextarea" rows="2" placeholder="Your comments" />
                 </div>
+              </div>
+              <div className="row">
                 <div className="col">
                   <div className="float-right">
-                    <button className="btn btn-dark"><i className="fas fa-pen"></i> Reply</button>
+                    <button onClick={this.onAddClicked} className="btn btn-light"><i className="fas fa-pen"></i> Add</button>
                   </div>
                 </div>
               </div>
+
+              <hr className="comment-hr" />
+
+              <h5>Latest comments</h5>
+
+              <hr className="comment-hr" />
+
               <div>
                 <Link to={"/user"}>Zexi</Link> scores: 9.8 2019-03-03
                 <p> miss MJ ~~~ Jackson has been referred to as the "King of Pop" because, throughout his career, he
@@ -82,12 +95,16 @@ class Artist extends Component {
                   various
                   music genres</p>
               </div>
+
               <hr className="comment-hr" />
+
               <div>
                 <Link to={"/user"}>Zhongheng</Link> scores: 9.9 2019-03-03
                 <p> Love this song </p>
               </div>
+
               <hr className="comment-hr" />
+
               <div>
                 <Link to={"/user"}>Tao</Link> scores: 9.7 2019-03-03
                 <p> Great! </p>
