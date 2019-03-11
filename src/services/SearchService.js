@@ -3,7 +3,7 @@ class SearchService {
   // API_URL = "https://tune-server.herokuapp.com/api";
 
   //local
-  API_URL = "http://localhost:5010/api";
+  API_URL = process.env.PORT || "http://localhost:5009/api";
   static myInstance = null;
   static getInstance() {
     if (SearchService.myInstance == null) {
