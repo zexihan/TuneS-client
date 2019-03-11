@@ -14,14 +14,14 @@ class SearchService {
   }
 
   query = async (searchText, searchType) => {
-    let res = await fetch(this.API_URL + "/search/" + searchText + "/type/" + searchType);
+    let res = await fetch(this.API_URL + "/search/" + searchText + "/type/" + searchType, {credentials: 'include'});
     let resList = await res.json();
     console.log(resList);
     return resList;
   }
 
   getSubject = (type, id, callback) => {
-    fetch(this.API_URL + "/" + type + "/" + id)
+    fetch(this.API_URL + "/" + type + "/" + id, {credentials: 'include'})
       .then(function(res){
         if (!res.ok) {
           throw Error(res.statusText)
