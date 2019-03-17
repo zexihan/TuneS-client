@@ -9,8 +9,6 @@ import Artist from './views/Artist';
 import Album from './views/Album';
 import Profile from './views/Profile';
 import ProfileEditor from './views/ProfileEditor';
-import Register from './views/Register';
-import Login from './views/Login';
 import NavBar from './components/NavBar';
 
 class RouterBoard extends Component {
@@ -73,16 +71,6 @@ class RouterBoard extends Component {
               path="/profile-editor"
               exact render={props =>
               <ProfileEditor {...props} /> }
-            />
-            <Route
-              path="/register"
-              exact render={props =>
-              <Register {...props} /> }
-            />
-            <Route
-              path="/login"
-              exact render={props =>
-              <Login {...props} /> }
             />
           </div>
         </Router>

@@ -26,10 +26,7 @@ class NavBar extends Component {
           </ul>
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link className="nav-link" to={`/login`}>Sign in</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to={`/register`}>Sign up</Link>
+              <button type="button" className="btn nav-link" data-toggle="modal" data-target="#login">Log in</button>
             </li>
           </ul>
         </div>
