@@ -8,9 +8,9 @@ import AlbumCardList from '../components/Landing/AlbumCardList';
 import TopCharts from '../components/Landing/TopCharts';
 import CarouselShow from '../components/Landing/CarouselShow';
 import SearchService from '../services/SearchService';
-// import LandingService from '../services/LandingService';
+import AuthService from '../services/AuthService';
 let searchService = SearchService.getInstance();
-// let landingService = LandingService.getInstance();
+let authService = AuthService.getInstance();
 
 class Landing extends Component {
   constructor(props) {
@@ -20,7 +20,9 @@ class Landing extends Component {
       searchType: "track",
       artistCount: 0,
       tuneserCount: 0,
-      playlist: {}
+      playlist: {},
+      currentUser: null,
+      isLoggedIn: false
     };
   }
 
@@ -30,6 +32,19 @@ class Landing extends Component {
       console.log("playlistMount", this.state.playlist)
     };
     searchService.getSubject("playlist", "59ZbFPES4DQwEjBpWHzrtC", callback)
+
+    authService.getProfile().then(
+      user => {
+        console.log(user);
+        if (user.id !== -1) {
+          this.setState({
+            currentUser: user,
+            isLoggedIn: true
+          });
+          this.props.changeLoginState(user);
+        }
+      }
+    );
   }
 
   search = async () => {
@@ -171,11 +186,6 @@ class Landing extends Component {
                   <tr>
                     <td>{this.state.artistCount}<br/>Artists</td>
                     <td>{this.state.tuneserCount}<br/>TuneSers</td>
-                  </tr>
-                  <tr>
-                    <td colSpan="3">
-                      <a href="http://localhost:5000/login/spotify-auth"><button className="btn btn-primary btn-block">JOIN NOW</button></a>
-                    </td>
                   </tr>
                   </tbody>
                 </table>

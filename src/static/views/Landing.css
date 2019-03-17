@@ -65,11 +65,11 @@ h5, h6 {
     background-color: rgb(243, 246, 247);
 }
 
-.content .right-area .side-1 {
-
+.right-area .side-1 td {
+    font-size: 14px;
 }
-.content .right-area .side-2 {
-
+.right-area .side-2 td {
+    font-size: 12px;
 }
 
 .btn-primary,

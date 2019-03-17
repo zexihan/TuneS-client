@@ -16,7 +16,8 @@ class RouterBoard extends Component {
     super(props);
     this.authService = AuthService.getInstance();
     this.state = {
-      subjects: []
+      subjects: [],
+      currentUser: null
     }
   }
 
@@ -27,16 +28,22 @@ class RouterBoard extends Component {
     console.log(subjects);
   }
 
+  changeLoginState = (user) => {
+    this.setState({
+      currentUser: user
+    });
+  }
+
   render() {
     return (
       <div>
         <Router>
           <div>
-            <NavBar />
+            <NavBar currentUser={this.state.currentUser}/>
             <Route
               path="/"
               exact render={props =>
-                <Landing {...props} search={this.search} />}
+                <Landing {...props} search={this.search} changeLoginState={this.changeLoginState}/>}
             />
             <Route
               path="/subject_search"
