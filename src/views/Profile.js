@@ -78,7 +78,11 @@ class Profile extends Component {
 
   onLogout = e => {
     // this.props.userService.logOut().then(() => this.props.history.push("/"));
-    this.props.history.push("/login");
+    fetch("http://localhost:5000/logout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include"
+    }).then(response => this.props.history.push("/login")).catch(error => console.log(error));
   };
 
   render() {

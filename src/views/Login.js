@@ -120,13 +120,12 @@ class LogIn extends Component {
             <div className="row mb-3">
               <div className="col-sm-2" />
               <div className="col-sm-10">
-                <button
+                <a href="http://localhost:5000/login/spotify-auth"><button
                   type="button"
                   className="btn btn-success btn-block"
-                  onClick={this.onLogin}
                 >
-                  LOG IN
-                </button>
+                  LOG IN WITH SPOTIFY
+                </button></a>
               </div>
             </div>
           </form>
