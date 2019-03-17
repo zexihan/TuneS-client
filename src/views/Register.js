@@ -12,13 +12,13 @@ class Register extends Component {
     };
   }
 
-  // componentDidMount = () => {
-  //   this.props.userService.getProfile().then(user => {
-  //     if (user.id !== -1) {
-  //       this.props.history.replace("/profile");
-  //     }
-  //   });
-  // };
+  componentDidMount = () => {
+    this.props.authService.getProfile().then(user => {
+      if (user.id !== -1) {
+        this.props.history.replace("/profile");
+      }
+    });
+  };
 
   onHideError = () => {
     this.setState({ showError: false });
@@ -35,7 +35,7 @@ class Register extends Component {
     //   password: this.state.password,
     //   courses: []
     // };
-    // this.props.userService.createUser(user).then(user => {
+    // this.props.authService.createUser(user).then(user => {
     //   if (user.id !== -1) {
     //     this.props.history.push("/profile");
     //   } else {

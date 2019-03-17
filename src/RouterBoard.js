@@ -8,14 +8,15 @@ import Track from './views/Track';
 import Artist from './views/Artist';
 import Album from './views/Album';
 import Profile from './views/Profile';
-import ProfileEditor from './views/ProfileEditor';
 import Register from './views/Register';
 import Login from './views/Login';
 import NavBar from './components/NavBar';
+import AuthService from './services/AuthService';
 
 class RouterBoard extends Component {
   constructor(props) {
     super(props);
+    this.authService = AuthService.getInstance();
     this.state = {
       subjects: []
     }
@@ -37,52 +38,47 @@ class RouterBoard extends Component {
             <Route
               path="/"
               exact render={props =>
-                <Landing {...props} search={this.search} /> }
+                <Landing {...props} search={this.search} />}
             />
             <Route
               path="/subject_search"
               exact render={props =>
-                <Searching {...props} subjects={this.state.subjects} /> }
+                <Searching {...props} subjects={this.state.subjects} />}
             />
             <Route
               path="/track/:id"
               exact render={props =>
-              <Track {...props} /> }
+                <Track {...props} />}
             />
             <Route
               path="/artist/:id"
               exact render={props =>
-              <Artist {...props} /> }
+                <Artist {...props} />}
             />
             <Route
               path="/album/:id"
               exact render={props =>
-              <Album {...props} /> }
+                <Album {...props} />}
             />
             <Route
               path="/user"
               exact render={props =>
-              <User {...props} /> }
+                <User {...props} authService={this.authService} />}
             />
             <Route
               path="/profile"
               exact render={props =>
-              <Profile {...props} /> }
-            />
-            <Route
-              path="/profile-editor"
-              exact render={props =>
-              <ProfileEditor {...props} /> }
+                <Profile {...props} authService={this.authService} />}
             />
             <Route
               path="/register"
               exact render={props =>
-              <Register {...props} /> }
+                <Register {...props} authService={this.authService} />}
             />
             <Route
               path="/login"
               exact render={props =>
-              <Login {...props} /> }
+                <Login {...props} authService={this.authService} />}
             />
           </div>
         </Router>

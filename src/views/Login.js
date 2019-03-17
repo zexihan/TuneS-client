@@ -12,13 +12,13 @@ class LogIn extends Component {
     };
   }
 
-  // componentDidMount = () => {
-  //   this.props.userService.getProfile().then(user => {
-  //     if (user.id !== -1) {
-  //       this.props.history.replace("/profile");
-  //     }
-  //   });
-  // };
+  componentDidMount = () => {
+    this.props.authService.getProfile().then(user => {
+      if (user.id !== -1) {
+        this.props.history.replace("/profile");
+      }
+    });
+  };
 
   onHideError = () => {
     this.setState({
@@ -35,12 +35,13 @@ class LogIn extends Component {
     //   username: this.state.username,
     //   password: this.state.password
     // };
-    // this.props.userService.logIn(user).then(user => {
+    // this.props.authService.logIn(user).then(user => {
     //   if (user.id !== -1) {
     //     this.props.history.push("/profile");
     //   } else {
     //     this.setState({ showError: true });
     //   }
+    //   // this.props.history.push("/profile", { user: user });
     // });
     this.props.history.push("/profile");
   };
@@ -120,12 +121,21 @@ class LogIn extends Component {
             <div className="row mb-3">
               <div className="col-sm-2" />
               <div className="col-sm-10">
-                <a href="http://localhost:5000/login/spotify-auth"><button
+                <button
                   type="button"
-                  className="btn btn-success btn-block"
+                  className="btn btn-success btn-block mb-2"
+                  onClick={this.onLogin}
                 >
-                  LOG IN WITH SPOTIFY
-                </button></a>
+                  SIGN IN
+                </button>
+                <a href="http://localhost:5000/login/spotify-auth">
+                  <button
+                    type="button"
+                    className="btn btn-success btn-block"
+                  >
+                    LOG IN WITH SPOTIFY
+                  </button>
+                </a>
               </div>
             </div>
           </form>

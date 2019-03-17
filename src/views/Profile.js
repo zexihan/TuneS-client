@@ -8,67 +8,54 @@ class Profile extends Component {
     this.state = {
       id: "",
       username: "",
-      portrait: "",
       password: "",
-      gender: "",
-      phone: "",
+      portrait: "",
       email: "",
       role: "",
-      dateofbirth: "",
-      courses: [],
       showUpdateInfo: false
     };
   }
 
-  // componentDidMount = () => {
-  //   this.props.userService.getProfile().then(user => {
-  //     if (user.id !== -1) {
-  //       this.setState({
-  //         id: user.id,
-  //         username: user.username,
-  //         password: user.password,
-  //         gender: user.gender,
-  //         phone: user.phone,
-  //         email: user.email,
-  //         role: user.role,
-  //         dateofbirth: user.dateofbirth,
-  //         courses: user.courses
-  //       });
-  //     } else {
-  //       this.props.history.replace("/");
-  //     }
-  //   });
-  // };
+  componentDidMount = () => {
+    this.props.authService.getProfile().then(user => {
+      if (user.id !== -1) {
+        this.setState({
+          id: user.id,
+          username: user.username,
+          password: user.password,
+          portrait: user.portrait,
+          email: user.email,
+          role: user.role,
+        });
+      } else {
+        this.props.history.replace("/");
+      }
+    });
+  };
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
   onUpdate = e => {
-    //   const user = {
-    //     id: this.state.id,
-    //     username: this.state.username,
-    //     password: this.state.password,
-    //     gender: this.state.gender,
-    //     phone: this.state.phone,
-    //     email: this.state.email,
-    //     role: this.state.role,
-    //     dateofbirth: this.state.dateofbirth,
-    //     courses: this.state.courses
-    //   };
-    //   this.props.userService.updateUser(user).then(user => {
-    //     if (user.id !== -1) {
-    //       this.setState({
-    //         gender: user.gender,
-    //         phone: user.phone,
-    //         email: user.email,
-    //         role: user.role,
-    //         dateofbirth: user.dateofbirth,
-    //         showUpdateInfo: true
-    //       });
-    //     }
-    //   });
-    console.log("updated");
+    const user = {
+      id: this.state.id,
+      username: this.state.username,
+      password: this.state.password,
+      portrait: this.state.portrait,
+      email: this.state.email,
+      role: this.state.role,
+    };
+    this.props.authService.updateUser(user).then(user => {
+      if (user.id !== -1) {
+        this.setState({
+          portrait: user.portrait,
+          email: user.email,
+          role: user.role,
+          showUpdateInfo: true
+        });
+      }
+    });
     this.props.history.replace("/profile");
   };
 
@@ -77,12 +64,7 @@ class Profile extends Component {
   };
 
   onLogout = e => {
-    // this.props.userService.logOut().then(() => this.props.history.push("/"));
-    fetch("http://localhost:5000/logout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include"
-    }).then(response => this.props.history.push("/login")).catch(error => console.log(error));
+    this.props.authService.logOut().then(response => this.props.history.push("/")).catch(error => console.log(error));
   };
 
   render() {
@@ -148,36 +130,6 @@ class Profile extends Component {
               </div>
             </div>
             <div className="form-group row">
-              <label htmlFor="gender" className="col-sm-2 col-form-label">
-                Gender
-              </label>
-              <div className="col-sm-10">
-                <input
-                  className="form-control"
-                  type="text"
-                  id="gender"
-                  name="gender"
-                  value={this.state.gender}
-                  onChange={this.onChange}
-                />
-              </div>
-            </div>
-            <div className="form-group row">
-              <label htmlFor="phone" className="col-sm-2 col-form-label">
-                Phone
-              </label>
-              <div className="col-sm-10">
-                <input
-                  className="form-control"
-                  type="text"
-                  id="phone"
-                  name="phone"
-                  value={this.state.phone}
-                  onChange={this.onChange}
-                />
-              </div>
-            </div>
-            <div className="form-group row">
               <label htmlFor="email" className="col-sm-2 col-form-label">
                 Email
               </label>
@@ -212,21 +164,6 @@ class Profile extends Component {
                   <option value="COMPANY">Company</option>
                   <option value="ADVERTISER">Advertiser</option>
                 </select>
-              </div>
-            </div>
-            <div className="form-group row">
-              <label htmlFor="dateofbirth" className="col-sm-2 col-form-label">
-                DOB
-              </label>
-              <div className="col-sm-10">
-                <input
-                  className="form-control"
-                  type="date"
-                  id="dateofbirth"
-                  name="dateofbirth"
-                  value={this.state.dateofbirth}
-                  onChange={this.onChange}
-                />
               </div>
             </div>
             <div className="form-group row">
