@@ -1,4 +1,4 @@
-import port from '../port.js'
+import port from '../port.js'//use one single port file
 class SearchService {
   // remote
   // API_URL = "https://tune-server.herokuapp.com/api";
@@ -21,6 +21,7 @@ class SearchService {
   }
 
   getSubject = (type, id, callback) => {
+    console.log(this.API_URL + "/" + type + "/" + id)
     fetch(this.API_URL + "/" + type + "/" + id, {credentials: 'include'})
       .then(function(res){
         if (!res.ok) {
