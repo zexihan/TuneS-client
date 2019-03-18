@@ -31,7 +31,7 @@ class Landing extends Component {
       this.setState({playlist: res, loaded: true});
       console.log("playlistMount", this.state.playlist)
     };
-    searchService.getSubject("playlist", "59ZbFPES4DQwEjBpWHzrtC", callback)
+    searchService.getSubject("playlist", "59ZbFPES4DQwEjBpWHzrtC", callback);
 
     authService.getProfile().then(
       user => {
