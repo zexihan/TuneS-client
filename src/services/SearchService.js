@@ -1,4 +1,4 @@
-import port from '../port.js'//use one single port file
+import port from '../port.js'; // use one single port file
 class SearchService {
 
   API_URL = port + '/api';

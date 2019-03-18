@@ -1,7 +1,8 @@
-import port from '../port.js'
+import port from '../port.js';
+
 class AuthService {
   // remote
-  API_URL = port +'/'
+  API_URL = port +'/';
 
   //local
   // API_URL = "http://localhost:5000/";
