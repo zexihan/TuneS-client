@@ -4,12 +4,16 @@ import { Link } from "react-router-dom";
 import '../static/views/Subject.css';
 
 import SearchService from '../services/SearchService';
+import AuthService from '../services/AuthService';
 let searchService = SearchService.getInstance();
+let authService = AuthService.getInstance();
 
 class Artist extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      username: null,
+      isLoggedIn: false,
       loaded: false,
       artist: {},
       comments: ""
@@ -24,15 +28,28 @@ class Artist extends Component {
       this.setState({artist: res, loaded: true});
       console.log("artistMount", this.state.artist)
     };
-    searchService.getSubject("artist", this.props.match.params.id, callback)
+    searchService.getSubject("artist", this.props.match.params.id, callback);
+
+    authService.getProfile().then(
+      user => {
+        console.log(user);
+        if (user.id !== -1) {
+          this.setState({
+            username: user.username,
+            isLoggedIn: true
+          });
+        }
+      }
+    );
   }
 
   componentWillReceiveProps(nextProps) {
-    const callback = (res) => {
-      this.setState({album: res});
-      console.log("artistUpdate", this.state.artist)
-    };
-    searchService.getSubject("artist", this.props.match.params.id, callback)
+    if (nextProps.logoutStatus === true) {
+      this.setState({
+        username: null,
+        isLoggedIn: false
+      })
+    }
   }
 
   onCommentsChanged = (e) => {
@@ -51,17 +68,16 @@ class Artist extends Component {
       this.state.loaded === true &&
       <div className="container-fluid">
         <div className="background-image" style={{backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + this.state.artist.images[0].url + ')'}} />
-        <div className="content subject-content mt-5">
+        <div className="content subject-content mt-md-5 mt-sm-3">
           <div className="row">
-            <div className="col-6">
+            <div className="col-sm-12 col-md-6">
               <h1 className="title">{this.state.artist.name}</h1>
               <div>Popularity: {this.state.artist.popularity}/100</div>
               <div>Followers: {this.state.artist.followers.total}</div>
               <div>Genres: {this.state.artist.genres.map(genre => <div key={genre}>&middot; {genre}</div>)}</div>
               <div>Reviewed by: 0 TuneSers</div>
-              <div><Link to={"/login"}>Log in</Link> or <Link to={"/login"}>sign up</Link> to review</div>
             </div>
-            <div className="col-6">
+            <div className="col-6 d-none d-md-block">
               <div className='float-right embed-container'>
                 <iframe src={"https://embed.spotify.com/?uri=spotify:artist:" + this.state.artist.id}
                         width="350px" height="350px" frameBorder="0" allowtransparency="true" allow="encrypted-media"/>
@@ -69,26 +85,52 @@ class Artist extends Component {
             </div>
           </div>
 
-          <div className="row comments my-5">
+          <div className="row my-3 d-md-none">
+            <div className="col-12">
+              <div className='text-center embed-container'>
+                <iframe src={"https://embed.spotify.com/?uri=spotify:artist:" + this.state.artist.id}
+                        width="350px" height="350px" frameBorder="0" allowtransparency="true" allow="encrypted-media"/>
+              </div>
+            </div>
+          </div>
+
+          <div className="row comments my-md-5 my-sm-3">
             <div className="col">
               <h4>Comments</h4>
 
               <hr className="comment-hr" />
 
-              <div className="row my-2">
-                <div className="col">
-                  <textarea onChange={this.onCommentsChanged} className="form-control" id="commentTextarea" rows="2" placeholder="Your comments" />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col">
-                  <div className="float-right">
-                    <button onClick={this.onAddClicked} className="btn btn-light"><i className="fas fa-pen"></i> Add</button>
+              {this.state.username !== null ? (
+                <div>
+                  <div className="row">
+                    <div className="col">
+                      <h6>{this.state.username}:</h6>
+                    </div>
                   </div>
-                </div>
-              </div>
 
-              <hr className="comment-hr" />
+                  <div className="row my-2">
+                    <div className="col">
+                      <textarea onChange={this.onCommentsChanged} className="form-control" id="commentTextarea" rows="2" placeholder="Your comments" />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col">
+                      <div className="float-right">
+                        <button onClick={this.onAddClicked} className="btn btn-light"><i className="fas fa-pen"></i> Add</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <hr className="comment-hr" />
+                </div>
+              ):(
+                <div>
+                  <a href="#" data-toggle="modal" data-target="#login">Log in to comment</a>
+                  <hr className="comment-hr" />
+                </div>
+
+              )}
 
               <h5>Latest comments</h5>
 

@@ -3,10 +3,11 @@
     padding-bottom: 0.25rem;
     font-size: smaller;
     line-height: 1em;
+    width: 100%;
 }
 
 .navbar-custom {
-    background-color: rgba(85, 87, 83, 1);
+    background-color: rgba(85, 87, 83, 1) !important;
 }
 /* change the brand and text color */
 .navbar-custom .navbar-brand,
@@ -23,6 +24,10 @@
 .navbar-custom .nav-item.active .nav-link,
 .navbar-custom .nav-item:hover .nav-link {
     color: #ffffff;
+}
+
+.dropdown-item {
+    font-size: 14px;
 }
 
 

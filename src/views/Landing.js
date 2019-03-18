@@ -21,7 +21,7 @@ class Landing extends Component {
       artistCount: 0,
       tuneserCount: 0,
       playlist: {},
-      currentUser: null,
+      username: null,
       isLoggedIn: false
     };
   }
@@ -38,10 +38,9 @@ class Landing extends Component {
         console.log(user);
         if (user.id !== -1) {
           this.setState({
-            currentUser: user,
+            username: user.username,
             isLoggedIn: true
           });
-          this.props.changeLoginState(user);
         }
       }
     );
@@ -124,35 +123,32 @@ class Landing extends Component {
 
         <hr className="search-hr"/>
 
-        <div className="row navs py-1">
-          <div className="col">
-            <ul className="nav justify-content-center">
-              <li className="nav-item">
-                <a className="nav-link" href="#">New Music</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">Playlists</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">Music Videos</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">Top Charts</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">Genres</a>
-              </li>
-            </ul>
-          </div>
-        </div>
+        {/*<div className="row navs py-1">*/}
+          {/*<div className="col">*/}
+            {/*<ul className="nav justify-content-center">*/}
+              {/*<li className="nav-item">*/}
+                {/*<a className="nav-link" href="#">New Music</a>*/}
+              {/*</li>*/}
+              {/*<li className="nav-item">*/}
+                {/*<a className="nav-link" href="#">Playlists</a>*/}
+              {/*</li>*/}
+              {/*<li className="nav-item">*/}
+                {/*<a className="nav-link" href="#">Music Videos</a>*/}
+              {/*</li>*/}
+              {/*<li className="nav-item">*/}
+                {/*<a className="nav-link" href="#">Top Charts</a>*/}
+              {/*</li>*/}
+              {/*<li className="nav-item">*/}
+                {/*<a className="nav-link" href="#">Genres</a>*/}
+              {/*</li>*/}
+            {/*</ul>*/}
+          {/*</div>*/}
+        {/*</div>*/}
 
-        <div className="row content my-3">
-          <div className="col-9 left-area">
+        <div className="row landing-content my-3">
+          <div className="col-md-9 col-sm-12 left-area">
 
-
-
-
-            <div className="row adv-1 my-4">
+            <div className="row adv-1 my-1">
               <div className="col">
                 <div className="adv-1-content">
                   <CarouselShow />
@@ -178,7 +174,7 @@ class Landing extends Component {
               {/*</div>*/}
             {/*</div>*/}
           </div>
-          <div className="col-3 right-area">
+          <div className="col-3 right-area d-none d-md-block">
             <div className="row side-1">
               <div className="col">
                 <table className="table table-borderless text-center">
@@ -223,37 +219,6 @@ class Landing extends Component {
                 <h6>Top Charts</h6>
                 <hr />
                 <TopCharts />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="modal fade" id="login" tabIndex="-1" role="dialog"
-             aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-          <div className="modal-dialog modal-dialog-centered" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLongTitle">Log In to Connect</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <div className="row m-3">
-                  <div className="col">
-                    <a href="http://localhost:5000/login/spotify-auth"><button
-                      type="button"
-                      className="btn btn-success btn-block"
-                    >
-                      Log in with Spotify
-                    </button></a>
-                  </div>
-                </div>
-                <div className="row m-3">
-                  <div className="col text-center">
-                    Don't have an account? <a href="https://www.spotify.com/us/signup/?forward_url=https%3A%2F%2Faccounts.spotify.com%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A5000%252Flogin%252Fspotify-auth%252Fcallback%26scope%3Duser-read-email%2520user-read-private%26client_id%3Da1e8617e0c7648d99634ae3a3d192590">Sign up for Spotify</a>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

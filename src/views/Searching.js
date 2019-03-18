@@ -144,27 +144,27 @@ class Searching extends Component {
 
       <hr className="search-hr" />
 
-      <div className="row navs py-1">
-        <div className="col">
-          <ul className="nav justify-content-center">
-            <li className="nav-item">
-              <a className="nav-link" href="#">New Music</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Playlists</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Music Videos</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Top Charts</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Genres</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+      {/*<div className="row navs py-1">*/}
+        {/*<div className="col">*/}
+          {/*<ul className="nav justify-content-center">*/}
+            {/*<li className="nav-item">*/}
+              {/*<a className="nav-link" href="#">New Music</a>*/}
+            {/*</li>*/}
+            {/*<li className="nav-item">*/}
+              {/*<a className="nav-link" href="#">Playlists</a>*/}
+            {/*</li>*/}
+            {/*<li className="nav-item">*/}
+              {/*<a className="nav-link" href="#">Music Videos</a>*/}
+            {/*</li>*/}
+            {/*<li className="nav-item">*/}
+              {/*<a className="nav-link" href="#">Top Charts</a>*/}
+            {/*</li>*/}
+            {/*<li className="nav-item">*/}
+              {/*<a className="nav-link" href="#">Genres</a>*/}
+            {/*</li>*/}
+          {/*</ul>*/}
+        {/*</div>*/}
+      {/*</div>*/}
 
 
       <div className="row">

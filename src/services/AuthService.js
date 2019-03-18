@@ -1,8 +1,9 @@
 class AuthService {
+  // remote
+  // API_URL = "https://tune-server.herokuapp.com/";
+  //local
+  API_URL = "http://localhost:5000/";
   static myInstance = null;
-  constructor() {
-    this.url = "http://localhost:5000/";
-  }
 
   static getInstance() {
     if (AuthService.myInstance == null) {
@@ -12,7 +13,7 @@ class AuthService {
   }
 
   createUser = user => {
-    return fetch(this.url + "register", {
+    return fetch(this.API_URL + "register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
@@ -23,7 +24,7 @@ class AuthService {
   };
 
   getProfile = () => {
-    return fetch(this.url + "user/current", {
+    return fetch(this.API_URL + "user/current", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       credentials: "include"
@@ -33,7 +34,7 @@ class AuthService {
   };
 
   logIn = user => {
-    return fetch(this.url + "login", {
+    return fetch(this.API_URL + "login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
@@ -44,7 +45,7 @@ class AuthService {
   };
 
   logOut = () => {
-    return fetch(this.url + "logout", {
+    return fetch(this.API_URL + "logout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include"
@@ -54,7 +55,7 @@ class AuthService {
   };
 
   findAllUsers = () => {
-    return fetch(this.url + "users", {
+    return fetch(this.API_URL + "users", {
       credentials: "include"
     })
       .then(response => response.json())
@@ -62,7 +63,7 @@ class AuthService {
   };
 
   findUserById = id => {
-    const url = this.url + "user/" + id;
+    const url = this.API_URL + "user/" + id;
     return fetch(url, {
       credentials: "include"
     })
@@ -71,7 +72,7 @@ class AuthService {
   };
 
   updateUser = user => {
-    const url = this.url + "user/" + user.id;
+    const url = this.API_URL + "user/" + user.id;
     return fetch(url, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },

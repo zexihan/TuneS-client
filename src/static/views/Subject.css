@@ -67,3 +67,17 @@ a:hover {
     -ms-filter: blur(20px);
     filter: blur(20px);
 }
+
+@media screen and (min-width: 600px) {
+    .subject-content {
+        padding-left: 10vw;
+        padding-right: 10vw;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .subject-content {
+        padding-left: 3vw;
+        padding-right: 3vw;
+    }
+}

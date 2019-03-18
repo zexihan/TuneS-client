@@ -2,8 +2,8 @@
     color: tomato;
 }
 
-.user-content {
-    width: 1000px;
+.profile-image img {
+    width: 128px;
 }
 
 .user-block {
@@ -31,7 +31,7 @@ table {
     padding: 3px;
 }
 
-.left-hr {
-    border-top: 3px solid rgb(20, 146, 103);
+.user-hr {
+    border-top: 1px dashed rgb(174, 174, 174);
     margin: 0;
 }
