@@ -1,8 +1,9 @@
 class AuthService {
   // remote
-  // API_URL = "https://tune-server.herokuapp.com/";
+  API_URL = "https://tunes-api.herokuapp.com/";
+
   //local
-  API_URL = "http://localhost:5000/";
+  // API_URL = "http://localhost:5000/";
   static myInstance = null;
 
   static getInstance() {
