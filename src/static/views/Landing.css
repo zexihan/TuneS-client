@@ -39,9 +39,18 @@
     color: #ffffff;
 }
 
-.content {
-    padding-left: 10%;
-    padding-right: 10%;
+@media screen and (min-width: 600px) {
+    .landing-content {
+        padding-left: 10vw;
+        padding-right: 10vw;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .landing-content {
+        padding-left: 2vw;
+        padding-right: 2vw;
+    }
 }
 
 h5, h6 {
@@ -65,11 +74,11 @@ h5, h6 {
     background-color: rgb(243, 246, 247);
 }
 
-.content .right-area .side-1 {
-
+.right-area .side-1 td {
+    font-size: 14px;
 }
-.content .right-area .side-2 {
-
+.right-area .side-2 td {
+    font-size: 12px;
 }
 
 .btn-primary,
@@ -97,4 +106,8 @@ h5, h6 {
 .table-hover-rows > tbody > tr:hover,
 .table-hover-rows > tbody > tr:hover {
     background-color: rgb(243, 246, 247);
+}
+
+#sign-up {
+    color: rgb(120, 207, 101)
 }

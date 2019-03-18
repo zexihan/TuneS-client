@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import SubjectList from '../components/Searching/SubjectList';
 
@@ -58,7 +58,7 @@ class Searching extends Component {
 
   search = async () => {
     this.setState({
-      query: this.state.searchText,
+      query: this.state.searchText
     });
     console.log("search");
     let resList = await searchService.query(this.state.searchText, this.state.preSearchType);
@@ -91,6 +91,13 @@ class Searching extends Component {
     });
   }
 
+  onSearchKeyPressed = (e) => {
+    if(e.charCode === 13){
+      this.search();
+      this.props.history.push({pathname: "/subject_search", search: "?query=" + this.state.searchText + "&type=" + this.state.preSearchType});
+    }
+  }
+
   onSearchTypeChanged = (e) => {
     this.setState({
       preSearchType: e.target.value
@@ -112,7 +119,8 @@ class Searching extends Component {
                    id="search"
                    className="form-control"
                    value={this.state.searchText}
-                   onChange={this.onSearchFieldChanged} />
+                   onChange={this.onSearchFieldChanged}
+                   onKeyPress={this.onSearchKeyPressed} />
             <div className="input-group-append">
               <Link to={{pathname: "/subject_search", search: "?query=" + this.state.searchText + "&type=" + this.state.preSearchType}}>
                 <button className="btn btn-outline-secondary" type="button" onClick={this.search}>
@@ -144,27 +152,27 @@ class Searching extends Component {
 
       <hr className="search-hr" />
 
-      <div className="row navs py-1">
-        <div className="col">
-          <ul className="nav justify-content-center">
-            <li className="nav-item">
-              <a className="nav-link" href="#">New Music</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Playlists</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Music Videos</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Top Charts</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Genres</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+      {/*<div className="row navs py-1">*/}
+        {/*<div className="col">*/}
+          {/*<ul className="nav justify-content-center">*/}
+            {/*<li className="nav-item">*/}
+              {/*<a className="nav-link" href="#">New Music</a>*/}
+            {/*</li>*/}
+            {/*<li className="nav-item">*/}
+              {/*<a className="nav-link" href="#">Playlists</a>*/}
+            {/*</li>*/}
+            {/*<li className="nav-item">*/}
+              {/*<a className="nav-link" href="#">Music Videos</a>*/}
+            {/*</li>*/}
+            {/*<li className="nav-item">*/}
+              {/*<a className="nav-link" href="#">Top Charts</a>*/}
+            {/*</li>*/}
+            {/*<li className="nav-item">*/}
+              {/*<a className="nav-link" href="#">Genres</a>*/}
+            {/*</li>*/}
+          {/*</ul>*/}
+        {/*</div>*/}
+      {/*</div>*/}
 
 
       <div className="row">
@@ -185,4 +193,4 @@ class Searching extends Component {
   }
 }
 
-export default Searching;
+export default withRouter(Searching);

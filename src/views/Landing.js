@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import '../static/views/Landing.css';
 
@@ -8,9 +8,9 @@ import AlbumCardList from '../components/Landing/AlbumCardList';
 import TopCharts from '../components/Landing/TopCharts';
 import CarouselShow from '../components/Landing/CarouselShow';
 import SearchService from '../services/SearchService';
-// import LandingService from '../services/LandingService';
+import AuthService from '../services/AuthService';
 let searchService = SearchService.getInstance();
-// let landingService = LandingService.getInstance();
+let authService = AuthService.getInstance();
 
 class Landing extends Component {
   constructor(props) {
@@ -20,7 +20,9 @@ class Landing extends Component {
       searchType: "track",
       artistCount: 0,
       tuneserCount: 0,
-      playlist: {}
+      playlist: {},
+      username: null,
+      isLoggedIn: false
     };
   }
 
@@ -29,7 +31,19 @@ class Landing extends Component {
       this.setState({playlist: res, loaded: true});
       console.log("playlistMount", this.state.playlist)
     };
-    searchService.getSubject("playlist", "59ZbFPES4DQwEjBpWHzrtC", callback)
+    searchService.getSubject("playlist", "59ZbFPES4DQwEjBpWHzrtC", callback);
+
+    authService.getProfile().then(
+      user => {
+        console.log(user);
+        if (user.id !== -1) {
+          this.setState({
+            username: user.username,
+            isLoggedIn: true
+          });
+        }
+      }
+    );
   }
 
   search = async () => {
@@ -61,6 +75,13 @@ class Landing extends Component {
     });
   }
 
+  onSearchKeyPressed = (e) => {
+    if(e.charCode === 13){
+      this.search();
+      this.props.history.push({pathname: "/subject_search", search: "?query=" + this.state.searchText + "&type=" + this.state.searchType});
+    }
+  }
+
   onSearchTypeChanged = (e) => {
     this.setState({
       searchType: e.target.value
@@ -72,13 +93,13 @@ class Landing extends Component {
     return (
       this.state.loaded === true &&
       <div className="container-fluid">
-        <div className="row d-flex justify-content-center py-4" id="search-area">
+        <div className="row d-flex justify-content-center py-4">
           <div className="my-auto mx-3">
             <h1 id="brand">TuneS</h1>
           </div>
           <div className="my-auto mx-3">
             <div className="input-group" style={{width: "100%"}}>
-              <input type="text" id="search" className="form-control" placeholder="Search..." onChange={this.onSearchFieldChanged} />
+              <input type="text" id="search" className="form-control" placeholder="Search..." onChange={this.onSearchFieldChanged} onKeyPress={this.onSearchKeyPressed} />
               <div className="input-group-append">
                 <Link to={{pathname: "/subject_search", search: "?query=" + this.state.searchText + "&type=" + this.state.searchType}}>
                   <button className="btn btn-outline-secondary" type="button" onClick={this.search}>
@@ -109,35 +130,32 @@ class Landing extends Component {
 
         <hr className="search-hr"/>
 
-        <div className="row navs py-1">
-          <div className="col">
-            <ul className="nav justify-content-center">
-              <li className="nav-item">
-                <a className="nav-link" href="#">New Music</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">Playlists</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">Music Videos</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">Top Charts</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">Genres</a>
-              </li>
-            </ul>
-          </div>
-        </div>
+        {/*<div className="row navs py-1">*/}
+          {/*<div className="col">*/}
+            {/*<ul className="nav justify-content-center">*/}
+              {/*<li className="nav-item">*/}
+                {/*<a className="nav-link" href="#">New Music</a>*/}
+              {/*</li>*/}
+              {/*<li className="nav-item">*/}
+                {/*<a className="nav-link" href="#">Playlists</a>*/}
+              {/*</li>*/}
+              {/*<li className="nav-item">*/}
+                {/*<a className="nav-link" href="#">Music Videos</a>*/}
+              {/*</li>*/}
+              {/*<li className="nav-item">*/}
+                {/*<a className="nav-link" href="#">Top Charts</a>*/}
+              {/*</li>*/}
+              {/*<li className="nav-item">*/}
+                {/*<a className="nav-link" href="#">Genres</a>*/}
+              {/*</li>*/}
+            {/*</ul>*/}
+          {/*</div>*/}
+        {/*</div>*/}
 
-        <div className="row content my-3">
-          <div className="col-9 left-area">
+        <div className="row landing-content my-3">
+          <div className="col-md-9 col-sm-12 left-area">
 
-
-
-
-            <div className="row adv-1 my-4">
+            <div className="row adv-1 my-1">
               <div className="col">
                 <div className="adv-1-content">
                   <CarouselShow />
@@ -163,7 +181,7 @@ class Landing extends Component {
               {/*</div>*/}
             {/*</div>*/}
           </div>
-          <div className="col-3 right-area">
+          <div className="col-3 right-area d-none d-md-block">
             <div className="row side-1">
               <div className="col">
                 <table className="table table-borderless text-center">
@@ -171,9 +189,6 @@ class Landing extends Component {
                   <tr>
                     <td>{this.state.artistCount}<br/>Artists</td>
                     <td>{this.state.tuneserCount}<br/>TuneSers</td>
-                  </tr>
-                  <tr>
-                    <td colSpan="3"><button className="btn btn-primary btn-block">JOIN NOW</button></td>
                   </tr>
                   </tbody>
                 </table>
@@ -220,4 +235,4 @@ class Landing extends Component {
   }
 }
 
-export default Landing;
+export default withRouter(Landing);

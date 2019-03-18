@@ -1,10 +1,8 @@
 import port from '../port.js'//use one single port file
 class SearchService {
-  // remote
-  // API_URL = "https://tune-server.herokuapp.com/api";
 
-  //local
-  API_URL = port;
+  API_URL = port + '/api';
+
   static myInstance = null;
   static getInstance() {
     if (SearchService.myInstance == null) {

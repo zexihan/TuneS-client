@@ -1,16 +1,25 @@
 import React, { Component } from "react";
-import "../static/views/User.css";
-import Posts from "../components/User/Posts";
-import AlbumCard from "../components/AlbumCard";
-import ArtistCard from "../components/ArtistCard";
-import Followers from "../components/User/Followers";
 import { Link } from "react-router-dom";
+
+import Followers from "../components/User/Followers";
+import Posts from "../components/User/Posts";
+// import AlbumCard from "../components/AlbumCard";
+// import ArtistCard from "../components/ArtistCard";
 // import Spinner from "../Spinner/Spinner";
+
+import "../static/views/User.css";
+
+import AuthService from '../services/AuthService';
+let authService = AuthService.getInstance();
 
 class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      username: null,
+      pageUsername: this.props.match.params.username,
+      isMyself: false,
+      isLoggedIn: false,
       portrait: "",
       savedSongs: [],
       followedAlbums: [], //Playlists, Tracks
@@ -31,6 +40,24 @@ class User extends Component {
     };
   }
 
+  componentDidMount() {
+    authService.getProfile().then(
+      user => {
+        if (user.id !== -1) {
+          this.setState({
+            username: user.username,
+            isLoggedIn: true
+          });
+        }
+        if (this.state.pageUsername === user.username) {
+          this.setState({
+            isMyself: true
+          })
+        }
+      }
+    );
+  }
+
   followHandler = () => {
     console.log("followed");
   };
@@ -42,80 +69,95 @@ class User extends Component {
   render() {
     return (
       <div className="container">
-        <div className="row user-content ml-2 mt-2">
-          <div className="col-md-9 col-12 d-block">
+        <div className="row user-content mt-3">
+          <div className="col">
             <div className="row">
-              <div className="col-1">
-                <i className="fas fa-3x fa-user-circle color-tomato" />
+              <div className="col-auto profile-image">
+                <img className="img-fluid" src="https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png" />
               </div>
-              <div className="col-2">
-                <h2 className="mt-1">Alice</h2>
+              <div className="col">
+                <div className="row">
+                  <div className="col">
+                    <h2 className="username my-1">{this.state.pageUsername}</h2>
+                    <div className="bio my-1">bio</div>
+                    <div className="location my-1"><i className="fas fa-map-marker-alt"></i> location</div>
+                    <div className="follow-count my-1">Following: 0 Followers: 0</div>
+                  </div>
+                </div>
               </div>
-              <div className="col-2">
+            </div>
+            <div className="row my-3">
+              {this.state.isMyself === false && this.state.isLoggedIn === true ? (
+              <div className="col-auto">
                 <button
                   type="button"
                   className="btn btn-light mt-2"
                   onClick={this.followHandler}
                 >
-                  Subscribe
+                  <i className="fas fa-plus"></i> Follow
                 </button>
               </div>
-              <div className="col-3">
-                <Link
-                  to="/profile"
-                  className="btn btn-light  mt-2"
-                  onClick={this.editProfileHandler}
-                >
-                  Edit Profile
-                </Link>
-              </div>
-              <div className="col" />
+              ) : null}
+              {this.state.isMyself === true ? (
+                <div className="col-auto">
+                  <Link
+                    to="/profile"
+                    className="btn btn-light  mt-2"
+                    onClick={this.editProfileHandler}
+                  >
+                    <i className="fas fa-user-edit"></i> Edit Profile
+                  </Link>
+                </div>
+              ) : null}
             </div>
           </div>
-          <div className="col-md-3 d-none d-md-block" />
-          <div className="col-md-9 col-12 d-block">
+        </div>
+
             <div id="recent-posts">
               <div className="row mt-2">
                 <div className="col">
                   <span>Recent Posts</span>
                 </div>
               </div>
-              <hr className="left-hr" />
+              <hr className="user-hr" />
               <div className="row mt-1 ml-2">posts</div>
             </div>
+
             <div id="followed-artists">
               <div className="row mt-2">
                 <div className="col">
                   <span>Followed Artists</span>
                 </div>
               </div>
-              <hr className="left-hr" />
+              <hr className="user-hr" />
               <div className="row mt-1">
-                <ArtistCard />
-                <ArtistCard />
-                <ArtistCard />
+                {/*<ArtistCard />*/}
+                {/*<ArtistCard />*/}
+                {/*<ArtistCard />*/}
               </div>
             </div>
+
             <div id="followed-albums">
               <div className="row mt-2">
                 <div className="col">
                   <span>Followed Albums (Published Albums)</span>
                 </div>
               </div>
-              <hr className="left-hr" />
+              <hr className="user-hr" />
               <div className="row mt-1">
-                <AlbumCard />
-                <AlbumCard />
-                <AlbumCard />
+                {/*<AlbumCard />*/}
+                {/*<AlbumCard />*/}
+                {/*<AlbumCard />*/}
               </div>
             </div>
+
             <div id="saved-songs">
               <div className="row mt-2">
                 <div className="col">
                   <span>Saved Songs (Published Songs)</span>
                 </div>
               </div>
-              <hr className="left-hr" />
+              <hr className="user-hr" />
               <ul type="circle" className="playlist mt-1 pl-1">
                 <li className="row playlist-song">
                   <div className="col-6 playlist-song-name">
@@ -139,39 +181,8 @@ class User extends Component {
                 </li>
               </ul>
             </div>
+
           </div>
-          <div className="col-md-3 d-none d-md-block">
-            <div id="friends" className="mt-2">
-              <span>Friends (Followers)</span>
-              <ul className="list-group">
-                {this.state.friends.slice(0, 4).map(friend => (
-                  <li
-                    key={friend.id}
-                    className="list-group-item d-flex justify-content-between align-items-center"
-                  >
-                    <Link to={`/user/${friend.id}`} className="ml-1">
-                      {friend.username}
-                    </Link>
-                    <span className="badge badge-primary badge-pill">
-                      {friend.id}
-                    </span>
-                    <i className="far fa-comments" />
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div id="liked-items" className="user-block mt-4">
-              <div className="user-block-title">
-                <span className="ml-2">Liked items</span>
-              </div>
-              <ul className="mt-1" type="circle">
-                <li>item 1</li>
-                <li>item 2</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
     );
   }
 }
