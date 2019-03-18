@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import port from '../port.js';
+import port from './port.js';
 
 import Landing from './views/Landing';
 import Searching from './views/Searching';
