@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router';
+import { Link, withRouter } from 'react-router-dom';
 
 import '../static/views/Landing.css';
 
@@ -75,6 +76,13 @@ class Landing extends Component {
     });
   }
 
+  onSearchKeyPressed = (e) => {
+    if(e.charCode === 13){
+      this.search();
+      this.props.history.push({pathname: "/subject_search", search: "?query=" + this.state.searchText + "&type=" + this.state.searchType});
+    }
+  }
+
   onSearchTypeChanged = (e) => {
     this.setState({
       searchType: e.target.value
@@ -92,7 +100,7 @@ class Landing extends Component {
           </div>
           <div className="my-auto mx-3">
             <div className="input-group" style={{width: "100%"}}>
-              <input type="text" id="search" className="form-control" placeholder="Search..." onChange={this.onSearchFieldChanged} />
+              <input type="text" id="search" className="form-control" placeholder="Search..." onChange={this.onSearchFieldChanged} onKeyPress={this.onSearchKeyPressed} />
               <div className="input-group-append">
                 <Link to={{pathname: "/subject_search", search: "?query=" + this.state.searchText + "&type=" + this.state.searchType}}>
                   <button className="btn btn-outline-secondary" type="button" onClick={this.search}>
@@ -228,4 +236,4 @@ class Landing extends Component {
   }
 }
 
-export default Landing;
+export default withRouter(Landing);
