@@ -98,7 +98,7 @@ class RouterBoard extends Component {
               <div className="modal-body">
                 <div className="row m-3">
                   <div className="col">
-                    <a href="https://tunes-server.herokuapp.com/login/spotify-auth" target="_blank"><button
+                    <a href="https://tune-server.herokuapp.com/login/spotify-auth" target="_blank"><button
                     // <a href="https://tunes-api.herokuapp.com/login/spotify-auth"><button
                       type="button"
                       className="btn btn-success btn-block"
