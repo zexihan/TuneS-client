@@ -93,10 +93,9 @@ class Artist extends Component {
               </div>
             </div>
           </div>
-
           <div className="row comments my-md-5 my-sm-3">
             <div className="col">
-              <h4>Comments</h4>
+              <h4>comments now only work for album pages</h4>
 
               <hr className="comment-hr" />
 

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-
 import Landing from './views/Landing';
 import Searching from './views/Searching';
 import User from './views/User';
@@ -67,7 +66,7 @@ class RouterBoard extends Component {
                 <Album {...props} logoutStatus={this.state.logoutStatus} />}
             />
             <Route
-              path="/user/:username"
+              path="/user/:id"
               exact render={props =>
                 <User {...props} logoutStatus={this.state.logoutStatus} />}
             />
@@ -78,6 +77,14 @@ class RouterBoard extends Component {
             />
           </div>
         </Router>
+          <p>
+         <b>Updates</b> 
+         <ol>
+         <li>you can signin with spotify to create account on our website and comment on albums</li>
+                
+            <li>If you are logged in with spotify, you can listen to albums our website</li>   
+            </ol> 
+                </p>
         <div className="modal fade" id="login" tabIndex="-1" role="dialog"
              aria-labelledby="exampleModalLongTitle" aria-hidden="true">
           <div className="modal-dialog modal-dialog-centered" role="document">
@@ -91,18 +98,19 @@ class RouterBoard extends Component {
               <div className="modal-body">
                 <div className="row m-3">
                   <div className="col">
-                    <a href="http://localhost:5000/login/spotify-auth" target="_blank"><button
+                    <a href="https://tunes-server.herokuapp.com/login/spotify-auth" target="_blank"><button
                     // <a href="https://tunes-api.herokuapp.com/login/spotify-auth"><button
                       type="button"
                       className="btn btn-success btn-block"
                     >
-                      <i className="fab fa-spotify"></i> Log in with Spotify
+                      <i className="fab fa-spotify"></i> Log in/ signup free with Spotify
                     </button></a>
                   </div>
                 </div>
                 <div className="row m-3">
                   <div className="col text-center">
-                    Don't have an account? <a id="sign-up" href="https://www.spotify.com/us/signup/?forward_url=https%3A%2F%2Faccounts.spotify.com%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A5000%252Flogin%252Fspotify-auth%252Fcallback%26scope%3Duser-read-email%2520user-read-private%26client_id%3Da1e8617e0c7648d99634ae3a3d192590">Sign up for Spotify</a>
+                  Refresh me to be logged in on this page after spotify signin
+                    {/* Don't have an account? <a id="sign-up" href="https://www.spotify.com/us/signup/?forward_url=https%3A%2F%2Faccounts.spotify.com%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A5000%252Flogin%252Fspotify-auth%252Fcallback%26scope%3Duser-read-email%2520user-read-private%26client_id%3Da1e8617e0c7648d99634ae3a3d192590">Sign up for Spotify</a> */}
                   </div>
                 </div>
               </div>

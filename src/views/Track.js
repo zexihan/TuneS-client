@@ -135,7 +135,7 @@ class Track extends Component {
               )}
 
 
-              <h5>Latest comments</h5>
+              <h5>comments now only work for album pages</h5>
 
               <hr className="comment-hr" />
 

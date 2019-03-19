@@ -30,7 +30,7 @@ class SearchService {
       return response.json()
     }).then(callback).catch(function(error){
       // alert("error check connection/ try refresh");
-      console.log(error)})
+      console.log(error); alert("error, try refresh")})
   }
 
 //app.get('/api/albumOrTrack/:id/comments'
@@ -45,7 +45,9 @@ class SearchService {
           return response.json()
       }).catch(function(error){
           // alert("error check connection/ try refresh");
-          console.log(error)})
+          console.log(error); alert("error, try refresh")
+        
+          })
   }
 
     // app.post('/api/album/:id/comment'
@@ -64,7 +66,7 @@ class SearchService {
                 return response.json()
             }).catch(function(error){
                 // alert("error check connection/ try refresh");
-                console.log(error)})
+                console.log(error); alert("error, try refresh")})
     }
 }
 
