@@ -166,8 +166,10 @@ class Album extends Component {
                       <hr className="comment-hr" />
 
                       <div>
+                      {comment.anony===true ? <img width="40px" height="40px" src={
+                        "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png"} /> :
                        <img width="40px" height="40px" src={comment.user.photo==="" ?
-                "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png" : comment.user.photo}/>
+                "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png" : comment.user.photo}/>}
                        &nbsp;{comment.anony===true?"Anonymous":
                       <Link to={`/user/${comment.user.sid}`}>{comment.user.displayName}</Link>}&nbsp;  
                       at {comment.updatedAt.slice(0, -5).split('T')[0]} &nbsp;
