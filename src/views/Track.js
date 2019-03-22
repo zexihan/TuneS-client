@@ -12,11 +12,15 @@ class Track extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: null,
+      displayName: null,
+      photo: null,
       isLoggedIn: false,
       loaded: false,
       track: {},
-      comments: ""
+      comments: "",
+      isLiked: false,
+      commentCount: 0,
+      likeCount: 0
     };
   }
 
@@ -35,7 +39,8 @@ class Track extends Component {
         console.log(user);
         if (user.id !== -1) {
           this.setState({
-            username: user.username,
+            displayName: user.displayName,
+            photo: user.photo,
             isLoggedIn: true
           });
         }
@@ -46,7 +51,7 @@ class Track extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.logoutStatus === true) {
       this.setState({
-        username: null,
+        displayName: null,
         isLoggedIn: false
       })
     }
@@ -64,6 +69,12 @@ class Track extends Component {
     console.log(this.state.comments);
   }
 
+  onLikeClicked = () => {
+    this.setState({
+      isLiked: !this.state.isLiked
+    });
+  }
+
   render() {
     return (
       this.state.loaded === true &&
@@ -77,7 +88,21 @@ class Track extends Component {
               <div>Artist: <Link to={`/artist/${this.state.track.artists[0].id}`}>{this.state.track.artists[0].name}</Link></div>
               <div>Released: {this.state.track.album.release_date}</div>
               <div>Popularity: {this.state.track.popularity}/100</div>
-              <div>Reviewed by: 0 TuneSers</div>
+              <div>Comments: {this.state.commentCount}</div>
+              <div>Likes: {this.state.likeCount}</div>
+              <div className="my-2">
+                <button className="btn btn-light" onClick={this.onLikeClicked}>
+                  {this.state.isLiked === true ?
+                    <span style={{ color: "#cc0000" }}>
+                      <i className="fas fa-heart"></i>
+                    </span>
+                    :
+                    <span style={{ color: "black" }}>
+                      <i className="far fa-heart"></i>
+                    </span>
+                  }
+                </button>
+              </div>
             </div>
             <div className="col-6 d-none d-md-block">
               <div className='float-right embed-container'>
@@ -98,59 +123,49 @@ class Track extends Component {
 
           <div className="row comments my-md-5 my-sm-3">
             <div className="col">
-              <h4>Comments</h4>
+              <h4>Comment</h4>
 
-              <hr className="comment-hr" />
-
-              {this.state.username !== null ? (
-                <div>
-                  <div className="row">
+              {this.state.displayName !== null ? (
+                <div className="comment-editor my-3">
+                  <div className="row mx-1 my-2">
+                    <div className="col-auto align-self-center">
+                      <img width="50px" height="50px" src={this.state.photo} />
+                    </div>
                     <div className="col">
-                      <h6>{this.state.username}:</h6>
+                      <textarea onChange={this.onCommentsChanged} className="form-control" id="commentTextarea" rows="2" placeholder="Add a comment..." />
                     </div>
                   </div>
 
-                  <div className="row my-2">
-                    <div className="col">
-                      <textarea onChange={this.onCommentsChanged} className="form-control" id="commentTextarea" rows="2" placeholder="Your comments" />
-                    </div>
-                  </div>
-
-                  <div className="row">
+                  <div className="row mx-1 my-2">
                     <div className="col">
                       <div className="float-right">
-                        <button onClick={this.onAddClicked} className="btn btn-light"><i className="fas fa-pen"></i> Add</button>
+                        <button onClick={this.onAddClicked} className="btn btn-light">Submit</button>
                       </div>
                     </div>
                   </div>
 
-                  <hr className="comment-hr" />
                 </div>
-              ):(
-                <div>
-                  <a href="#" data-toggle="modal" data-target="#login">Log in to comment</a>
-                  <hr className="comment-hr" />
-                </div>
+              ) : (
+                  <div>
+                    <a href="#" data-toggle="modal" data-target="#login">Log in to add a comment</a>
+                    <hr className="comment-hr" />
+                  </div>
 
-              )}
+                )}
 
 
-              <h5>Latest comments</h5>
+              <h5>comments now only work for album pages</h5>
 
               <hr className="comment-hr" />
 
               <div>
                 <Link to={"/user"}>Zexi</Link> scores: 9.8 2019-03-03
-                <p> miss MJ ~~~ Jackson has been referred to as the "King of Pop" because, throughout his career, he
+                <p>
+                  miss MJ ~~~ Jackson has been referred to as the "King of Pop" because, throughout his career, he
                   transformed the art of music videos and paved the way for modern pop music. For much of Jackson's
-                  career, he
-                  had an unparalleled worldwide influence over the younger generation. His music and videos, such as
-                  Thriller,
-                  fostered racial diversity in MTV's roster and steered its focus from rock to pop music and R&B, shaping
-                  the
-                  channel into a form that proved enduring. Jackson's work continues to influence numerous artists of
-                  various
-                  music genres</p>
+                  career, he had an unparalleled worldwide influence over the younger generation. His music and videos,
+                  such as Thriller.
+                </p>
               </div>
 
               <hr className="comment-hr" />

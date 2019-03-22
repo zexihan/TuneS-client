@@ -23,7 +23,7 @@ class AuthService {
       credentials: "include"
     })
       .then(response => response.json())
-      .catch(error => console.log(error));
+      .catch(error => {console.log(error);alert("error, try refresh")});
   };
 
   getProfile = () => {
@@ -33,7 +33,17 @@ class AuthService {
       credentials: "include"
     })
       .then(response => response.json())
-      .catch(error => console.log(error));
+      .catch(error => {console.log(error);alert("error, try refresh")});
+  };
+
+  getPublicProfile = (sid) => {
+    return fetch(this.API_URL + "user/profile/" + sid, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include"
+    })
+      .then(response => response.json())
+      .catch(error => {console.log(error);alert("error, try refresh")});
   };
 
   logIn = user => {
@@ -44,7 +54,7 @@ class AuthService {
       credentials: "include"
     })
       .then(response => response.json())
-      .catch(error => console.log(error));
+      .catch(error => {console.log(error);alert("error, try refresh")});
   };
 
   logOut = () => {
@@ -54,7 +64,7 @@ class AuthService {
       credentials: "include"
     })
       .then(() => console.log("User successfully logged out!"))
-      .catch(error => console.log(error));
+      .catch(error => {console.log(error);alert("error, try refresh")});
   };
 
   findAllUsers = () => {
@@ -62,7 +72,7 @@ class AuthService {
       credentials: "include"
     })
       .then(response => response.json())
-      .catch(error => console.log(error));
+      .catch(error => {console.log(error);alert("error, try refresh")});
   };
 
   findUserById = id => {
@@ -71,7 +81,7 @@ class AuthService {
       credentials: "include"
     })
       .then(response => response.json())
-      .catch(error => console.log(error));
+      .catch(error => {console.log(error);alert("error, try refresh")});
   };
 
   updateUser = user => {
@@ -83,7 +93,7 @@ class AuthService {
       credentials: "include"
     })
       .then(response => response.json())
-      .catch(error => {console.log(error);alert("may not have connection/ try refresh")});
+      .catch(error => {console.log(error);alert("error, try refresh")});
   };
 }
 

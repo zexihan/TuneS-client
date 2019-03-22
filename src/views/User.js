@@ -16,8 +16,10 @@ class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: null,
-      pageUsername: this.props.match.params.username,
+      country: "",
+      displayName: "",
+      id: null,
+      pageId: this.props.match.params.id,
       isMyself: false,
       isLoggedIn: false,
       portrait: "",
@@ -41,15 +43,17 @@ class User extends Component {
   }
 
   componentDidMount() {
-    authService.getProfile().then(
+    authService.getPublicProfile(this.props.match.params.id).then(
       user => {
-        if (user.id !== -1) {
+        console.log('tt', user.displayName)
+        this.setState({displayName: user.displayName, portrait: user.photo, country: user.country})
+        if (user.sid !== -1) {
           this.setState({
-            username: user.username,
+            id: user.sid,
             isLoggedIn: true
           });
         }
-        if (this.state.pageUsername === user.username) {
+        if (this.state.pageId === user.id) {
           this.setState({
             isMyself: true
           })
@@ -73,14 +77,15 @@ class User extends Component {
           <div className="col">
             <div className="row">
               <div className="col-auto profile-image">
-                <img className="img-fluid" src="https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png" />
+                <img className="img-fluid" src={this.state.portrait==="" ?
+                "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png" : this.state.portrait} />
               </div>
               <div className="col">
                 <div className="row">
                   <div className="col">
-                    <h2 className="username my-1">{this.state.pageUsername}</h2>
+                    <h2 className="username my-1">{this.state.displayName}</h2>
                     <div className="bio my-1">bio</div>
-                    <div className="location my-1"><i className="fas fa-map-marker-alt"></i> location</div>
+                    <div className="location my-1"><i className="fas fa-map-marker-alt"></i> {this.state.country}</div>
                     <div className="follow-count my-1">Following: 0 Followers: 0</div>
                   </div>
                 </div>

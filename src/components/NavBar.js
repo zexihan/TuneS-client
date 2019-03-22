@@ -15,14 +15,15 @@ class NavBar extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount() {//will reeive props?
     authService.getProfile().then(
       user => {
         console.log(user);
         if (user.id !== -1) {
           this.setState({
             username: user.username,
-            isLoggedIn: true
+            isLoggedIn: true,
+            id: user.id
           });
           $(".loggedin-nav").show();
           $(".loggedout-nav").hide();
@@ -86,7 +87,7 @@ class NavBar extends Component {
                   Profile
                 </a>
                 <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                  <Link className="dropdown-item my-2" to={`/user/${this.state.username}`}>Personal Page</Link>
+                  <Link className="dropdown-item my-2" to={`/user/${this.state.id}`}>Personal Page</Link>
                   <Link className="dropdown-item my-2" to={`/profile`}>Edit Profile</Link>
                   <div className="dropdown-divider"></div>
                   <button className="dropdown-item" href="#" onClick={this.onLogoutClicked} data-dismiss="modal">Log Out</button>

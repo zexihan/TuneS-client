@@ -69,7 +69,7 @@ class RouterBoard extends Component {
                 <Album {...props} logoutStatus={this.state.logoutStatus} />}
             />
             <Route
-              path="/user/:username"
+              path="/user/:id"
               exact render={props =>
                 <User {...props} logoutStatus={this.state.logoutStatus} />}
             />
@@ -102,7 +102,8 @@ class RouterBoard extends Component {
                 </div>
                 <div className="row m-3">
                   <div className="col text-center">
-                    Don't have an account? <a id="sign-up" href="https://www.spotify.com/us/signup/?forward_url=https%3A%2F%2Faccounts.spotify.com%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A5000%252Flogin%252Fspotify-auth%252Fcallback%26scope%3Duser-read-email%2520user-read-private%26client_id%3Da1e8617e0c7648d99634ae3a3d192590">Sign up for Spotify</a>
+                  Refresh me to be logged in on this page after spotify signin
+                    {/* Don't have an account? <a id="sign-up" href="https://www.spotify.com/us/signup/?forward_url=https%3A%2F%2Faccounts.spotify.com%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A5000%252Flogin%252Fspotify-auth%252Fcallback%26scope%3Duser-read-email%2520user-read-private%26client_id%3Da1e8617e0c7648d99634ae3a3d192590">Sign up for Spotify</a> */}
                   </div>
                 </div>
               </div>
