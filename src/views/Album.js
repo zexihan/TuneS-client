@@ -5,13 +5,11 @@ import '../static/views/Subject.css';
 
 import SearchService from '../services/SearchService';
 import AuthService from '../services/AuthService';
-
 let searchService = SearchService.getInstance();
 let authService = AuthService.getInstance();
 
 class Album extends Component {
   constructor(props) {
-      console.log("constrcuted")
     super(props);
     this.state = {
       displayName: null,
@@ -19,7 +17,7 @@ class Album extends Component {
       isLoggedIn: false,
       loaded: false,
       album: {},
-      comment: "",
+      comments: "",
       isLiked: false,
       commentCount: 0,
       likeCount: 0
@@ -32,11 +30,11 @@ class Album extends Component {
   componentDidMount() {
     console.log('x')
     const callback = (res) => {
-      searchService.getComments("album", this.props.match.params.id).then( comments=> {
-          console.log("get", comments)
-          this.setState({album: res, loaded: true, comments: comments})
+      searchService.getComments("album", this.props.match.params.id).then(comments => {
+        console.log("get", comments)
+        this.setState({ album: res, loaded: true, comments: comments })
       }
-    )
+      )
       //console.log("albumMount", this.state.album)
     };
     searchService.getSubject("album", this.props.match.params.id, callback)
@@ -59,10 +57,10 @@ class Album extends Component {
   componentWillReceiveProps(nextProps) {
     console.log('y');
     const callback = (res) => {
-      searchService.getComments("album", this.props.match.params.id).then( comments=> {
-              console.log(comments);
-              this.setState({album: res,  comments: comments})
-          }
+      searchService.getComments("album", this.props.match.params.id).then(comments => {
+        console.log(comments);
+        this.setState({ album: res, comments: comments })
+      }
       )
       //console.log("albumUpdate", this.state.album)
     };
@@ -84,9 +82,9 @@ class Album extends Component {
   }
 
   onAddClicked = () => {
-      const callback = (res) => { console.log(res, "rev"); this.props.history.push("/album/" + this.props.match.params.id)} //to render new reviews
-    searchService.addComment("album", this.props.match.params.id, this.state.comment).then(res=>callback())
-    //console.log(this.state.comment);
+    const callback = (res) => { console.log(res, "rev"); this.props.history.push("/album/" + this.props.match.params.id) } //to render new reviews
+    searchService.addComment("album", this.props.match.params.id, this.state.comments).then(res => callback())
+    //console.log(this.state.comments);
   }
 
   onLikeClicked = () => {
@@ -101,11 +99,11 @@ class Album extends Component {
 
   render() {
     console.log("loaded");
-    console.log('dc',this.state.comments);
+    console.log('dc', this.state.comments);
     return (
       this.state.loaded === true &&
       <div className="container-fluid">
-        <div className="background-image" style={{backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + this.state.album.images[0].url + ')'}} />
+        <div className="background-image" style={{ backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + this.state.album.images[0].url + ')' }} />
         <div className="content subject-content mt-md-5 mt-sm-3">
           <div className="row">
             <div className="col-6">
@@ -116,30 +114,30 @@ class Album extends Component {
               <div>Popularity: {this.state.album.popularity}/100</div>
               <div>Comments: {this.state.commentCount}</div>
               <div>Likes: {this.state.likeCount}</div>
-              {this.state.displayName !== null ? 
-              <div className="my-2">
-                <button className="btn btn-light" onClick={this.onLikeClicked}>
-                {this.state.isLiked === true ? 
-                  <span style={{ color: "#cc0000" }}>
-                    <i className="fas fa-heart"></i>
-                  </span>
-                  :
-                  <span style={{ color: "black" }}>
-                    <i className="far fa-heart"></i>
-                  </span>
-                }
-                </button>
-              </div> 
-              : 
-              <div>
-                <a href="#" data-toggle="modal" data-target="#login">Log in to like</a>
-              </div>
+              {this.state.displayName !== null ?
+                <div className="my-2">
+                  <button className="btn btn-light" onClick={this.onLikeClicked}>
+                    {this.state.isLiked === true ?
+                      <span style={{ color: "#cc0000" }}>
+                        <i className="fas fa-heart"></i>
+                      </span>
+                      :
+                      <span style={{ color: "black" }}>
+                        <i className="far fa-heart"></i>
+                      </span>
+                    }
+                  </button>
+                </div>
+                :
+                <div>
+                  <a href="#" data-toggle="modal" data-target="#login">Log in to like</a>
+                </div>
               }
             </div>
             <div className="col-6 d-none d-md-block">
               <div className='float-right embed-container'>
                 <iframe src={"https://embed.spotify.com/?uri=spotify:album:" + this.state.album.id}
-                        width="350px" height="350px" frameBorder="0" allowtransparency="true" allow="encrypted-media"/>
+                  width="350px" height="350px" frameBorder="0" allowtransparency="true" allow="encrypted-media" />
               </div>
             </div>
           </div>
@@ -185,48 +183,48 @@ class Album extends Component {
                     </div>
                   </div>
                 </div>
-              ):(
-                <div>
-                  <a href="#" data-toggle="modal" data-target="#login">Log in to add a comment</a>
-                  <hr className="comment-hr" />
-                </div>
+              ) : (
+                  <div>
+                    <a href="#" data-toggle="modal" data-target="#login">Log in to add a comment</a>
+                    <hr className="comment-hr" />
+                  </div>
 
-              )}
+                )}
 
               <h5>Latest comments</h5>
-                {this.state.comments.map((comment, i) => ( 
-                  <div className="comment-list-item" key={i}>
-                    
-                    <hr className="comment-hr" />
+              {this.state.comments.map((comment, i) => (
+                <div className="comment-list-item" key={i}>
 
-                    <div className="row">
-                      <div className="col-auto align-self-center">
-                        {comment.anony === true ? <img width="40px" height="40px" src={
-                          "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png"} /> :
-                          <img width="40px" height="40px" src={comment.user.photo === "" ?
-                            "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png" : comment.user.photo} />}
-                      </div>
-                      <div className="col">
-                          {comment.anony === true ? 
-                            "Anonymous" 
-                            :
-                            <Link to={`/user/${comment.user.sid}`}>{comment.user.displayName}</Link>
-                        }: {comment.content}
-                        <br />
-                        <div className="comment-time">
-                          {comment.updatedAt.slice(0, -5).split('T')[0]}&nbsp;
+                  <hr className="comment-hr" />
+
+                  <div className="row">
+                    <div className="col-auto align-self-center">
+                      {comment.anony === true ? <img width="40px" height="40px" src={
+                        "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png"} /> :
+                        <img width="40px" height="40px" src={comment.user.photo === "" ?
+                          "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png" : comment.user.photo} />}
+                    </div>
+                    <div className="col">
+                      {comment.anony === true ?
+                        "Anonymous"
+                        :
+                        <Link to={`/user/${comment.user.sid}`}>{comment.user.displayName}</Link>
+                      }: {comment.content}
+                      <br />
+                      <div className="comment-time">
+                        {comment.updatedAt.slice(0, -5).split('T')[0]}&nbsp;
                           {comment.updatedAt.slice(0, -5).split('T')[1]}&nbsp;UTC&nbsp;
                         </div>
-                      </div>
-                      <div className="col align-self-center">
-                        <span className="float-right" style={{ fontSize: "18px" }} onClick={this.onCommentLikeClicked} value={comment.content}>
-                          <i className="far fa-thumbs-up"></i>
-                        </span>
-                      </div>
                     </div>
-                  </div> 
-                    ))
-                }
+                    <div className="col align-self-center">
+                      <span className="float-right" style={{ fontSize: "18px" }} onClick={this.onCommentLikeClicked} value={comment.content}>
+                        <i className="far fa-thumbs-up"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))
+              }
             </div>
           </div>
         </div>
