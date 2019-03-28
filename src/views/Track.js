@@ -5,8 +5,10 @@ import '../static/views/Subject.css';
 
 import SearchService from '../services/SearchService';
 import AuthService from '../services/AuthService';
-let searchService = SearchService.getInstance();
-let authService = AuthService.getInstance();
+import SubjectService from '../services/SubjectService';
+const searchService = SearchService.getInstance();
+const authService = AuthService.getInstance();
+const subjectService = SubjectService.getInstance();
 
 class Track extends Component {
   constructor(props) {
@@ -29,7 +31,7 @@ class Track extends Component {
   // }
   componentDidMount() {
     const callback = (res) => {
-      this.setState({track: res, loaded: true});
+      this.setState({ track: res, loaded: true });
       console.log("trackMount", this.state.track)
     };
     searchService.getSubject("track", this.props.match.params.id, callback);
@@ -65,21 +67,24 @@ class Track extends Component {
   }
 
   onAddClicked = () => {
-      searchService.addComment()
+    searchService.addComment()
     console.log(this.state.comments);
   }
 
   onLikeClicked = () => {
-    this.setState({
-      isLiked: !this.state.isLiked
-    });
+    console.log(this.props.match.params.id);
+    subjectService.likeSubject("track", this.props.match.params.id).then(() => {
+      this.setState({
+        isLiked: !this.state.isLiked
+      });
+    })
   }
 
   render() {
     return (
       this.state.loaded === true &&
       <div className="container-fluid">
-        <div className="background-image" style={{backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + this.state.track.album.images[0].url + ')'}} />
+        <div className="background-image" style={{ backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + this.state.track.album.images[0].url + ')' }} />
         <div className="subject-content mt-md-5 mt-sm-3">
           <div className="row">
             <div className="col-sm-12 col-md-6">
@@ -107,7 +112,7 @@ class Track extends Component {
             <div className="col-6 d-none d-md-block">
               <div className='float-right embed-container'>
                 <iframe src={"https://embed.spotify.com/?uri=spotify:track:" + this.state.track.id}
-                        width="350px" height="350px" frameBorder="0" allowtransparency="true" allow="encrypted-media"/>
+                  width="350px" height="350px" frameBorder="0" allowtransparency="true" allow="encrypted-media" />
               </div>
             </div>
           </div>
@@ -116,7 +121,7 @@ class Track extends Component {
             <div className="col-12">
               <div className='text-center embed-container'>
                 <iframe src={"https://embed.spotify.com/?uri=spotify:track:" + this.state.track.id}
-                        width="350px" height="350px" frameBorder="0" allowtransparency="true" allow="encrypted-media"/>
+                  width="350px" height="350px" frameBorder="0" allowtransparency="true" allow="encrypted-media" />
               </div>
             </div>
           </div>
