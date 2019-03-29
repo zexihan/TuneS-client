@@ -21,7 +21,7 @@ class Landing extends Component {
       artistCount: 0,
       tuneserCount: 0,
       playlist: {},
-      username: null,
+      displayName: null,
       isLoggedIn: false
     };
   }
@@ -36,9 +36,9 @@ class Landing extends Component {
     authService.getProfile().then(
       user => {
         console.log(user);
-        if (user.id !== -1) {
+        if (user.uid !== -1) {
           this.setState({
-            username: user.username,
+            displayName: user.displayName,
             isLoggedIn: true
           });
         }
@@ -47,6 +47,10 @@ class Landing extends Component {
   }
 
   search = async () => {
+    if (!this.state.searchText) {
+      return;
+    }
+
     let resList = await searchService.query(this.state.searchText, this.state.searchType);
     console.log(await resList);
     var subjects = [];

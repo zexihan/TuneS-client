@@ -10,7 +10,7 @@ class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: null,
+      displayName: null,
       isLoggedIn: false
     };
   }
@@ -19,11 +19,11 @@ class NavBar extends Component {
     authService.getProfile().then(
       user => {
         console.log(user);
-        if (user.id !== -1) {
+        if (user.uid !== -1) {
           this.setState({
-            username: user.username,
+            displayName: user.displayName,
             isLoggedIn: true,
-            id: user.id
+            id: user.uid
           });
           $(".loggedin-nav").show();
           $(".loggedout-nav").hide();
@@ -39,7 +39,7 @@ class NavBar extends Component {
     authService.logOut();
     this.props.logout();
     this.setState({
-      username: null,
+      displayName: null,
       isLoggedIn: false
     });
     $(".loggedin-nav").hide();
@@ -63,14 +63,14 @@ class NavBar extends Component {
               <a className="nav-link" href="#">About</a>
             </li>
           </ul>
-          {/*{this.state.username === null ? null : (*/}
+          {/*{this.state.displayName === null ? null : (*/}
             {/*<ul className="navbar-nav">*/}
               {/*<li className="nav-item">*/}
-                {/*<a className="btn nav-link">Hi, {this.state.username} </a>*/}
+                {/*<a className="btn nav-link">Hi, {this.state.displayName} </a>*/}
               {/*</li>*/}
             {/*</ul>*/}
           {/*)}*/}
-          {/*{this.state.username === null ? (*/}
+          {/*{this.state.displayName === null ? (*/}
             <ul className="navbar-nav loggedout-nav">
               <li className="nav-item">
                 <a className="nav-link" href="#" data-toggle="modal" data-target="#login">Log In</a>
@@ -79,7 +79,7 @@ class NavBar extends Component {
             {/*) : (*/}
             <ul className="navbar-nav loggedin-nav">
               <li className="nav-item d-none d-md-block">
-                <a className="btn nav-link">Hi, {this.state.username} </a>
+                <a className="btn nav-link">Hi, {this.state.displayName} </a>
               </li>
               <li className="nav-item dropdown my-1">
                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"

@@ -32,10 +32,10 @@ class User extends Component {
       publishedSongs: [],
       publishedAlbums: [],
       friends: [
-        { id: "1", username: "Max" },
-        { id: "2", username: "Bob" },
-        { id: "3", username: "Tom" },
-        { id: "4", username: "Tim" }
+        { id: "1", displayName: "Max" },
+        { id: "2", displayName: "Bob" },
+        { id: "3", displayName: "Tom" },
+        { id: "4", displayName: "Tim" }
       ],
       comments: [],
       likedItems: []
@@ -53,7 +53,7 @@ class User extends Component {
             isLoggedIn: true
           });
         }
-        if (this.state.pageId === user.id) {
+        if (this.state.pageId === user.uid) {
           this.setState({
             isMyself: true
           })
@@ -83,7 +83,7 @@ class User extends Component {
               <div className="col">
                 <div className="row">
                   <div className="col">
-                    <h2 className="username my-1">{this.state.displayName}</h2>
+                    <h2 className="displayName my-1">{this.state.displayName}</h2>
                     <div className="bio my-1">bio</div>
                     <div className="location my-1"><i className="fas fa-map-marker-alt"></i> {this.state.country}</div>
                     <div className="follow-count my-1">Following: 0 Followers: 0</div>

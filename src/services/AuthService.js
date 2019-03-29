@@ -1,13 +1,9 @@
 import port from '../port.js';
 
 class AuthService {
-  // remote
   API_URL = port +'/';
 
-  //local
-  // API_URL = "http://localhost:5000/";
   static myInstance = null;
-
   static getInstance() {
     if (AuthService.myInstance == null) {
       AuthService.myInstance = new AuthService();
@@ -23,7 +19,10 @@ class AuthService {
       credentials: "include"
     })
       .then(response => response.json())
-      .catch(error => {console.log(error);alert("error, try refresh")});
+      .catch(error => {
+        console.log(error);
+        alert("createUser error, try refresh")
+      });
   };
 
   getProfile = () => {
@@ -33,7 +32,10 @@ class AuthService {
       credentials: "include"
     })
       .then(response => response.json())
-      .catch(error => {console.log(error);alert("error, try refresh")});
+      .catch(error => {
+        console.log(error);
+        alert("getProfile error, try refresh")
+      });
   };
 
   getPublicProfile = (sid) => {
@@ -43,7 +45,10 @@ class AuthService {
       credentials: "include"
     })
       .then(response => response.json())
-      .catch(error => {console.log(error);alert("error, try refresh")});
+      .catch(error => {
+        console.log(error);
+        alert("getPublicProfile error, try refresh");
+      });
   };
 
   logIn = user => {
@@ -54,7 +59,10 @@ class AuthService {
       credentials: "include"
     })
       .then(response => response.json())
-      .catch(error => {console.log(error);alert("error, try refresh")});
+      .catch(error => {
+        console.log(error);
+        alert("logIn error, try refresh");
+      });
   };
 
   logOut = () => {
@@ -64,7 +72,10 @@ class AuthService {
       credentials: "include"
     })
       .then(() => console.log("User successfully logged out!"))
-      .catch(error => {console.log(error);alert("error, try refresh")});
+      .catch(error => {
+        console.log(error);
+        alert("logOut error, try refresh");
+      });
   };
 
   findAllUsers = () => {
@@ -72,7 +83,10 @@ class AuthService {
       credentials: "include"
     })
       .then(response => response.json())
-      .catch(error => {console.log(error);alert("error, try refresh")});
+      .catch(error => {
+        console.log(error);
+        alert("findAllUsers error, try refresh");
+      });
   };
 
   findUserById = id => {
@@ -81,11 +95,14 @@ class AuthService {
       credentials: "include"
     })
       .then(response => response.json())
-      .catch(error => {console.log(error);alert("error, try refresh")});
+      .catch(error => {
+        console.log(error);
+        alert("findUserById error, try refresh");
+      });
   };
 
   updateUser = user => {
-    const url = this.API_URL + "user/" + user.id;
+    const url = this.API_URL + "user/" + user.uid;
     return fetch(url, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -93,7 +110,10 @@ class AuthService {
       credentials: "include"
     })
       .then(response => response.json())
-      .catch(error => {console.log(error);alert("error, try refresh")});
+      .catch(error => {
+        console.log(error);
+        alert("updateUser error, try refresh");
+      });
   };
 }
 

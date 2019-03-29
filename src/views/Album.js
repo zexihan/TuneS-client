@@ -3,10 +3,13 @@ import { Link } from "react-router-dom";
 
 import '../static/views/Subject.css';
 
+import AuthService from "../services/AuthService";
 import SearchService from '../services/SearchService';
-import AuthService from '../services/AuthService';
-let searchService = SearchService.getInstance();
+import SubjectService from "../services/SubjectService";
 let authService = AuthService.getInstance();
+let searchService = SearchService.getInstance();
+let subjectService = SubjectService.getInstance();
+
 
 class Album extends Component {
   constructor(props) {
@@ -17,7 +20,8 @@ class Album extends Component {
       isLoggedIn: false,
       loaded: false,
       album: {},
-      comments: "",
+      comments: [],
+      comment: "",
       isLiked: false,
       commentCount: 0,
       likeCount: 0
@@ -28,13 +32,12 @@ class Album extends Component {
   //     [{url: "https://cdn.pixabay.com/photo/2015/02/22/17/56/loading-645268_1280.jpg"}] }//no internet image
   // }
   componentDidMount() {
-    console.log('x')
+    
     const callback = (res) => {
-      searchService.getComments("album", this.props.match.params.id).then(comments => {
+      subjectService.getComments("album", this.props.match.params.id).then(comments => {
         console.log("get", comments)
         this.setState({ album: res, loaded: true, comments: comments })
-      }
-      )
+      });
       //console.log("albumMount", this.state.album)
     };
     searchService.getSubject("album", this.props.match.params.id, callback)
@@ -42,11 +45,17 @@ class Album extends Component {
     authService.getProfile().then(
       user => {
         console.log(user);
-        if (user.id !== -1) {
+        if (user.uid !== -1) {
           this.setState({
             displayName: user.displayName,
             photo: user.photo,
             isLoggedIn: true
+          });
+          subjectService.isLiked("album", this.props.match.params.id).then(res => {
+            console.log(res);
+            this.setState({
+              isLiked: res.isliked
+            })
           });
         }
       }
@@ -55,16 +64,16 @@ class Album extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('y');
-    const callback = (res) => {
-      searchService.getComments("album", this.props.match.params.id).then(comments => {
-        console.log(comments);
-        this.setState({ album: res, comments: comments })
-      }
-      )
+    const callback = res => {
+      subjectService
+        .getComments("album", this.props.match.params.id)
+        .then(comments => {
+          console.log(comments);
+          this.setState({ album: res, comments: comments });
+        });
       //console.log("albumUpdate", this.state.album)
     };
-    searchService.getSubject("album", this.props.match.params.id, callback)
+    searchService.getSubject("album", this.props.match.params.id, callback);
 
     if (nextProps.logoutStatus === true) { //logoutStatus: on router board
       this.setState({
@@ -74,7 +83,7 @@ class Album extends Component {
     }
   }
 
-  onCommentsChanged = (e) => {
+  onCommentChanged = (e) => {
     this.setState({
       comment: e.target.value
     });
@@ -82,15 +91,20 @@ class Album extends Component {
   }
 
   onAddClicked = () => {
-    const callback = (res) => { console.log(res, "rev"); this.props.history.push("/album/" + this.props.match.params.id) } //to render new reviews
-    searchService.addComment("album", this.props.match.params.id, this.state.comments).then(res => callback())
-    //console.log(this.state.comments);
-  }
+    const callback = res => {
+      console.log(res, "rev");
+      this.props.history.push("/album/" + this.props.match.params.id);
+    }; //to render new reviews
+    subjectService
+      .addComment("album", this.props.match.params.id, this.state.comment)
+      .then(res => callback());
+  };
 
   onLikeClicked = () => {
     this.setState({
       isLiked: !this.state.isLiked
     });
+    subjectService.likeSubject("album", this.props.match.params.id);
   }
 
   onCommentLikeClicked = e => {
@@ -171,7 +185,7 @@ class Album extends Component {
                       <img width="50px" height="50px" src={this.state.photo} />
                     </div>
                     <div className="col">
-                      <textarea onChange={this.onCommentsChanged} className="form-control" id="commentTextarea" rows="2" placeholder="Add a comment..." />
+                      <textarea onChange={this.onCommentChanged} className="form-control" id="commentTextarea" rows="2" placeholder="Add a comment..." />
                     </div>
                   </div>
 

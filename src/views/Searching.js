@@ -22,6 +22,9 @@ class Searching extends Component {
   async componentDidMount() {
     console.log("componentDidMount");
     if (this.state.subjects.length === 0) {
+      if (!this.state.searchText) {
+        return;
+      }
       let resList = await searchService.query(this.state.searchText, this.state.searchType);
       console.log(await resList);
       let subjects = [];
@@ -60,6 +63,9 @@ class Searching extends Component {
     this.setState({
       query: this.state.searchText
     });
+    if (this.state.searchText === "") {
+      return;
+    }
     console.log("search");
     let resList = await searchService.query(this.state.searchText, this.state.preSearchType);
     let subjects = [];

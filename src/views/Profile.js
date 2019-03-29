@@ -11,7 +11,7 @@ class Profile extends Component {
     super(props);
     this.state = {
       id: "",
-      username: "",
+      displayName: "",
       portrait: "",
       firstName: "",
       lastName: "",
@@ -25,10 +25,10 @@ class Profile extends Component {
 
   componentDidMount = () => {
     authService.getProfile().then(user => {
-      if (user.id !== -1) {
+      if (user.uid !== -1) {
         this.setState({
-          id: user.id,
-          username: user.username,
+          id: user.uid,
+          displayName: user.displayName,
           firstName: user.firstName,
           lastName: user.lastName,
           portrait: user.portrait,
@@ -50,7 +50,7 @@ class Profile extends Component {
   onUpdate = e => {
     const user = {
       id: this.state.id,
-      username: this.state.username,
+      displayName: this.state.displayName,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
       portrait: this.state.portrait,
@@ -61,7 +61,7 @@ class Profile extends Component {
     };
 
     authService.updateUser(user).then(user => {
-      if (user.id !== -1) {
+      if (user.uid !== -1) {
         this.setState({
           firstName: user.firstName,
           lastName: user.lastName,
@@ -117,16 +117,16 @@ class Profile extends Component {
                   </div>
                 </div>
               )}
-              <label htmlFor="username" className="col-sm-2 col-form-label">
-                Username
+              <label htmlFor="displayName" className="col-sm-2 col-form-label">
+                displayName
               </label>
               <div className="col-sm-10">
                 <input
                   className="form-control"
                   type="text"
-                  id="username"
-                  name="username"
-                  value={this.state.username}
+                  id="displayName"
+                  name="displayName"
+                  value={this.state.displayName}
                   readOnly={true}
                 />
               </div>

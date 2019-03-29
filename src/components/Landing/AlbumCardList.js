@@ -22,11 +22,11 @@ class AlbumCardList extends Component {
   render() {
     return (
       <div className="row mx-1 d-flex justify-content-center">
-        {this.state.playlist.tracks.items.slice(1, 9).map(track => {
-          return (
-            <AlbumCard track={track} key={track.track.album.id} />
-          );
-        })}
+        {this.state.playlist !== undefined ? this.state.playlist.tracks.items
+          .slice(1, 9)
+          .map(track => {
+            return <AlbumCard track={track} key={track.track.album.id} />;
+          }) : null}
       </div>
     );
   }
