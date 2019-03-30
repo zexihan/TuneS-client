@@ -72,7 +72,7 @@ class SubjectService {
   };
 
   likeSubject = (type, id) => {
-    return fetch(this.API_URL + "/like/" + type + "/" + id, {
+    return fetch(this.API_URL + "/like/subject/" + type + "/" + id, {
       method: "POST",
       credentials: "include"
     })
@@ -80,11 +80,24 @@ class SubjectService {
   };
 
   likeComment = id => {
+    console.log("like comment: " + id);
     return fetch(this.API_URL + "/like/comment/" + id, {
       method: "POST",
       credentials: "include"
     })
+      .catch(err => console.log(err));
+  }
+
+  getCommentLikes = () => {
+    return fetch(this.API_URL + "/likes/comment", {
+      method: "GET",
+      credentials: "include"
+    })
       .then(res => res.json())
+      .then(res => {
+        console.log(res);
+        return res;
+      })
       .catch(err => console.log(err));
   }
 }

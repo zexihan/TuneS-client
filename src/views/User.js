@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 import Followers from "../components/User/Followers";
-import Posts from "../components/User/Posts";
+import Comments from "../components/User/Comments";
 // import AlbumCard from "../components/AlbumCard";
 // import ArtistCard from "../components/ArtistCard";
 // import Spinner from "../Spinner/Spinner";
@@ -27,18 +27,12 @@ class User extends Component {
       followedAlbums: [], //Playlists, Tracks
       followedArtists: [],
       followedUsers: [],
-      posts: [],
       followers: [],
       publishedSongs: [],
       publishedAlbums: [],
-      friends: [
-        { id: "1", displayName: "Max" },
-        { id: "2", displayName: "Bob" },
-        { id: "3", displayName: "Tom" },
-        { id: "4", displayName: "Tim" }
-      ],
+      friends: [],
       comments: [],
-      likedItems: []
+      subjectLikes: []
     };
   }
 
@@ -47,9 +41,9 @@ class User extends Component {
       user => {
         console.log('tt', user.displayName)
         this.setState({displayName: user.displayName, portrait: user.photo, country: user.country})
-        if (user.sid !== -1) {
+        if (user.uid !== -1) {
           this.setState({
-            id: user.sid,
+            id: user.uid,
             isLoggedIn: true
           });
         }
@@ -118,14 +112,14 @@ class User extends Component {
           </div>
         </div>
 
-            <div id="recent-posts">
+            <div id="recent-comments">
               <div className="row mt-2">
                 <div className="col">
-                  <span>Recent Posts</span>
+                  <span>Recent Comments</span>
                 </div>
               </div>
               <hr className="user-hr" />
-              <div className="row mt-1 ml-2">posts</div>
+              <div className="row mt-1 ml-2">comments</div>
             </div>
 
             <div id="followed-artists">

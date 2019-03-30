@@ -1,6 +1,6 @@
 import React from "react";
 
-const Posts = props => {
+const Comments = props => {
   const posts = props.posts.map(post => (
     <div key={post.id}>
       <strong className="post-title">{post.title}</strong>
@@ -10,4 +10,4 @@ const Posts = props => {
   return <div>{posts}</div>;
 };
 
-export default Posts;
+export default Comments;

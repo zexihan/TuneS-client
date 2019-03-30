@@ -17,11 +17,12 @@ class Artist extends Component {
       displayName: null,
       photo: null,
       isLoggedIn: false,
-      loaded: false,
+      loaded: 0,
       artist: {},
       comments: [],
       comment: "",
       isLiked: false,
+      commentLikes: [],
       commentCount: 0,
       likeCount: 0
     };
@@ -31,38 +32,49 @@ class Artist extends Component {
   //     [{url: "https://cdn.pixabay.com/photo/2015/02/22/17/56/loading-645268_1280.jpg"}] }//no internet image
   // }
   componentDidMount() {
-
     const callback = res => {
       subjectService
         .getComments("artist", this.props.match.params.id)
         .then(comments => {
           console.log("get", comments);
-          this.setState({ artist: res, loaded: true, comments: comments });
+          this.setState({
+            artist: res,
+            loaded: true,
+            comments: comments,
+            loaded: this.state.loaded + 1
+          });
         });
       //console.log("albumMount", this.state.album)
     };
     searchService.getSubject("artist", this.props.match.params.id, callback);
 
-    authService.getProfile().then(
-      user => {
-        console.log(user);
-        if (user.uid !== -1) {
-          this.setState({
-            displayName: user.displayName,
-            photo: user.photo,
-            isLoggedIn: true
-          });
-          subjectService
-            .isLiked("artist", this.props.match.params.id)
-            .then(res => {
-              console.log(res);
-              this.setState({
-                isLiked: res.isliked
-              });
+    authService.getProfile().then(user => {
+      console.log(user);
+      if (user.uid !== -1) {
+        this.setState({
+          displayName: user.displayName,
+          photo: user.photo,
+          isLoggedIn: true,
+          loaded: this.state.loaded + 1
+        });
+        subjectService
+          .isLiked("artist", this.props.match.params.id)
+          .then(res => {
+            console.log(res);
+            this.setState({
+              isLiked: res.isliked,
+              loaded: this.state.loaded + 1
             });
-        }
+          });
+        subjectService.getCommentLikes().then(res => {
+          console.log(res);
+          this.setState({
+            commentLikes: res,
+            loaded: this.state.loaded + 1
+          });
+        });
       }
-    );
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -81,16 +93,16 @@ class Artist extends Component {
       this.setState({
         displayName: null,
         isLoggedIn: false
-      })
+      });
     }
   }
 
-  onCommentChanged = (e) => {
+  onCommentChanged = e => {
     this.setState({
       comment: e.target.value
     });
     console.log(e.target.value);
-  }
+  };
 
   onAddClicked = () => {
     const callback = res => {
@@ -100,18 +112,37 @@ class Artist extends Component {
     subjectService
       .addComment("artist", this.props.match.params.id, this.state.comment)
       .then(res => callback());
-  }
+  };
 
   onLikeClicked = () => {
     this.setState({
       isLiked: !this.state.isLiked
     });
     subjectService.likeSubject("artist", this.props.match.params.id);
-  }
+  };
+
+  onCommentLikeClicked = e => {
+    const commentId = e.currentTarget.getAttribute("value");
+    console.log(commentId);
+    this.setState({
+      commentLikes: this.state.commentLikes.concat(commentId)
+    });
+    subjectService.likeComment(commentId);
+    for (var i = 0; i < this.state.comments.length; i++) {
+      if (
+        commentId === this.state.comments[i]._id &&
+        !this.state.commentLikes.includes(commentId)
+      ) {
+        this.state.comments[i].userLikes.push(1);
+        this.state.commentLikes.push(commentId);
+      }
+    }
+  };
 
   render() {
     return (
-      this.state.loaded === true && (
+      ((this.state.isLoggedIn === true && this.state.loaded === 4) ||
+        (this.state.isLoggedIn === false && [1, 4].includes(this.state.loaded))) && (
         <div className="container-fluid">
           <div
             className="background-image"
@@ -136,22 +167,30 @@ class Artist extends Component {
                 </div>
                 <div>Comments: {this.state.commentCount}</div>
                 <div>Likes: {this.state.likeCount}</div>
-                <div className="my-2">
-                  <button
-                    className="btn btn-light"
-                    onClick={this.onLikeClicked}
-                  >
-                    {this.state.isLiked === true ? (
-                      <span style={{ color: "#cc0000" }}>
-                        <i className="fas fa-heart" />
-                      </span>
-                    ) : (
-                      <span style={{ color: "black" }}>
-                        <i className="far fa-heart" />
-                      </span>
-                    )}
-                  </button>
-                </div>
+                {this.state.displayName !== null ? (
+                  <div className="my-2">
+                    <button
+                      className="btn btn-light"
+                      onClick={this.onLikeClicked}
+                    >
+                      {this.state.isLiked === true ? (
+                        <span style={{ color: "#cc0000" }}>
+                          <i className="fas fa-heart" />
+                        </span>
+                      ) : (
+                        <span style={{ color: "black" }}>
+                          <i className="far fa-heart" />
+                        </span>
+                      )}
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <a href="#" data-toggle="modal" data-target="#login">
+                      Log in to like
+                    </a>
+                  </div>
+                )}
               </div>
               <div className="col-6 d-none d-md-block">
                 <div className="float-right embed-container">
@@ -279,14 +318,19 @@ class Artist extends Component {
                         </div>
                       </div>
                       <div className="col align-self-center">
-                        <span
-                          className="float-right"
-                          style={{ fontSize: "18px" }}
+                        <button
+                          className="btn float-right"
+                          style={{ fontSize: "18px", color: "white" }}
                           onClick={this.onCommentLikeClicked}
-                          value={comment.content}
+                          value={comment._id}
                         >
-                          <i className="far fa-thumbs-up" />
-                        </span>
+                          {comment.userLikes.length}&nbsp;
+                          {this.state.commentLikes.includes(comment._id) ? (
+                            <i className="fas fa-thumbs-up" />
+                          ) : (
+                            <i className="far fa-thumbs-up" />
+                          )}
+                        </button>
                       </div>
                     </div>
                   </div>
