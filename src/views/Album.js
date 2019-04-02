@@ -51,6 +51,7 @@ class Album extends Component {
     authService.getProfile().then(user => {
       console.log(user);
       if (user.uid !== -1) {
+        console.log(user);
         this.setState({
           displayName: user.displayName,
           photo: user.photo,

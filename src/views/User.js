@@ -42,6 +42,7 @@ class User extends Component {
     authService.getProfile().then(user => {
       if (user.uid !== -1) {
         if (user.uid == this.props.match.params.id) {
+          console.log("myself");
           this.setState({
             displayName: user.displayName, portrait: user.photo, country: user.country,
             id: user.uid,
@@ -55,7 +56,7 @@ class User extends Component {
       }
       authService.getPublicProfile(this.props.match.params.id).then(
         user => {
-          console.log('tt', user.displayName)
+          console.log("others");
           this.setState({
             displayName: user.displayName, portrait: user.photo, country: user.country,
             id: user.uid,
@@ -82,7 +83,7 @@ class User extends Component {
       return (
         <li key={comment._id}>
           <Link to={"/" + comment.subjectType + "/" + comment.subjectId}>
-            {comment.content.slice(0, 20) + "......"}
+            {comment.content.slice(0, 20)}
           </Link>
         </li>);
     })
@@ -91,7 +92,7 @@ class User extends Component {
       return (
         <li key={commentLike._id}>
           <Link to={"/" + commentLike.subjectType + "/" + commentLike.subjectId}>
-            {commentLike.content.slice(0, 20) + "......"}
+            {commentLike.content.slice(0, 20)}
           </Link>
         </li>
       )
@@ -99,12 +100,12 @@ class User extends Component {
 
     const favoriteSubjects = this.state.subjectLikes.map(subjectLike => {
       return (
-        <li key={subjectId}>
+        <li key={subjectLike.subjectId}>
           {/* {subjectType === "track" && <TrackCard track={subjectLike.track} />} */}
           {/* {subjectType === "artist" && <ArtistCard artist={subjectLike.artist} />} */}
           {/* {subjectType === "album" && <AlbumCard album={subjectLike.album} />} */}
         </li>
-      )
+      );
     })
 
     return (
@@ -157,7 +158,7 @@ class User extends Component {
         <div id="recent-comments">
           <div className="row mt-2">
             <div className="col">
-              <span>Recent Comments</span>
+              <span>My Comments</span>
             </div>
           </div>
           <hr className="user-hr" />
