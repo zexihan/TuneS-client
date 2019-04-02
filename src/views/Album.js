@@ -183,19 +183,19 @@ class Album extends Component {
                           <i className="fas fa-heart" />
                         </span>
                       ) : (
-                        <span style={{ color: "black" }}>
-                          <i className="far fa-heart" />
-                        </span>
-                      )}
+                          <span style={{ color: "black" }}>
+                            <i className="far fa-heart" />
+                          </span>
+                        )}
                     </button>
                   </div>
                 ) : (
-                  <div>
-                    <a href="#" data-toggle="modal" data-target="#login">
-                      Log in to like
+                    <div>
+                      <a href="#" data-toggle="modal" data-target="#login">
+                        Log in to like
                     </a>
-                  </div>
-                )}
+                    </div>
+                  )}
               </div>
               <div className="col-6 d-none d-md-block">
                 <div className="float-right embed-container">
@@ -282,13 +282,13 @@ class Album extends Component {
                     </div>
                   </div>
                 ) : (
-                  <div>
-                    <a href="#" data-toggle="modal" data-target="#login">
-                      Log in to add a comment
+                    <div>
+                      <a href="#" data-toggle="modal" data-target="#login">
+                        Log in to add a comment
                     </a>
-                    <hr className="comment-hr" />
-                  </div>
-                )}
+                      <hr className="comment-hr" />
+                    </div>
+                  )}
 
                 <h5>Latest comments</h5>
                 {this.state.comments.map((comment, i) => (
@@ -306,25 +306,25 @@ class Album extends Component {
                             }
                           />
                         ) : (
-                          <img
-                            width="40px"
-                            height="40px"
-                            src={
-                              comment.user.photo === ""
-                                ? "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png"
-                                : comment.user.photo
-                            }
-                          />
-                        )}
+                            <img
+                              width="40px"
+                              height="40px"
+                              src={
+                                comment.user.photo === ""
+                                  ? "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png"
+                                  : comment.user.photo
+                              }
+                            />
+                          )}
                       </div>
                       <div className="col">
                         {comment.anony === true ? (
                           "Anonymous"
                         ) : (
-                          <Link to={`/user/${comment.user.sid}`}>
-                            {comment.user.displayName}
-                          </Link>
-                        )}
+                            <Link to={`/user/${comment.user.sid}`}>
+                              {comment.user.displayName}
+                            </Link>
+                          )}
                         : {comment.content}
                         <br />
                         <div className="comment-time">
@@ -345,8 +345,8 @@ class Album extends Component {
                           {this.state.commentLikes.includes(comment._id) ? (
                             <i className="fas fa-thumbs-up" />
                           ) : (
-                            <i className="far fa-thumbs-up" />
-                          )}
+                              <i className="far fa-thumbs-up" />
+                            )}
                         </button>
                       </div>
                     </div>

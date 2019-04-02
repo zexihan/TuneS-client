@@ -10,6 +10,7 @@ import Comments from "../components/User/Comments";
 import "../static/views/User.css";
 
 import AuthService from '../services/AuthService';
+import ArtistCard from "../components/ArtistCard";
 let authService = AuthService.getInstance();
 
 class User extends Component {
@@ -32,7 +33,8 @@ class User extends Component {
       publishedAlbums: [],
       friends: [],
       comments: [],
-      subjectLikes: []
+      subjectLikes: [],
+      commentLikes: []
     };
   }
 
@@ -44,22 +46,25 @@ class User extends Component {
             displayName: user.displayName, portrait: user.photo, country: user.country,
             id: user.uid,
             isLoggedIn: true,
-            isMyself: true
+            isMyself: true,
+            comments: user.comments,
+            commentLikes: user.commentLikes
           });
-        } else {
-          authService.getPublicProfile(this.props.match.params.id).then(
-            user => {
-              console.log('tt', user.displayName)
-              this.setState({
-                displayName: user.displayName, portrait: user.photo, country: user.country,
-                id: user.uid,
-                isLoggedIn: true
-              });
-            }
-          );
+          return null;
         }
       }
-
+      authService.getPublicProfile(this.props.match.params.id).then(
+        user => {
+          console.log('tt', user.displayName)
+          this.setState({
+            displayName: user.displayName, portrait: user.photo, country: user.country,
+            id: user.uid,
+            isLoggedIn: (user.uid !== -1) ? false : true,
+            comments: user.comments,
+            commentLikes: user.commentLikes
+          });
+        }
+      );
     })
   }
 
@@ -72,6 +77,36 @@ class User extends Component {
   };
 
   render() {
+
+    const recentComments = this.state.comments.map(comment => {
+      return (
+        <li key={comment._id}>
+          <Link to={"/" + comment.subjectType + "/" + comment.subjectId}>
+            {comment.content.slice(0, 20) + "......"}
+          </Link>
+        </li>);
+    })
+
+    const favoriteComments = this.state.commentLikes.map(commentLike => {
+      return (
+        <li key={commentLike._id}>
+          <Link to={"/" + commentLike.subjectType + "/" + commentLike.subjectId}>
+            {commentLike.content.slice(0, 20) + "......"}
+          </Link>
+        </li>
+      )
+    })
+
+    const favoriteSubjects = this.state.subjectLikes.map(subjectLike => {
+      return (
+        <li key={subjectId}>
+          {/* {subjectType === "track" && <TrackCard track={subjectLike.track} />} */}
+          {/* {subjectType === "artist" && <ArtistCard artist={subjectLike.artist} />} */}
+          {/* {subjectType === "album" && <AlbumCard album={subjectLike.album} />} */}
+        </li>
+      )
+    })
+
     return (
       <div className="container">
         <div className="row user-content mt-3">
@@ -126,17 +161,25 @@ class User extends Component {
             </div>
           </div>
           <hr className="user-hr" />
-          <div className="row mt-1 ml-2">comments</div>
+          <div className="row mt-1 ml-2">
+            <ul>
+              {recentComments}
+            </ul>
+          </div>
         </div>
 
         <div id="recent-comments">
           <div className="row mt-2">
             <div className="col">
-              <span>Favorite Albums, Tracks and Artists</span>
+              <span>Favorite Subjects</span>
             </div>
           </div>
           <hr className="user-hr" />
-          <div className="row mt-1 ml-2">comments</div>
+          <div className="row mt-1 ml-2">
+            <ul>
+              {favoriteSubjects}
+            </ul>
+          </div>
         </div>
 
         <div id="recent-comments">
@@ -146,7 +189,11 @@ class User extends Component {
             </div>
           </div>
           <hr className="user-hr" />
-          <div className="row mt-1 ml-2">comments</div>
+          <div className="row mt-1 ml-2">
+            <ul>
+              {favoriteComments}
+            </ul>
+          </div>
         </div>
 
         <div id="followed-artists">
