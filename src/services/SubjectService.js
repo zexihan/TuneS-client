@@ -12,85 +12,99 @@ class SubjectService {
     return this.myInstance;
   }
 
-  // app.get('/api/albumOrTrack/:id/comments'
-  getComments = (type, id) => {
-    return fetch(this.API_URL + "/comments/" + type + "/" + id, {
+  
+  findCommentsBySubjectId = (type, id) => {
+    return fetch(this.API_URL + "/subject/" + type + "/" + id + "/comments", {
       credentials: "include"
     })
-      .then(function(res) {
-        if (!res.ok) {
-          throw Error(res.statusText);
-        }
-        return res;
-      })
-      .then(function(response) {
-        return response.json();
-      })
-      .catch(function(error) {
-        // alert("error check connection/ try refresh");
-        console.log(error);
-        alert("error, try refresh");
-      });
-  };
-
-  // app.post('/api/album/:id/comment'
-  addComment = (type, id, comment) => {
-    return fetch(this.API_URL + "/comment/" + type + "/" + id, {
-      method: "POST",
-      body: JSON.stringify({ comment: comment }),
-      headers: new Headers({ "Content-type": "application/json" }),
-      credentials: "include"
-    })
-      .then(function(res) {
-        if (!res.ok) {
-          throw Error(res.statusText);
-        }
-        return res;
-      })
-      .then(function(response) {
-        return response.json();
-      })
-      .catch(function(error) {
-        // alert("error check connection/ try refresh");
-        console.log(error);
-        alert("error, try refresh");
-      });
-  };
-
-  isLiked = (type, id) => {
-    return fetch(this.API_URL + "/isliked/" + type + "/" + id, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include"
-    })
-      .then(res => res.json())
       .then(res => {
-        console.log(res)
-        return res
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
       })
-      .catch(err => console.log(err));
+      .then(res => {
+        return res.json();
+      })
+      .catch(err => {
+        console.log(err);
+        alert("findCommentsBySubjectId error");
+      });
   };
 
-  likeSubject = (type, id) => {
-    return fetch(this.API_URL + "/like/subject/" + type + "/" + id, {
-      method: "POST",
+  findCommentsByUserId = id => {
+    console.log(this.API_URL + "/user/" + id + "/comments");
+    return fetch(this.API_URL + "/user/" + id + "/comments", {
       credentials: "include"
     })
-      .catch(err => console.log(err));
-  };
-
-  likeComment = id => {
-    console.log("like comment: " + id);
-    return fetch(this.API_URL + "/like/comment/" + id, {
-      method: "POST",
-      credentials: "include"
-    })
-      .catch(err => console.log(err));
+      .then(res => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then(res => {
+        return res.json();
+      })
+      .catch(err => {
+        console.log(err);
+        alert("findCommentsByUserId error");
+      });
   }
 
-  getCommentLikes = () => {
-    return fetch(this.API_URL + "/likes/comment", {
+  
+  addComment = (subject, commentContent) => {
+    return fetch(
+      this.API_URL + "/subject/" + subject.type + "/" + subject._id + "/comment",
+      {
+        method: "POST",
+        body: JSON.stringify({ subject, commentContent }),
+        headers: new Headers({ "Content-type": "application/json" }),
+        credentials: "include"
+      }
+    )
+      .then(res => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then(res => {
+        return res.json();
+      })
+      .catch(err => {
+        console.log(err);
+        alert("addComment error");
+      });
+  };
+
+  deleteComment = id => {
+    return fetch(
+      this.API_URL + "/current/comment/" + id,
+      {
+        method: "DELETE",
+        credentials: "include"
+      }
+    )
+      .then(res => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then(res => {
+        return res.json();
+      })
+      .catch(err => {
+        console.log(err);
+        alert("deleteComment error");
+      });
+  }
+
+  findSubjectIsLiked = (type, id) => {
+    return fetch(this.API_URL + "/current/" + type + "/" + id + "/isliked", {
       method: "GET",
+      headers: { "Content-Type": "application/json" },
       credentials: "include"
     })
       .then(res => res.json())
@@ -98,8 +112,87 @@ class SubjectService {
         console.log(res);
         return res;
       })
-      .catch(err => console.log(err));
-  }
+      .catch(err => {
+        console.log(err);
+        alert("findSubjectIsLiked error");
+      });
+  };
+
+  likeSubject = subject => {
+    return fetch(
+      this.API_URL + "/subject/" + subject.type + "/" + subject._id + "/like",
+      {
+        method: "POST",
+        body: JSON.stringify(subject),
+        headers: new Headers({ "Content-type": "application/json" }),
+        credentials: "include"
+      }
+    ).catch(err => {
+        console.log(err);
+        alert("likeSubject error");
+      });
+  };
+
+  likeComment = id => {
+    console.log("like comment: " + id);
+    return fetch(this.API_URL + "/like/comment/" + id, {
+      method: "POST",
+      credentials: "include"
+    }).catch(err => {
+        console.log(err);
+        alert("likeComment error");
+      });
+  };
+
+  findCommentLikesByCurrentUser = () => {
+    return fetch(this.API_URL + "/current/likes/comment", {
+      method: "GET",
+      credentials: "include"
+    })
+      .then(res => res.json())
+      .then(res => {
+        let res_list = [];
+        for (var i = 0; i < res.length; i++) {
+          res_list.push(res[i].comment);
+        }
+        console.log(res_list);
+        return res_list;
+      })
+      .catch(err => {
+        console.log(err);
+        alert("findCommentLikesByCurrentUser error");
+      });
+  };
+
+  findSubjectLikesByUserId = id => {
+    return fetch(this.API_URL + "/user/" + id + "/likes/subject", {
+      method: "GET",
+      credentials: "include"
+    })
+      .then(res => res.json())
+      .then(res => {
+        return res;
+      })
+      .catch(err => {
+        console.log(err);
+        alert("findSubjectLikesByUserId error");
+      });
+  };
+
+  findCommentLikesByUserId = id => {
+    return fetch(this.API_URL + "/user/" + id + "/likes/comment", {
+      method: "GET",
+      credentials: "include"
+    })
+      .then(res => res.json())
+      .then(res => {
+        return res;
+      })
+      .catch(err => {
+        console.log(err);
+        alert("findCommentLikesByUserId error");
+      });
+  };
 }
 
 export default SubjectService;

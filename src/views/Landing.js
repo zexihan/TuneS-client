@@ -8,9 +8,9 @@ import AlbumCardList from '../components/Landing/AlbumCardList';
 import TopCharts from '../components/Landing/TopCharts';
 import CarouselShow from '../components/Landing/CarouselShow';
 import SearchService from '../services/SearchService';
-import AuthService from '../services/AuthService';
+import UserService from '../services/UserService';
 let searchService = SearchService.getInstance();
-let authService = AuthService.getInstance();
+let userService = UserService.getInstance();
 
 class Landing extends Component {
   constructor(props) {
@@ -33,10 +33,10 @@ class Landing extends Component {
     };
     searchService.getSubject("playlist", "59ZbFPES4DQwEjBpWHzrtC", callback);
 
-    authService.getProfile().then(
+    userService.getCurrentUser().then(
       user => {
         console.log(user);
-        if (user.uid !== -1) {
+        if (user._id !== -1) {
           this.setState({
             displayName: user.displayName,
             isLoggedIn: true

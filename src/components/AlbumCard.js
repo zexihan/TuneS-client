@@ -9,7 +9,7 @@ const AlbumCard = ({track}) => {
     imageURL = track.track.album.images[0].url;
   }
   return (
-    <div className="card m-sm-2 m-md-3">
+    <div className="card">
       <Link to={`/album/${track.track.album.id}`}><img src={imageURL} className="card-img-top" alt="..."/></Link>
       <div className="card-body">
         <Link to={`/album/${track.track.album.id}`}><p className="card-text albumcard-album">{track.track.album.name}</p></Link>

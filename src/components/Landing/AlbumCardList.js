@@ -21,11 +21,18 @@ class AlbumCardList extends Component {
 
   render() {
     return (
-      <div className="row mx-1 d-flex justify-content-center">
+      <div className="row mx-1 my-2">
         {this.state.playlist !== undefined ? this.state.playlist.tracks.items
-          .slice(1, 9)
-          .map(track => {
-            return <AlbumCard track={track} key={track.track.album.id} />;
+          .slice(10, 20)
+          .map((track, i) => {
+            return (
+              <div className="col my-1 w-sm-2 w-md-3 w-lg-4 d-flex justify-content-center" key={i}>
+                <AlbumCard
+                  track={track}
+                  key={track.track.album.id}
+                />
+              </div>
+            );
           }) : null}
       </div>
     );

@@ -3,8 +3,8 @@ import {Link} from "react-router-dom";
 import $ from 'jquery';
 import '../static/components/NavBar.css';
 
-import AuthService from '../services/AuthService';
-let authService = AuthService.getInstance();
+import UserService from '../services/UserService';
+let userService = UserService.getInstance();
 
 class NavBar extends Component {
   constructor(props) {
@@ -16,14 +16,14 @@ class NavBar extends Component {
   }
 
   componentDidMount() {//will reeive props?
-    authService.getProfile().then(
+    userService.getCurrentUser().then(
       user => {
         console.log(user);
-        if (user.uid !== -1) {
+        if (user._id !== -1) {
           this.setState({
             displayName: user.displayName,
             isLoggedIn: true,
-            id: user.uid
+            userId: user._id
           });
           $(".loggedin-nav").show();
           $(".loggedout-nav").hide();
@@ -36,7 +36,7 @@ class NavBar extends Component {
   }
 
   onLogoutClicked = () => {
-    authService.logOut();
+    userService.logout();
     this.props.logout();
     this.setState({
       displayName: null,
@@ -87,7 +87,7 @@ class NavBar extends Component {
                   Profile
                 </a>
                 <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                  <Link className="dropdown-item my-2" to={`/user/${this.state.id}`}>My TuneS</Link>
+                  <Link className="dropdown-item my-2" to={`/user/${this.state.userId}`}>My TuneS</Link>
                   <Link className="dropdown-item my-2" to={`/profile`}>Edit Profile</Link>
                   <div className="dropdown-divider"></div>
                   <button className="dropdown-item" href="#" onClick={this.onLogoutClicked} data-dismiss="modal">Log Out</button>

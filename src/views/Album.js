@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import '../static/views/Subject.css';
+import "../static/views/Subject.css";
 
-import AuthService from "../services/AuthService";
-import SearchService from '../services/SearchService';
+import UserService from "../services/UserService";
+import SearchService from "../services/SearchService";
 import SubjectService from "../services/SubjectService";
-let authService = AuthService.getInstance();
+let userService = UserService.getInstance();
 let searchService = SearchService.getInstance();
 let subjectService = SubjectService.getInstance();
-
 
 class Album extends Component {
   constructor(props) {
@@ -23,19 +22,14 @@ class Album extends Component {
       comments: [],
       comment: "",
       isLiked: false,
-      commentLikes: [],
-      commentCount: 0,
-      likeCount: 0
+      commentLikes: []
     };
   }
 
-  // track: { album: { images:
-  //     [{url: "https://cdn.pixabay.com/photo/2015/02/22/17/56/loading-645268_1280.jpg"}] }//no internet image
-  // }
   componentDidMount() {
     const callback = res => {
       subjectService
-        .getComments("album", this.props.match.params.id)
+        .findCommentsBySubjectId("album", this.props.match.params.id)
         .then(comments => {
           console.log("get", comments);
           this.setState({
@@ -44,13 +38,11 @@ class Album extends Component {
             loaded: this.state.loaded + 1
           });
         });
-      //console.log("albumMount", this.state.album)
     };
     searchService.getSubject("album", this.props.match.params.id, callback);
 
-    authService.getProfile().then(user => {
-      console.log(user);
-      if (user.uid !== -1) {
+    userService.getCurrentUser().then(user => {
+      if (user._id !== -1) {
         console.log(user);
         this.setState({
           displayName: user.displayName,
@@ -59,7 +51,7 @@ class Album extends Component {
           loaded: this.state.loaded + 1
         });
         subjectService
-          .isLiked("album", this.props.match.params.id)
+          .findSubjectIsLiked("album", this.props.match.params.id)
           .then(res => {
             console.log(res);
             this.setState({
@@ -67,7 +59,7 @@ class Album extends Component {
               loaded: this.state.loaded + 1
             });
           });
-        subjectService.getCommentLikes().then(res => {
+        subjectService.findCommentLikesByCurrentUser().then(res => {
           console.log(res);
           this.setState({
             commentLikes: res,
@@ -81,17 +73,15 @@ class Album extends Component {
   componentWillReceiveProps(nextProps) {
     const callback = res => {
       subjectService
-        .getComments("album", this.props.match.params.id)
+        .findCommentsBySubjectId("album", this.props.match.params.id)
         .then(comments => {
           console.log(comments);
-          this.setState({ album: res, comments: comments });
+          this.setState({ album: res, comments });
         });
-      //console.log("albumUpdate", this.state.album)
     };
     searchService.getSubject("album", this.props.match.params.id, callback);
 
     if (nextProps.logoutStatus === true) {
-      //logoutStatus: on router board
       this.setState({
         displayName: null,
         isLoggedIn: false
@@ -109,41 +99,67 @@ class Album extends Component {
   onAddClicked = () => {
     const callback = res => {
       console.log(res, "rev");
+      this.setState({
+        comment: ""
+      });
       this.props.history.push("/album/" + this.props.match.params.id);
-    }; //to render new reviews
+    }; // to render new reviews
+    const subject = {
+      _id: this.props.match.params.id,
+      type: "album",
+      title: this.state.album.name,
+      image:
+        this.state.album.images.length > 0
+          ? this.state.album.images[0].url
+          : null
+    };
     subjectService
-      .addComment("album", this.props.match.params.id, this.state.comment)
-      .then(res => callback());
+      .addComment(subject, this.state.comment)
+      .then(res => callback(res));
   };
 
   onLikeClicked = () => {
     this.setState({
       isLiked: !this.state.isLiked
     });
-    subjectService.likeSubject("album", this.props.match.params.id);
+    const subject = {
+      _id: this.props.match.params.id,
+      type: "album",
+      title: this.state.album.name,
+      image:
+        this.state.album.images.length > 0
+          ? this.state.album.images[0].url
+          : null
+    };
+    subjectService.likeSubject(subject);
   };
 
   onCommentLikeClicked = e => {
     const commentId = e.currentTarget.getAttribute("value");
     console.log(commentId);
-    this.setState({
-      commentLikes: this.state.commentLikes.concat(commentId)
-    });
     subjectService.likeComment(commentId);
-    for (var i = 0; i < this.state.comments.length; i++) {
-      if (
-        commentId === this.state.comments[i]._id &&
-        !this.state.commentLikes.includes(commentId)
-      ) {
-        this.state.comments[i].userLikes.push(1);
-        this.state.commentLikes.push(commentId);
+    if (this.state.commentLikes.includes(commentId)) {
+      this.setState({
+        commentLikes: this.state.commentLikes.filter(id => id !== commentId)
+      });
+      for (var i = 0; i < this.state.comments.length; i++) {
+        if (commentId === this.state.comments[i]._id) {
+          this.state.comments[i].likeCount--;
+        }
+      }
+    } else {
+      this.setState({
+        commentLikes: this.state.commentLikes.concat(commentId)
+      });
+      for (var i = 0; i < this.state.comments.length; i++) {
+        if (commentId === this.state.comments[i]._id) {
+          this.state.comments[i].likeCount++;
+        }
       }
     }
   };
 
   render() {
-    console.log("loaded");
-    console.log("dc", this.state.comments);
     return (
       ((this.state.isLoggedIn === true && this.state.loaded === 4) ||
         (this.state.isLoggedIn === false &&
@@ -171,8 +187,6 @@ class Album extends Component {
                 <div>Released: {this.state.album.release_date}</div>
                 <div>Total tracks: {this.state.album.total_tracks}</div>
                 <div>Popularity: {this.state.album.popularity}/100</div>
-                <div>Comments: {this.state.commentCount}</div>
-                <div>Likes: {this.state.likeCount}</div>
                 {this.state.displayName !== null ? (
                   <div className="my-2">
                     <button
@@ -184,19 +198,19 @@ class Album extends Component {
                           <i className="fas fa-heart" />
                         </span>
                       ) : (
-                          <span style={{ color: "black" }}>
-                            <i className="far fa-heart" />
-                          </span>
-                        )}
+                        <span style={{ color: "black" }}>
+                          <i className="far fa-heart" />
+                        </span>
+                      )}
                     </button>
                   </div>
                 ) : (
-                    <div>
-                      <a href="#" data-toggle="modal" data-target="#login">
-                        Log in to like
+                  <div>
+                    <a href="#" data-toggle="modal" data-target="#login">
+                      Log in to like
                     </a>
-                    </div>
-                  )}
+                  </div>
+                )}
               </div>
               <div className="col-6 d-none d-md-block">
                 <div className="float-right embed-container">
@@ -265,6 +279,7 @@ class Album extends Component {
                           id="commentTextarea"
                           rows="2"
                           placeholder="Add a comment..."
+                          value={this.state.comment}
                         />
                       </div>
                     </div>
@@ -283,13 +298,13 @@ class Album extends Component {
                     </div>
                   </div>
                 ) : (
-                    <div>
-                      <a href="#" data-toggle="modal" data-target="#login">
-                        Log in to add a comment
+                  <div>
+                    <a href="#" data-toggle="modal" data-target="#login">
+                      Log in to add a comment
                     </a>
-                      <hr className="comment-hr" />
-                    </div>
-                  )}
+                    <hr className="comment-hr" />
+                  </div>
+                )}
 
                 <h5>Latest comments</h5>
                 {this.state.comments.map((comment, i) => (
@@ -298,34 +313,20 @@ class Album extends Component {
 
                     <div className="row">
                       <div className="col-auto align-self-center">
-                        {comment.anony === true ? (
-                          <img
-                            width="40px"
-                            height="40px"
-                            src={
-                              "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png"
-                            }
-                          />
-                        ) : (
-                            <img
-                              width="40px"
-                              height="40px"
-                              src={
-                                comment.user.photo === ""
-                                  ? "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png"
-                                  : comment.user.photo
-                              }
-                            />
-                          )}
+                        <img
+                          width="40px"
+                          height="40px"
+                          src={
+                            comment.user.photo === null
+                              ? "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png"
+                              : comment.user.photo
+                          }
+                        />
                       </div>
                       <div className="col">
-                        {comment.anony === true ? (
-                          "Anonymous"
-                        ) : (
-                            <Link to={`/user/${comment.user.sid}`}>
-                              {comment.user.displayName}
-                            </Link>
-                          )}
+                        <Link to={`/user/${comment.user._id}`}>
+                          {comment.user.displayName}
+                        </Link>
                         : {comment.content}
                         <br />
                         <div className="comment-time">
@@ -342,12 +343,12 @@ class Album extends Component {
                           onClick={this.onCommentLikeClicked}
                           value={comment._id}
                         >
-                          {comment.userLikes.length}&nbsp;
+                          {comment.likeCount}&nbsp;
                           {this.state.commentLikes.includes(comment._id) ? (
                             <i className="fas fa-thumbs-up" />
                           ) : (
-                              <i className="far fa-thumbs-up" />
-                            )}
+                            <i className="far fa-thumbs-up" />
+                          )}
                         </button>
                       </div>
                     </div>

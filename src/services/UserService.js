@@ -1,12 +1,12 @@
 import port from '../port.js';
 
-class AuthService {
+class UserService {
   API_URL = port +'/';
 
   static myInstance = null;
   static getInstance() {
-    if (AuthService.myInstance == null) {
-      AuthService.myInstance = new AuthService();
+    if (UserService.myInstance == null) {
+      UserService.myInstance = new UserService();
     }
     return this.myInstance;
   }
@@ -18,63 +18,63 @@ class AuthService {
       body: JSON.stringify(user),
       credentials: "include"
     })
-      .then(response => response.json())
-      .catch(error => {
-        console.log(error);
-        alert("createUser error, try refresh")
+      .then(res => res.json())
+      .catch(err => {
+        console.log(err);
+        alert("createUser error")
       });
   };
 
-  getProfile = () => {
+  getCurrentUser = () => {
     return fetch(this.API_URL + "user/current", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       credentials: "include"
     })
-      .then(response => response.json())
-      .catch(error => {
-        console.log(error);
-        alert("getProfile error, try refresh")
+      .then(res => res.json())
+      .catch(err => {
+        console.log(err);
+        alert("getCurrentUser error")
       });
   };
 
-  getPublicProfile = (sid) => {
-    return fetch(this.API_URL + "user/profile/" + sid, {
+  findUserById = userId => {
+    return fetch(this.API_URL + "user/" + userId, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       credentials: "include"
     })
-      .then(response => response.json())
+      .then(res => res.json())
       .catch(error => {
         console.log(error);
-        alert("getPublicProfile error, try refresh");
+        alert("findUserById error");
       });
   };
 
-  logIn = user => {
+  login = user => {
     return fetch(this.API_URL + "login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
       credentials: "include"
     })
-      .then(response => response.json())
-      .catch(error => {
-        console.log(error);
-        alert("logIn error, try refresh");
+      .then(res => res.json())
+      .catch(err => {
+        console.log(err);
+        alert("logIn error");
       });
   };
 
-  logOut = () => {
+  logout = () => {
     return fetch(this.API_URL + "logout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include"
     })
       .then(() => console.log("User successfully logged out!"))
-      .catch(error => {
-        console.log(error);
-        alert("logOut error, try refresh");
+      .catch(err => {
+        console.log(err);
+        alert("logOut error");
       });
   };
 
@@ -82,10 +82,10 @@ class AuthService {
     return fetch(this.API_URL + "users", {
       credentials: "include"
     })
-      .then(response => response.json())
-      .catch(error => {
-        console.log(error);
-        alert("findAllUsers error, try refresh");
+      .then(res => res.json())
+      .catch(err => {
+        console.log(err);
+        alert("findAllUsers error");
       });
   };
 
@@ -94,27 +94,27 @@ class AuthService {
     return fetch(url, {
       credentials: "include"
     })
-      .then(response => response.json())
-      .catch(error => {
-        console.log(error);
-        alert("findUserById error, try refresh");
+      .then(res => res.json())
+      .catch(err => {
+        console.log(err);
+        alert("findUserById error");
       });
   };
 
   updateUser = user => {
-    const url = this.API_URL + "user/" + user.uid;
+    const url = this.API_URL + "user/current";
     return fetch(url, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
       credentials: "include"
     })
-      .then(response => response.json())
-      .catch(error => {
-        console.log(error);
-        alert("updateUser error, try refresh");
+      .then(res => res.json())
+      .catch(err => {
+        console.log(err);
+        alert("updateUser error");
       });
   };
 }
 
-export default AuthService;
+export default UserService;

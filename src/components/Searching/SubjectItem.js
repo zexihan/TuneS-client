@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import '../../static/components/SubjectItem.css';
 
 const SubjectItem = ({subject, type}) => {
+  var imageURL = "";
   switch (type) {
     case "track": {
-      var imageURL = "https://carwad.net/sites/default/files/pics-of-musical-notes-146477-1383627.png";
+      imageURL = "https://carwad.net/sites/default/files/pics-of-musical-notes-146477-1383627.png";
       if (subject.album.images && subject.album.images.length) {
         imageURL = subject.album.images[0].url;
       }
@@ -30,7 +31,7 @@ const SubjectItem = ({subject, type}) => {
       );
     }
     case "artist": {
-      var imageURL = "https://newmusicshelf.com/wp-content/uploads/blank-profile-picture.png";
+      imageURL = "https://newmusicshelf.com/wp-content/uploads/blank-profile-picture.png";
       var followers = 0;
       if (subject.images && subject.images.length) {
         imageURL = subject.images[0].url;
@@ -55,7 +56,7 @@ const SubjectItem = ({subject, type}) => {
       );
     }
     case "album": {
-      var imageURL = "https://us.123rf.com/450wm/luplupme/luplupme1606/luplupme160600492/58500023-vinyl-lp-lp-album-disc-isoliert-lange-spiel-vinyl-scheibe-mit-leeren-orangefarbenen-etikett-vektor-v.jpg?ver=6";
+      imageURL = "https://us.123rf.com/450wm/luplupme/luplupme1606/luplupme160600492/58500023-vinyl-lp-lp-album-disc-isoliert-lange-spiel-vinyl-scheibe-mit-leeren-orangefarbenen-etikett-vektor-v.jpg?ver=6";
       if (subject.images && subject.images.length) {
         imageURL = subject.images[0].url;
       }

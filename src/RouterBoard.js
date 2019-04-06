@@ -9,11 +9,11 @@ import User from './views/User';
 import Track from './views/Track';
 import Artist from './views/Artist';
 import Album from './views/Album';
-import Profile from './views/Profile';
+import ProfileEditor from "./views/ProfileEditor";
 import NavBar from './components/NavBar';
 
-import AuthService from './services/AuthService';
-let authService = AuthService.getInstance();
+import UserService from './services/UserService';
+let userService = UserService.getInstance();
 
 class RouterBoard extends Component {
   constructor(props) {
@@ -45,48 +45,79 @@ class RouterBoard extends Component {
             <NavBar logout={this.logout} />
             <Route
               path="/"
-              exact render={props =>
-                <Landing {...props} search={this.search} />}
+              exact
+              render={props => <Landing {...props} search={this.search} />}
             />
             <Route
               path="/subject_search"
-              exact render={props =>
-                <Searching {...props} subjects={this.state.subjects} />}
+              exact
+              render={props => (
+                <Searching {...props} subjects={this.state.subjects} />
+              )}
             />
             <Route
               path="/track/:id"
-              exact render={props =>
-                <Track {...props} logoutStatus={this.state.logoutStatus} />}
+              exact
+              render={props => (
+                <Track {...props} logoutStatus={this.state.logoutStatus} />
+              )}
             />
             <Route
               path="/artist/:id"
-              exact render={props =>
-                <Artist {...props} logoutStatus={this.state.logoutStatus} />}
+              exact
+              render={props => (
+                <Artist {...props} logoutStatus={this.state.logoutStatus} />
+              )}
             />
             <Route
               path="/album/:id"
-              exact render={props =>
-                <Album {...props} logoutStatus={this.state.logoutStatus} />}
+              exact
+              render={props => (
+                <Album {...props} logoutStatus={this.state.logoutStatus} />
+              )}
             />
             <Route
               path="/user/:id"
-              exact render={props =>
-                <User {...props} logoutStatus={this.state.logoutStatus} />}
+              exact
+              render={props => (
+                <User {...props} logoutStatus={this.state.logoutStatus} />
+              )}
             />
             <Route
               path="/profile"
-              exact render={props =>
-                <Profile {...props} logoutStatus={this.state.logoutStatus} />}
+              exact
+              render={props => (
+                <ProfileEditor
+                  {...props}
+                  logoutStatus={this.state.logoutStatus}
+                />
+              )}
             />
           </div>
         </Router>
-        <div className="modal fade" id="login" tabIndex="-1" role="dialog"
-             aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-          <div className="modal-dialog modal-dialog-centered" role="document">
+        <div
+          className="modal fade"
+          id="login"
+          tabIndex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLongTitle"
+          aria-hidden="true"
+        >
+          <div
+            className="modal-dialog modal-dialog-centered"
+            role="document"
+          >
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLongTitle">Log In to Connect</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <h5 className="modal-title" id="exampleModalLongTitle">
+                  Log In to Connect
+                </h5>
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -94,15 +125,19 @@ class RouterBoard extends Component {
                 <div className="row m-3">
                   <div className="col">
                     <a href={port + "/login/spotify-auth"} target="_blank">
-                      <button type="button" className="btn btn-success btn-block">
-                        <i className="fab fa-spotify"></i> Log in with Spotify
+                      <button
+                        type="button"
+                        className="btn btn-success btn-block"
+                      >
+                        <i className="fab fa-spotify" /> Log in with Spotify
                       </button>
                     </a>
                   </div>
                 </div>
                 <div className="row m-3">
                   <div className="col text-center">
-                  Refresh me to be logged in on this page after spotify signin
+                    Refresh me to be logged in on this page after spotify
+                    signin
                     {/* Don't have an account? <a id="sign-up" href="https://www.spotify.com/us/signup/?forward_url=https%3A%2F%2Faccounts.spotify.com%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A5000%252Flogin%252Fspotify-auth%252Fcallback%26scope%3Duser-read-email%2520user-read-private%26client_id%3Da1e8617e0c7648d99634ae3a3d192590">Sign up for Spotify</a> */}
                   </div>
                 </div>

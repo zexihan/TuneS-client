@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import '../static/views/Subject.css';
+import "../static/views/Subject.css";
 
-import AuthService from "../services/AuthService";
+import UserService from "../services/UserService";
 import SearchService from "../services/SearchService";
 import SubjectService from "../services/SubjectService";
-let authService = AuthService.getInstance();
+let userService = UserService.getInstance();
 let searchService = SearchService.getInstance();
 let subjectService = SubjectService.getInstance();
 
@@ -22,35 +22,28 @@ class Track extends Component {
       comments: [],
       comment: "",
       isLiked: false,
-      commentLikes: [],
-      commentCount: 0,
-      likeCount: 0
+      commentLikes: []
     };
   }
 
-  // track: { album: { images:
-  //     [{url: "https://cdn.pixabay.com/photo/2015/02/22/17/56/loading-645268_1280.jpg"}] }//no internet image
-  // }
   componentDidMount() {
     const callback = res => {
       subjectService
-        .getComments("track", this.props.match.params.id)
+        .findCommentsBySubjectId("track", this.props.match.params.id)
         .then(comments => {
           console.log("get", comments);
           this.setState({
             track: res,
-            loaded: true,
             comments: comments,
             loaded: this.state.loaded + 1
           });
         });
-      //console.log("albumMount", this.state.album)
     };
     searchService.getSubject("track", this.props.match.params.id, callback);
 
-    authService.getProfile().then(user => {
+    userService.getCurrentUser().then(user => {
       console.log(user);
-      if (user.uid !== -1) {
+      if (user._id !== -1) {
         this.setState({
           displayName: user.displayName,
           photo: user.photo,
@@ -58,7 +51,7 @@ class Track extends Component {
           loaded: this.state.loaded + 1
         });
         subjectService
-          .isLiked("track", this.props.match.params.id)
+          .findSubjectIsLiked("track", this.props.match.params.id)
           .then(res => {
             console.log(res);
             this.setState({
@@ -66,7 +59,7 @@ class Track extends Component {
               loaded: this.state.loaded + 1
             });
           });
-        subjectService.getCommentLikes().then(res => {
+        subjectService.findCommentLikesByCurrentUser().then(res => {
           console.log(res);
           this.setState({
             commentLikes: res,
@@ -80,12 +73,11 @@ class Track extends Component {
   componentWillReceiveProps(nextProps) {
     const callback = res => {
       subjectService
-        .getComments("track", this.props.match.params.id)
+        .findCommentsBySubjectId("track", this.props.match.params.id)
         .then(comments => {
           console.log(comments);
-          this.setState({ track: res, comments: comments });
+          this.setState({ track: res, comments });
         });
-      //console.log("albumUpdate", this.state.album)
     };
     searchService.getSubject("track", this.props.match.params.id, callback);
 
@@ -107,34 +99,62 @@ class Track extends Component {
   onAddClicked = () => {
     const callback = res => {
       console.log(res, "rev");
+      this.setState({
+        comment: ""
+      });
       this.props.history.push("/track/" + this.props.match.params.id);
     }; //to render new reviews
+    const subject = {
+      _id: this.props.match.params.id,
+      type: "track",
+      title: this.state.track.name,
+      image:
+        this.state.track.album.images.length > 0
+          ? this.state.track.album.images[0].url
+          : null
+    };
     subjectService
-      .addComment("track", this.props.match.params.id, this.state.comment)
-      .then(res => callback());
+      .addComment(subject, this.state.comment)
+      .then(res => callback(res));
   };
 
   onLikeClicked = () => {
     this.setState({
       isLiked: !this.state.isLiked
     });
-    subjectService.likeSubject("track", this.props.match.params.id);
+    const subject = {
+      _id: this.props.match.params.id,
+      type: "track",
+      title: this.state.track.name,
+      image:
+        this.state.track.album.images.length > 0
+          ? this.state.track.album.images[0].url
+          : null
+    };
+    subjectService.likeSubject(subject);
   };
 
   onCommentLikeClicked = e => {
     const commentId = e.currentTarget.getAttribute("value");
     console.log(commentId);
-    this.setState({
-      commentLikes: this.state.commentLikes.concat(commentId)
-    });
     subjectService.likeComment(commentId);
-    for (var i = 0; i < this.state.comments.length; i++) {
-      if (
-        commentId === this.state.comments[i]._id &&
-        !this.state.commentLikes.includes(commentId)
-      ) {
-        this.state.comments[i].userLikes.push(1);
-        this.state.commentLikes.push(commentId);
+    if (this.state.commentLikes.includes(commentId)) {
+      this.setState({
+        commentLikes: this.state.commentLikes.filter(id => id !== commentId)
+      });
+      for (var i = 0; i < this.state.comments.length; i++) {
+        if (commentId === this.state.comments[i]._id) {
+          this.state.comments[i].likeCount--;
+        }
+      }
+    } else {
+      this.setState({
+        commentLikes: this.state.commentLikes.concat(commentId)
+      });
+      for (var i = 0; i < this.state.comments.length; i++) {
+        if (commentId === this.state.comments[i]._id) {
+          this.state.comments[i].likeCount++;
+        }
       }
     }
   };
@@ -172,8 +192,6 @@ class Track extends Component {
                 </div>
                 <div>Released: {this.state.track.album.release_date}</div>
                 <div>Popularity: {this.state.track.popularity}/100</div>
-                <div>Comments: {this.state.commentCount}</div>
-                <div>Likes: {this.state.likeCount}</div>
                 {this.state.displayName !== null ? (
                   <div className="my-2">
                     <button
@@ -288,34 +306,20 @@ class Track extends Component {
 
                     <div className="row">
                       <div className="col-auto align-self-center">
-                        {comment.anony === true ? (
-                          <img
-                            width="40px"
-                            height="40px"
-                            src={
-                              "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png"
-                            }
-                          />
-                        ) : (
-                          <img
-                            width="40px"
-                            height="40px"
-                            src={
-                              comment.user.photo === ""
-                                ? "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png"
-                                : comment.user.photo
-                            }
-                          />
-                        )}
+                        <img
+                          width="40px"
+                          height="40px"
+                          src={
+                            comment.user.photo === ""
+                              ? "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png"
+                              : comment.user.photo
+                          }
+                        />
                       </div>
                       <div className="col">
-                        {comment.anony === true ? (
-                          "Anonymous"
-                        ) : (
-                          <Link to={`/user/${comment.user.sid}`}>
-                            {comment.user.displayName}
-                          </Link>
-                        )}
+                        <Link to={`/user/${comment.user._id}`}>
+                          {comment.user.displayName}
+                        </Link>
                         : {comment.content}
                         <br />
                         <div className="comment-time">
@@ -332,7 +336,7 @@ class Track extends Component {
                           onClick={this.onCommentLikeClicked}
                           value={comment._id}
                         >
-                          {comment.userLikes.length}&nbsp;
+                          {comment.likeCount}&nbsp;
                           {this.state.commentLikes.includes(comment._id) ? (
                             <i className="fas fa-thumbs-up" />
                           ) : (
@@ -353,4 +357,3 @@ class Track extends Component {
 }
 
 export default Track;
-
