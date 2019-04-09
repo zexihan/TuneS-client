@@ -11,6 +11,25 @@ class UserService {
     return this.myInstance;
   }
 
+  getUserCount = () => {
+    return fetch(this.API_URL + "usercount", {
+      credentials: "include"
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then(res => {
+        return res.json();
+      })
+      .catch(err => {
+        console.log(err);
+        alert("getUserCount error");
+      });
+  }
+
   createUser = user => {
     return fetch(this.API_URL + "register", {
       method: "POST",

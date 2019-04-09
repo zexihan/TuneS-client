@@ -4,13 +4,14 @@ import { Link, withRouter } from 'react-router-dom';
 import '../static/views/Landing.css';
 
 import AlbumCardList from '../components/Landing/AlbumCardList';
-// import ArtistCardList from '../components/Landing/ArtistCardList';
 import TopCharts from '../components/Landing/TopCharts';
 import CarouselShow from '../components/Landing/CarouselShow';
 import SearchService from '../services/SearchService';
 import UserService from '../services/UserService';
+import SubjectService from '../services/SubjectService';
 let searchService = SearchService.getInstance();
 let userService = UserService.getInstance();
+let subjectService = SubjectService.getInstance();
 
 class Landing extends Component {
   constructor(props) {
@@ -22,17 +23,37 @@ class Landing extends Component {
       tuneserCount: 0,
       playlist: {},
       displayName: null,
-      isLoggedIn: false
+      isLoggedIn: false,
+      topTracks: [],
+      topAlbums: [],
+      topArtists: [],
+      userCount: {},
+      loaded: 0
     };
   }
 
   componentDidMount() {
     const callback = (res) => {
-      this.setState({playlist: res, loaded: true});
+      this.setState({playlist: res, loaded: this.state.loaded + 1});
       console.log("playlistMount", this.state.playlist)
     };
     searchService.getSubject("playlist", "59ZbFPES4DQwEjBpWHzrtC", callback);
-
+    subjectService.findTopSubjects().then(res => {
+      console.log(res);
+      this.setState({
+        topAlbums: res.topAlbums,
+        topArtists: res.topArtists,
+        topTracks: res.topTracks,
+        loaded: this.state.loaded + 1
+      });
+    });
+    userService.getUserCount().then(res => {
+      console.log(res);
+      this.setState({
+        userCount: res,
+        loaded: this.state.loaded + 1
+      });
+    });
     userService.getCurrentUser().then(
       user => {
         console.log(user);
@@ -95,111 +116,167 @@ class Landing extends Component {
 
   render() {
     return (
-      this.state.loaded === true &&
-      <div className="container-fluid">
-        <div className="row d-flex justify-content-center py-4">
-          <div className="my-auto mx-3">
-            <h1 id="brand">TuneS</h1>
-          </div>
-          <div className="my-auto mx-3">
-            <div className="input-group" style={{width: "100%"}}>
-              <input type="text" id="search" className="form-control" placeholder="Search..." onChange={this.onSearchFieldChanged} onKeyPress={this.onSearchKeyPressed} />
-              <div className="input-group-append">
-                <Link to={{pathname: "/subject_search", search: "?query=" + this.state.searchText + "&type=" + this.state.searchType}}>
-                  <button className="btn btn-outline-secondary" type="button" onClick={this.search}>
-                    <i className="fas fa-search" />
-                  </button>
-                </Link>
+      this.state.loaded === 3 && (
+        <div className="container-fluid">
+          <div className="row d-flex justify-content-center py-4">
+            <div className="my-auto mx-3">
+              <h1 id="brand">TuneS</h1>
+            </div>
+            <div className="my-auto mx-3">
+              <div className="input-group" style={{ width: "100%" }}>
+                <input
+                  type="text"
+                  id="search"
+                  className="form-control"
+                  placeholder="Search..."
+                  onChange={this.onSearchFieldChanged}
+                  onKeyPress={this.onSearchKeyPressed}
+                />
+                <div className="input-group-append">
+                  <Link
+                    to={{
+                      pathname: "/subject_search",
+                      search:
+                        "?query=" +
+                        this.state.searchText +
+                        "&type=" +
+                        this.state.searchType
+                    }}
+                  >
+                    <button
+                      className="btn btn-outline-secondary"
+                      type="button"
+                      onClick={this.search}
+                    >
+                      <i className="fas fa-search" />
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <div className="my-auto mx-3">
+              <div className="form-check form-check-inline">
+                <input
+                  onChange={this.onSearchTypeChanged}
+                  className="form-check-input"
+                  type="radio"
+                  name="inlineRadioOptions"
+                  id="radio-track"
+                  value="track"
+                  checked={this.state.searchType === "track"}
+                />
+                <label className="form-check-label" htmlFor="radio-track">
+                  Track
+                </label>
+              </div>
+              <div className="form-check form-check-inline">
+                <input
+                  onChange={this.onSearchTypeChanged}
+                  className="form-check-input"
+                  type="radio"
+                  name="inlineRadioOptions"
+                  id="radio-artist"
+                  value="artist"
+                  checked={this.state.searchType === "artist"}
+                />
+                <label className="form-check-label" htmlFor="radio-artist">
+                  Artist
+                </label>
+              </div>
+              <div className="form-check form-check-inline">
+                <input
+                  onChange={this.onSearchTypeChanged}
+                  className="form-check-input"
+                  type="radio"
+                  name="inlineRadioOptions"
+                  id="radio-album"
+                  value="album"
+                  checked={this.state.searchType === "album"}
+                />
+                <label className="form-check-label" htmlFor="radio-album">
+                  Album
+                </label>
               </div>
             </div>
           </div>
-          <div className="my-auto mx-3">
-            <div className="form-check form-check-inline">
-              <input onChange={this.onSearchTypeChanged} className="form-check-input" type="radio" name="inlineRadioOptions"
-                     id="radio-track" value="track" checked={this.state.searchType === "track"} />
-              <label className="form-check-label" htmlFor="radio-track">Track</label>
-            </div>
-            <div className="form-check form-check-inline">
-              <input onChange={this.onSearchTypeChanged} className="form-check-input" type="radio" name="inlineRadioOptions"
-                     id="radio-artist" value="artist" checked={this.state.searchType === "artist"} />
-              <label className="form-check-label" htmlFor="radio-artist">Artist</label>
-            </div>
-            <div className="form-check form-check-inline">
-              <input onChange={this.onSearchTypeChanged} className="form-check-input" type="radio" name="inlineRadioOptions"
-                     id="radio-album" value="album" checked={this.state.searchType === "album"} />
-              <label className="form-check-label" htmlFor="radio-album">Album</label>
-            </div>
-          </div>
-        </div>
 
-        <hr className="search-hr"/>
+          <hr className="search-hr" />
 
-        {/*<div className="row navs py-1">*/}
+          {/*<div className="row navs py-1">*/}
           {/*<div className="col">*/}
-            {/*<ul className="nav justify-content-center">*/}
-              {/*<li className="nav-item">*/}
-                {/*<a className="nav-link" href="#">New Music</a>*/}
-              {/*</li>*/}
-              {/*<li className="nav-item">*/}
-                {/*<a className="nav-link" href="#">Playlists</a>*/}
-              {/*</li>*/}
-              {/*<li className="nav-item">*/}
-                {/*<a className="nav-link" href="#">Music Videos</a>*/}
-              {/*</li>*/}
-              {/*<li className="nav-item">*/}
-                {/*<a className="nav-link" href="#">Top Charts</a>*/}
-              {/*</li>*/}
-              {/*<li className="nav-item">*/}
-                {/*<a className="nav-link" href="#">Genres</a>*/}
-              {/*</li>*/}
-            {/*</ul>*/}
+          {/*<ul className="nav justify-content-center">*/}
+          {/*<li className="nav-item">*/}
+          {/*<a className="nav-link" href="#">New Music</a>*/}
+          {/*</li>*/}
+          {/*<li className="nav-item">*/}
+          {/*<a className="nav-link" href="#">Playlists</a>*/}
+          {/*</li>*/}
+          {/*<li className="nav-item">*/}
+          {/*<a className="nav-link" href="#">Music Videos</a>*/}
+          {/*</li>*/}
+          {/*<li className="nav-item">*/}
+          {/*<a className="nav-link" href="#">Top Charts</a>*/}
+          {/*</li>*/}
+          {/*<li className="nav-item">*/}
+          {/*<a className="nav-link" href="#">Genres</a>*/}
+          {/*</li>*/}
+          {/*</ul>*/}
           {/*</div>*/}
-        {/*</div>*/}
+          {/*</div>*/}
 
-        <div className="row landing-content my-3">
-          <div className="col-md-9 col-sm-12 left-area">
-
-            <div className="row adv-1 my-1">
-              <div className="col">
-                <div className="adv-1-content">
-                  <CarouselShow />
+          <div className="row landing-content my-3">
+            <div className="col-md-9 col-sm-12 left-area">
+              <div className="row adv-1 my-1">
+                <div className="col">
+                  <div className="adv-1-content">
+                    <CarouselShow />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="row adv-2 my-4">
-              <div className="col">
-                <h5>Trending Albums</h5>
-                <hr className="left-hr" />
-                <div className="adv-2-content">
-                  <AlbumCardList playlist={this.state.playlist} />
+              <div className="row adv-2 my-4">
+                <div className="col">
+                  <h5>Trending Albums</h5>
+                  <hr className="left-hr" />
+                  <div className="adv-2-content">
+                    <AlbumCardList playlist={this.state.playlist} />
+                  </div>
                 </div>
               </div>
-            </div>
-            {/*<div className="row adv-3 my-4">*/}
+              {/*<div className="row adv-3 my-4">*/}
               {/*<div className="col">*/}
-                {/*<h5>Artists</h5>*/}
-                {/*<hr className="left-hr" />*/}
-                {/*<div className="adv-3-content">*/}
-                  {/*<ArtistCardList playlist={this.state.playlist} />*/}
-                {/*</div>*/}
+              {/*<h5>Artists</h5>*/}
+              {/*<hr className="left-hr" />*/}
+              {/*<div className="adv-3-content">*/}
+              {/*<ArtistCardList playlist={this.state.playlist} />*/}
               {/*</div>*/}
-            {/*</div>*/}
-          </div>
-          <div className="col-3 right-area d-none d-md-block">
-            <div className="row side-1">
-              <div className="col">
-                <table className="table table-borderless text-center">
-                  <tbody>
-                  <tr>
-                    <td>{this.state.artistCount}<br/>Artists</td>
-                    <td>{this.state.tuneserCount}<br/>TuneSers</td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
+              {/*</div>*/}
+              {/*</div>*/}
             </div>
+            <div className="col-3 right-area d-none d-md-block">
+              <div className="row side-1">
+                <div className="col">
+                  <table className="table table-borderless text-center">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div className="user-count">
+                            {this.state.userCount.u1}
+                          </div>
+                          <div className="user-count-title">TuneSers</div>
+                        </td>
+                        <td>
+                          <div className="user-count">
+                            {this.state.userCount.u2}
+                          </div>
+                          <div className="user-count-title">Artists</div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
 
-            <div className="row side-2 my-3">
+              {/* <div className="row side-2 my-3">
               <div className="col">
                 <h6>Hot Genres</h6>
                 <hr />
@@ -224,17 +301,22 @@ class Landing extends Component {
                   </tbody>
                 </table>
               </div>
-            </div>
-            <div className="row side-3">
-              <div className="col">
-                <h6>Top Charts</h6>
-                <hr />
-                <TopCharts />
+            </div> */}
+              <div className="row side-3">
+                <div className="col">
+                  <h6>Top Charts</h6>
+                  <hr />
+                  <TopCharts
+                    topTracks={this.state.topTracks}
+                    topAlbums={this.state.topAlbums}
+                    topArtists={this.state.topArtists}
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )
     );
   }
 }

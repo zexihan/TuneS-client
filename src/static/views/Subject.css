@@ -51,10 +51,10 @@
 }
 
 a {
-    color: #FAD689;
+    color: rgb(255, 205, 97);
 }
 a:hover {
-    color: #FAD689;
+    color: rgb(255, 205, 97);
 }
 
 .background-image {

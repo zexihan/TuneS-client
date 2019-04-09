@@ -19,7 +19,7 @@ class SearchService {
 
   getSubject = (type, id, callback) => {
     console.log(this.API_URL + "/" + type + "/" + id)
-    fetch(this.API_URL + "/" + type + "/" + id, {credentials: 'include'})
+    fetch(this.API_URL + "/subject/" + type + "/" + id, {credentials: 'include'})
       .then(function(res){
         if (!res.ok) {
           throw Error(res.statusText)

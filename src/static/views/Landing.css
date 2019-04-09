@@ -116,3 +116,13 @@ h5, h6 {
 #sign-up {
     color: rgb(120, 207, 101)
 }
+
+.user-count {
+    color: rgb(20, 146, 103);
+    font-size: 18px;
+}
+
+.user-count-title {
+    color: rgb(20, 146, 103);
+    font-size: 16px;
+}

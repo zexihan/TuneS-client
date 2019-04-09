@@ -12,7 +12,28 @@ class SubjectService {
     return this.myInstance;
   }
 
-  
+  findTopSubjects = () => {
+    return fetch(
+      this.API_URL + "/subject/top",
+      {
+        credentials: "include"
+      }
+    )
+      .then(res => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then(res => {
+        return res.json();
+      })
+      .catch(err => {
+        console.log(err);
+        alert("findTopSubjects error");
+      });
+  }
+
   findCommentsBySubjectId = (type, id) => {
     return fetch(this.API_URL + "/subject/" + type + "/" + id + "/comments", {
       credentials: "include"
@@ -50,12 +71,16 @@ class SubjectService {
         console.log(err);
         alert("findCommentsByUserId error");
       });
-  }
+  };
 
-  
   addComment = (subject, commentContent) => {
     return fetch(
-      this.API_URL + "/subject/" + subject.type + "/" + subject._id + "/comment",
+      this.API_URL +
+        "/subject/" +
+        subject.type +
+        "/" +
+        subject._id +
+        "/comment",
       {
         method: "POST",
         body: JSON.stringify({ subject, commentContent }),
@@ -79,13 +104,10 @@ class SubjectService {
   };
 
   deleteComment = id => {
-    return fetch(
-      this.API_URL + "/current/comment/" + id,
-      {
-        method: "DELETE",
-        credentials: "include"
-      }
-    )
+    return fetch(this.API_URL + "/current/comment/" + id, {
+      method: "DELETE",
+      credentials: "include"
+    })
       .then(res => {
         if (!res.ok) {
           throw Error(res.statusText);
@@ -99,7 +121,7 @@ class SubjectService {
         console.log(err);
         alert("deleteComment error");
       });
-  }
+  };
 
   findSubjectIsLiked = (type, id) => {
     return fetch(this.API_URL + "/current/" + type + "/" + id + "/isliked", {
@@ -128,9 +150,9 @@ class SubjectService {
         credentials: "include"
       }
     ).catch(err => {
-        console.log(err);
-        alert("likeSubject error");
-      });
+      console.log(err);
+      alert("likeSubject error");
+    });
   };
 
   likeComment = id => {
@@ -139,9 +161,9 @@ class SubjectService {
       method: "POST",
       credentials: "include"
     }).catch(err => {
-        console.log(err);
-        alert("likeComment error");
-      });
+      console.log(err);
+      alert("likeComment error");
+    });
   };
 
   findCommentLikesByCurrentUser = () => {
