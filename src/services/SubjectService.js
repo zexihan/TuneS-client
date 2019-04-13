@@ -119,7 +119,7 @@ class SubjectService {
       })
       .catch(err => {
         console.log(err);
-        alert("deleteComment error");
+        alert("deleteComment may noy be successful");
       });
   };
 

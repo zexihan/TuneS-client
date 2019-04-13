@@ -61,7 +61,7 @@ class User extends Component {
       subjectService
         .findCommentsByUserId(this.props.match.params.id)
         .then(comments => {
-          console.log(comments);
+          // console.log(comments);
           this.setState({
             comments,
             loaded: this.state.loaded + 1

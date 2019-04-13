@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import "../../static/components/CommentList.css";
 
 const CommentList = ({ comments, deleteComment, isMyself }) => {
+  console.log('me', comments)
   return (
     <div className="col">
       {comments.map(comment => (

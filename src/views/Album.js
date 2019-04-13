@@ -136,30 +136,33 @@ class Album extends Component {
 
   onCommentLikeClicked = e => {
     const commentId = e.currentTarget.getAttribute("value");
-    console.log(commentId);
-    subjectService.likeComment(commentId);
-    if (this.state.commentLikes.includes(commentId)) {
-      this.setState({
-        commentLikes: this.state.commentLikes.filter(id => id !== commentId)
-      });
-      for (var i = 0; i < this.state.comments.length; i++) {
-        if (commentId === this.state.comments[i]._id) {
-          this.state.comments[i].likeCount--;
-        }
-      }
-    } else {
-      this.setState({
-        commentLikes: this.state.commentLikes.concat(commentId)
-      });
-      for (var i = 0; i < this.state.comments.length; i++) {
-        if (commentId === this.state.comments[i]._id) {
-          this.state.comments[i].likeCount++;
-        }
-      }
-    }
+    // console.log(commentId);
+    subjectService.likeComment(commentId).then( ()=>{
+
+  subjectService.findCommentLikesByCurrentUser().then(res => {
+    // console.log(res);
+    this.setState({
+      commentLikes: res,
+    });
+  });
+
+  subjectService
+        .findCommentsBySubjectId("album", this.props.match.params.id)
+        .then(comments => {
+          // console.log("get", comments);
+          this.setState({
+            comments: comments,
+          });
+        });
+
+
+})
+  
   };
 
   render() {
+    console.log('likes', this.state.commentLikes.map(x=>x._id))
+    console.log('comments', this.state.comments[0])
     return (
       ((this.state.isLoggedIn === true && this.state.loaded === 4) ||
         (this.state.isLoggedIn === false &&
@@ -344,7 +347,7 @@ class Album extends Component {
                           value={comment._id}
                         >
                           {comment.likeCount}&nbsp;
-                          {this.state.commentLikes.includes(comment._id) ? (
+                          {this.state.commentLikes.map(x=>x._id).includes(comment._id) ? (
                             <i className="fas fa-thumbs-up" />
                           ) : (
                             <i className="far fa-thumbs-up" />
