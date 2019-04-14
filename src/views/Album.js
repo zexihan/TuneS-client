@@ -1,3 +1,4 @@
+//do not use form, it causes react to refresh
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
@@ -6,9 +7,12 @@ import "../static/views/Subject.css";
 import UserService from "../services/UserService";
 import SearchService from "../services/SearchService";
 import SubjectService from "../services/SubjectService";
+import Yangframe from "./frame";
+
 let userService = UserService.getInstance();
 let searchService = SearchService.getInstance();
 let subjectService = SubjectService.getInstance();
+
 
 class Album extends Component {
   constructor(props) {
@@ -22,12 +26,21 @@ class Album extends Component {
       comments: [],
       comment: "",
       isLiked: false,
-      commentLikes: []
+      commentLikes: [],
+      showTracks: false,
+      showIntro: true,
+      intro:"",
+      type:1,
+      editing: false
     };
   }
 
   componentDidMount() {
+    subjectService.getSubjectById(this.props.match.params.id).then(res=>{this.setState({intro: res.intro})})
+    .catch((err)=>alert("cannot find intro"))
+      
     const callback = res => {
+      
       subjectService
         .findCommentsBySubjectId("album", this.props.match.params.id)
         .then(comments => {
@@ -48,7 +61,8 @@ class Album extends Component {
           displayName: user.displayName,
           photo: user.photo,
           isLoggedIn: true,
-          loaded: this.state.loaded + 1
+          loaded: this.state.loaded + 1,
+          type: user.type
         });
         subjectService
           .findSubjectIsLiked("album", this.props.match.params.id)
@@ -70,7 +84,7 @@ class Album extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) { //may not be neccessary in our case
     const callback = res => {
       subjectService
         .findCommentsBySubjectId("album", this.props.match.params.id)
@@ -160,9 +174,15 @@ class Album extends Component {
   
   };
 
+  changeIntro=()=>{
+    subjectService.updateSubjectIntroById(this.props.match.params.id, {intro: this.state.intro, type: "album"}).then((res)=>this.setState({editing: !this.state.editing}))
+      .catch((err)=>alert('edit error/ you may not be an editor'))
+    // subjectService.updateIntro
+  }
   render() {
-    console.log('likes', this.state.commentLikes.map(x=>x._id))
-    console.log('comments', this.state.comments[0])
+    // console.log('likes', this.state.commentLikes.map(x=>x._id))
+    // console.log('rendered asd', this.state.isLoggedIn)
+    console.log('rendered asd', this.state.intro)
     return (
       ((this.state.isLoggedIn === true && this.state.loaded === 4) ||
         (this.state.isLoggedIn === false &&
@@ -179,7 +199,7 @@ class Album extends Component {
           />
           <div className="content subject-content mt-md-5 mt-sm-3">
             <div className="row">
-              <div className="col-6">
+              <div className="col-md-6">
                 <h1 className="title">{this.state.album.name}</h1>
                 <div>
                   Artist:{" "}
@@ -190,8 +210,10 @@ class Album extends Component {
                 <div>Released: {this.state.album.release_date}</div>
                 <div>Total tracks: {this.state.album.total_tracks}</div>
                 <div>Popularity: {this.state.album.popularity}/100</div>
+
+                {/* like-show tracks-show intro buttons here */}
                 {this.state.displayName !== null ? (
-                  <div className="my-2">
+                  <span style={{margin:"3px"}} className="my-2">
                     <button
                       className="btn btn-light"
                       onClick={this.onLikeClicked}
@@ -206,60 +228,96 @@ class Album extends Component {
                         </span>
                       )}
                     </button>
-                  </div>
+                  </span>
                 ) : (
-                  <div>
-                    <a href="#" data-toggle="modal" data-target="#login">
-                      Log in to like
+                  <span>
+                    <a href="#" style={{margin:"3px"}} data-toggle="modal" data-target="#login">
+                      Log in to like and save
                     </a>
-                  </div>
+                  </span>
                 )}
+
+                {this.state.showTracks
+                  ?<h4 className='btn btn-light' style={{cursor: "pointer", margin:"3px"}}
+                
+                  onClick={() => this.setState({ showTracks: !this.state.showTracks })}>hide tracks</h4>
+                  :<h4 className='btn btn-light' style={{cursor: "pointer",margin:"3px"}}
+                
+                  onClick={() => this.setState({ showTracks: !this.state.showTracks })}>more tracks</h4>}
+
+                  {this.state.showIntro
+                  ?<h4 className='btn btn-light' style={{cursor: "pointer", margin:"3px"}}
+                
+                  onClick={() => this.setState({ showIntro: !this.state.showIntro })}>hide Intro</h4>
+                  :<h4 className='btn btn-light' style={{cursor: "pointer",margin:"3px"}}
+                
+                  onClick={() => this.setState({ showIntro: !this.state.showIntro })}>see/edit Intro</h4>} 
+              
+              {this.state.showIntro? //show/hide intro info
+              <div>
+              <p>{!this.state.intro?"No intro yet, you can edit one!":this.state.intro}</p>
+              {/* editor view */}
+              {this.state.type !==2    //is this user logged in as a type 2?(editor)
+              ?   
+                ( this.state.isLoggedIn ===true ?<a href={`/profile`} target="_blank">Switch to editor then refresh this page to edit </a> //is logged in another user type
+                :  <a href="#" style={{margin:"3px"}} data-toggle="modal" data-target="#login">Login and be an editor to edit </a>
+                )
+              :
+                (this.state.editing===true
+                  ?<div>
+                      <textarea placeholder="Add an Intro..." onChange={
+                        (event)=>this.setState({intro: event.target.value})
+                      }
+                            rows="2" value={this.state.intro} className="form-control"/>
+                      <button style={{margin: "2px"}} onClick={this.changeIntro} className="btn btn-light"> update</button>
+                      <button style={{margin: "2px"}} onClick={()=>this.setState({editing: !this.state.editing})} 
+                      className="btn btn-light"> cancel</button>
+                  </div>
+                  :
+                  <div>
+                      <button onClick={()=>this.setState({editing: !this.state.editing})} style={{margin:"1px"}}
+                        
+                        className="btn btn-light"
+                        >edit</button>
+                  </div>)
+              }
               </div>
-              <div className="col-6 d-none d-md-block">
-                <div className="float-right embed-container">
-                  <iframe
-                    src={
-                      "https://embed.spotify.com/?uri=spotify:album:" +
-                      this.state.album.id
-                    }
-                    width="350px"
-                    height="350px"
-                    frameBorder="0"
-                    allowtransparency="true"
-                    allow="encrypted-media"
-                  />
-                </div>
+              :null
+            }
+                  
+              </div>
+
+              {/* iframe to listen */}
+              <div className="col-md-6">
+                Can listen if in spotify session ( try refresh )
+                { this.state.showTracks
+                  ?
+                  <Yangframe size={"show"} src={"https://embed.spotify.com/?uri=spotify:album:" +
+                  this.state.album.id}/>
+                  : 
+                <Yangframe size={"hide"} src={"https://embed.spotify.com/?uri=spotify:album:" +
+                this.state.album.id}/>
+                }
               </div>
             </div>
+            
 
-            <div className="row my-3 d-md-none">
-              <div className="col-12">
-                <div className="text-center embed-container">
-                  <iframe
-                    src={
-                      "https://embed.spotify.com/?uri=spotify:album:" +
-                      this.state.album.id
-                    }
-                    width="350px"
-                    height="350px"
-                    frameBorder="0"
-                    allowtransparency="true"
-                    allow="encrypted-media"
-                  />
-                </div>
-              </div>
-            </div>
-
+            {/* hide/ show track links and even lyrics*/}
             <div className="row comments my-5">
               <div className="col">
-                <h4>Tracks</h4>
-                {this.state.album.tracks.items.map(track => (
-                  <div key={track.id}>
-                    &middot; <Link to={`/track/${track.id}`}>{track.name}</Link>
-                  </div>
-                ))}
+                
+
+                {this.state.showTracks
+                    ? this.state.album.tracks.items.map(track => (
+                  <span key={track.id}>
+                    <Link style={{whiteSpace:"nowrap"}} to={`/track/${track.id}`}>&middot;{track.name}</Link> &nbsp;&nbsp;&nbsp;
+                  </span>
+                ))
+                    : null}
               </div>
             </div>
+
+
 
             <div className="row comments my-5">
               <div className="col">
@@ -303,7 +361,7 @@ class Album extends Component {
                 ) : (
                   <div>
                     <a href="#" data-toggle="modal" data-target="#login">
-                      Log in to add a comment
+                      Log in with spotify to add a comment
                     </a>
                     <hr className="comment-hr" />
                   </div>

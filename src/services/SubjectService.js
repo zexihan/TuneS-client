@@ -11,6 +11,46 @@ class SubjectService {
     }
     return this.myInstance;
   }
+  updateSubjectIntroById =(subjectId, intro)=>{
+    return fetch(
+      this.API_URL +'/subject/'+subjectId, //album with add intro field
+      {
+        method: "PUT",
+        body: JSON.stringify(intro),
+        headers: new Headers({ "Content-type": "application/json" }),
+        credentials: "include"
+      }
+    )
+      .then(res => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then(res => {
+        return res.json();
+      })
+  }
+
+  getSubjectById =(subjectId)=>{
+    return fetch(
+      this.API_URL +'/subject/'+subjectId, //album with add intro field
+      {
+        method: "GET",
+        headers: new Headers({ "Content-type": "application/json" }),
+        credentials: "include"
+      }
+    )
+      .then(res => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then(res => {
+        return res.json();
+      })
+  }
 
   findTopSubjects = () => {
     return fetch(

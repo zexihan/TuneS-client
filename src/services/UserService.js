@@ -127,12 +127,17 @@ class UserService {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
       credentials: "include"
+    }).then(res => {
+      if (!res.ok) {
+        throw Error(res.statusText);
+      }
+      return res;
     })
       .then(res => res.json())
-      .catch(err => {
-        console.log(err);
-        alert("updateUser error");
-      });
+      // .catch(err => {
+      //   // console.log(err);
+      //   alert("updateUser error");
+      // });
   };
 }
 

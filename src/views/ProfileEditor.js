@@ -68,7 +68,7 @@ class ProfileEditor extends Component {
           showUpdateInfo: true
         });
       }
-    });
+    }).catch(()=>alert("updateUser error/ user may have logged out"))//error handler);
     this.props.history.replace("/profile");
   };
 
@@ -85,7 +85,7 @@ class ProfileEditor extends Component {
       <div className="container">
         <div className="content">
           <h1 className="my-2">Edit Profile</h1>
-          <form className="mt-4">
+          <div className="mt-4">
             <div className="form-group row">
               {this.state.showUpdateInfo && (
                 <label
@@ -527,7 +527,7 @@ class ProfileEditor extends Component {
                 </Link>
               </div>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     );
