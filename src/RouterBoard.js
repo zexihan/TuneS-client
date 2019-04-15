@@ -7,6 +7,8 @@ import Landing from './views/Landing';
 import Searching from './views/Searching';
 import User from './views/User';
 import Track from './views/Track';
+import Joinus from './views/Joinus';
+
 import Artist from './views/Artist';
 import Album from './views/Album';
 import ProfileEditor from "./views/ProfileEditor";
@@ -43,6 +45,11 @@ class RouterBoard extends Component {
         <Router>
           <div>
             <NavBar logout={this.logout} />
+            <Route
+              path="/joinus"
+              exact
+              render={props => <Joinus {...props} search={this.search} />}
+            />
             <Route
               path="/"
               exact

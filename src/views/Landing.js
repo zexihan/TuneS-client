@@ -268,7 +268,7 @@ class Landing extends Component {
                           <div className="user-count">
                             {this.state.userCount.u2}
                           </div>
-                          <div className="user-count-title">Artists</div>
+                          <div className="user-count-title">Editors</div>
                         </td>
                       </tr>
                     </tbody>

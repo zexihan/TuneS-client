@@ -68,7 +68,7 @@ class ProfileEditor extends Component {
           showUpdateInfo: true
         });
       }
-    }).catch(()=>alert("updateUser error/ user may have logged out"))//error handler);
+    }).catch(()=>alert("updateUser error/ you may save and like more music to be an editor or user may have logged out"))//error handler);
     this.props.history.replace("/profile");
   };
 
@@ -489,7 +489,7 @@ class ProfileEditor extends Component {
             </div>
             <div className="form-group row">
               <label htmlFor="type" className="col-sm-2 col-form-label">
-                Type
+                Be Editor
               </label>
               <div className="col-sm-10">
                 <select
@@ -500,7 +500,7 @@ class ProfileEditor extends Component {
                   onChange={this.onChange}
                 >
                   <option value="1">Member</option>
-                  <option value="2">Artist</option>
+                  <option value="2">Editor</option>
                 </select>
               </div>
             </div>

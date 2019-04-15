@@ -60,7 +60,7 @@ class NavBar extends Component {
               <Link className="nav-link" to={`/`}>Home<span className="sr-only">(current)</span></Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">About</a>
+            <Link className="nav-link" to={`/joinus`}>About/ Join us</Link>
             </li>
           </ul>
           {/*{this.state.displayName === null ? null : (*/}
