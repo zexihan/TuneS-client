@@ -237,7 +237,8 @@ class SubjectService {
       })
       .catch(err => {
         console.log(err);
-        alert("findSubjectLikesByUserId error");
+        alert("findSubjectLikesByUserId error/ you may need to login to like comments, will refresh");
+        window.location.reload();
       });
   };
 
@@ -252,7 +253,8 @@ class SubjectService {
       })
       .catch(err => {
         console.log(err);
-        alert("findCommentLikesByUserId error");
+        alert("findCommentLikesByUserId error/ you may need to login to like comments, will refresh");
+        window.location.reload();
       });
   };
 }
