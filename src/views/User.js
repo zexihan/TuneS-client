@@ -101,8 +101,27 @@ class User extends Component {
   }
 
   deleteComment = commentId => {
-    console.log(commentId);
-    subjectService.deleteComment(commentId);
+    subjectService.deleteComment(commentId).then(()=>{
+
+      subjectService.findCommentsByUserId(this.props.match.params.id).then(comments => {
+        this.setState({ comments });})
+
+        subjectService
+        .findCommentLikesByUserId(this.props.match.params.id) //commentLikes has a different nested json structure
+        .then(commentLikes => {
+          var comments = [];
+          for (var i = 0; i < commentLikes.length; i++) {
+            comments.push(commentLikes[i].comment);
+          }
+          console.log(comments);
+          this.setState({
+            commentLikes: comments
+          });
+        });
+    }
+    
+    )
+    
   };
 
   render() {

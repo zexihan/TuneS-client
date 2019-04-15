@@ -4,7 +4,15 @@ import { Link } from "react-router-dom";
 import "../../static/components/CommentList.css";
 
 const CommentList = ({ comments, deleteComment, isMyself }) => {
-  console.log('me', comments)
+  if(!deleteComment){
+  for (let i in comments){
+    console.log('like')
+    console.log('likes',comments[i])}}
+  else{
+    for (let i in comments){
+      console.log('nonlike')
+      console.log('nonlikes',comments[i].subject)}
+  }
   return (
     <div className="col">
       {comments.map(comment => (
@@ -23,7 +31,7 @@ const CommentList = ({ comments, deleteComment, isMyself }) => {
               {deleteComment && isMyself && (
                 <a
                   href=""
-                  onClick={() => deleteComment(comment._id)}
+                  onClick={(event) => {event.preventDefault();deleteComment(comment._id)}}
                 >
                   <u id="dotted">delete</u>
                 </a>
