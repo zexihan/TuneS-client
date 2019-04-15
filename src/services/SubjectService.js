@@ -202,7 +202,8 @@ class SubjectService {
       credentials: "include"
     }).catch(err => {
       console.log(err);
-      alert("likeComment error");
+      alert("likeComment error/ you may need to log in to comment, will refresh");
+      window.location.reload();
     });
   };
 
@@ -222,7 +223,8 @@ class SubjectService {
       })
       .catch(err => {
         console.log(err);
-        alert("findCommentLikesByCurrentUser error");
+        alert("findCommentLikesByCurrentUser error/ you may need to log in to comment, will refresh");
+        window.location.reload();
       });
   };
 
@@ -237,8 +239,8 @@ class SubjectService {
       })
       .catch(err => {
         console.log(err);
-        alert("findSubjectLikesByUserId error/ you may need to login to like comments, will refresh");
-        window.location.reload();
+        alert("findSubjectLikesByUserId error");
+        // window.location.reload();
       });
   };
 
@@ -253,8 +255,8 @@ class SubjectService {
       })
       .catch(err => {
         console.log(err);
-        alert("findCommentLikesByUserId error/ you may need to login to like comments, will refresh");
-        window.location.reload();
+        alert("findCommentLikesByUserId error");
+        // window.location.reload();
       });
   };
 }

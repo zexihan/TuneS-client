@@ -36,14 +36,14 @@ class NavBar extends Component {
   }
 
   onLogoutClicked = () => {
-    userService.logout();
-    this.props.logout();
-    this.setState({
-      displayName: null,
-      isLoggedIn: false
-    });
-    $(".loggedin-nav").hide();
-    $(".loggedout-nav").show();
+    userService.logout().then(()=>window.location.reload()); //if we cannot maintain all states after log out, consider window.load.refresh
+    // this.props.logout();
+    // this.setState({
+    //   displayName: null,
+    //   isLoggedIn: false
+    // });
+    // $(".loggedin-nav").hide();
+    // $(".loggedout-nav").show();
   }
 
   render() {
