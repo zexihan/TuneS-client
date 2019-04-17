@@ -6,7 +6,7 @@ import ItemList from "../components/User/ItemList";
 
 import "../static/views/User.css";
 
-import UserService from '../services/UserService';
+import UserService from "../services/UserService";
 import SubjectService from "../services/SubjectService";
 let userService = UserService.getInstance();
 let subjectService = SubjectService.getInstance();
@@ -101,12 +101,14 @@ class User extends Component {
   }
 
   deleteComment = commentId => {
-    subjectService.deleteComment(commentId).then(()=>{
+    subjectService.deleteComment(commentId).then(() => {
+      subjectService
+        .findCommentsByUserId(this.props.match.params.id)
+        .then(comments => {
+          this.setState({ comments });
+        });
 
-      subjectService.findCommentsByUserId(this.props.match.params.id).then(comments => {
-        this.setState({ comments });})
-
-        subjectService
+      subjectService
         .findCommentLikesByUserId(this.props.match.params.id) //commentLikes has a different nested json structure
         .then(commentLikes => {
           var comments = [];
@@ -118,10 +120,7 @@ class User extends Component {
             commentLikes: comments
           });
         });
-    }
-    
-    )
-    
+    });
   };
 
   render() {
@@ -133,6 +132,7 @@ class User extends Component {
               <div className="row">
                 <div className="col-auto profile-image">
                   <img
+                    alt="img"
                     className="img-fluid"
                     src={
                       this.state.photo === ""
@@ -148,8 +148,7 @@ class User extends Component {
                         {this.state.displayName}
                       </h2>
                       <div className="bio my-1">
-                        <i className="fas fa-compact-disc" />{" "}
-                        {this.state.bio}
+                        <i className="fas fa-compact-disc" /> {this.state.bio}
                       </div>
                       <div className="location my-1">
                         <i className="fas fa-map-marker-alt" />{" "}

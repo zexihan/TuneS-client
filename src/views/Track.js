@@ -22,11 +22,21 @@ class Track extends Component {
       comments: [],
       comment: "",
       isLiked: false,
-      commentLikes: []
+      commentLikes: [],
+      showLyric: false,
+      lyric: "",
+      type: 1,
+      editing: false
     };
   }
 
   componentDidMount() {
+    subjectService
+      .getSubjectById(this.props.match.params.id)
+      .then(res => {
+        this.setState({ lyric: res.lyric });
+      })
+      .catch(err => alert("cannot find lyric"));
     const callback = res => {
       subjectService
         .findCommentsBySubjectId("track", this.props.match.params.id)
@@ -48,7 +58,8 @@ class Track extends Component {
           displayName: user.displayName,
           photo: user.photo,
           isLoggedIn: true,
-          loaded: this.state.loaded + 1
+          loaded: this.state.loaded + 1,
+          type: user.type
         });
         subjectService
           .findSubjectIsLiked("track", this.props.match.params.id)
@@ -137,27 +148,34 @@ class Track extends Component {
   onCommentLikeClicked = e => {
     const commentId = e.currentTarget.getAttribute("value");
     // console.log(commentId);
-    subjectService.likeComment(commentId).then( ()=>{
+    subjectService.likeComment(commentId).then(() => {
+      subjectService.findCommentLikesByCurrentUser().then(res => {
+        // console.log(res);
+        this.setState({
+          commentLikes: res
+        });
+      });
 
-  subjectService.findCommentLikesByCurrentUser().then(res => {
-    // console.log(res);
-    this.setState({
-      commentLikes: res,
-    });
-  });
-
-  subjectService
+      subjectService
         .findCommentsBySubjectId("album", this.props.match.params.id)
         .then(comments => {
           // console.log("get", comments);
           this.setState({
-            comments: comments,
+            comments: comments
           });
         });
+    });
+  };
 
-
-})
-  
+  changeLyric = () => {
+    subjectService
+      .updateSubjectLyricById(this.props.match.params.id, {
+        lyric: this.state.lyric,
+        type: "track"
+      })
+      .then(res => this.setState({ editing: !this.state.editing }))
+      .catch(err => alert("edit error/ you may not be an editor"));
+    // subjectService.updateLyric
   };
 
   render() {
@@ -211,13 +229,109 @@ class Track extends Component {
                     </button>
                   </div>
                 ) : (
-                  <div>
-                    <a href="#" data-toggle="modal" data-target="#login">
+                  <span>
+                    <a
+                      href="#"
+                      style={{ margin: "3px" }}
+                      data-toggle="modal"
+                      data-target="#login"
+                    >
                       Log in to like
                     </a>
-                  </div>
+                  </span>
                 )}
+                {this.state.showLyric ? (
+                  <h4
+                    className="btn btn-light"
+                    style={{ cursor: "pointer", margin: "3px" }}
+                    onClick={() =>
+                      this.setState({ showLyric: !this.state.showLyric })
+                    }
+                  >
+                    hide Lyric
+                  </h4>
+                ) : (
+                  <h4
+                    className="btn btn-light"
+                    style={{ cursor: "pointer", margin: "3px" }}
+                    onClick={() =>
+                      this.setState({ showLyric: !this.state.showLyric })
+                    }
+                  >
+                    see/edit Lyric
+                  </h4>
+                )}
+
+                {this.state.showLyric ? ( //show/hide intro info
+                  <div>
+                    <p>
+                      {!this.state.lyric
+                        ? "No lyric yet, you can edit one!"
+                        : this.state.lyric}
+                    </p>
+                    {/* editor view */}
+                    {this.state.type !== 2 ? ( //is this user logged in as a type 2?(editor)
+                      this.state.isLoggedIn === true ? (
+                        <a href={`/profile`} target="_blank">
+                          Switch to editor then refresh this page to edit{" "}
+                        </a> //is logged in another user type
+                      ) : (
+                        <a
+                          href="#"
+                          style={{ margin: "3px" }}
+                          data-toggle="modal"
+                          data-target="#login"
+                        >
+                          Login and be an editor to edit{" "}
+                        </a>
+                      )
+                    ) : this.state.editing === true ? (
+                      <div>
+                        <textarea
+                          placeholder="Add an Lyric..."
+                          onChange={event =>
+                            this.setState({ lyric: event.target.value })
+                          }
+                          rows="2"
+                          value={this.state.lyric}
+                          className="form-control"
+                        />
+                        <button
+                          style={{ margin: "2px" }}
+                          onClick={this.changeLyric}
+                          className="btn btn-light"
+                        >
+                          {" "}
+                          update
+                        </button>
+                        <button
+                          style={{ margin: "2px" }}
+                          onClick={() =>
+                            this.setState({ editing: !this.state.editing })
+                          }
+                          className="btn btn-light"
+                        >
+                          {" "}
+                          cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <div>
+                        <button
+                          onClick={() =>
+                            this.setState({ editing: !this.state.editing })
+                          }
+                          style={{ margin: "1px" }}
+                          className="btn btn-light"
+                        >
+                          edit
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ) : null}
               </div>
+
               <div className="col-6 d-none d-md-block">
                 <div className="float-right embed-container">
                   <iframe
@@ -236,7 +350,7 @@ class Track extends Component {
             </div>
 
             <div className="row my-3 d-md-none">
-              <div className="col-12">
+              {/* <div className="col-12">
                 <div className="text-center embed-container">
                   <iframe
                     src={
@@ -250,7 +364,14 @@ class Track extends Component {
                     allow="encrypted-media"
                   />
                 </div>
-              </div>
+              </div> */}
+              {this.state.showLyric ? (
+                <p class="text-center" style={{ color: "white" }}>
+                  {this.state.lyric}
+                </p>
+              ) : (
+                ""
+              )}
             </div>
 
             <div className="row comments my-md-5 my-sm-3">
@@ -338,7 +459,9 @@ class Track extends Component {
                           value={comment._id}
                         >
                           {comment.likeCount}&nbsp;
-                          {this.state.commentLikes.map(x=>x._id).includes(comment._id) ? (
+                          {this.state.commentLikes
+                            .map(x => x._id)
+                            .includes(comment._id) ? (
                             <i className="fas fa-thumbs-up" />
                           ) : (
                             <i className="far fa-thumbs-up" />

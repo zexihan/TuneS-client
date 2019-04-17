@@ -1,4 +1,4 @@
-import port from '../port.js';
+import port from "../port.js";
 
 class SubjectService {
   API_URL = port + "/api";
@@ -11,9 +11,9 @@ class SubjectService {
     }
     return this.myInstance;
   }
-  updateSubjectIntroById =(subjectId, intro)=>{
+  updateSubjectIntroById = (subjectId, intro) => {
     return fetch(
-      this.API_URL +'/subject/'+subjectId, //album with add intro field
+      this.API_URL + "/subject/" + subjectId, // album with add intro field
       {
         method: "PUT",
         body: JSON.stringify(intro),
@@ -29,12 +29,33 @@ class SubjectService {
       })
       .then(res => {
         return res.json();
-      })
-  }
+      });
+  };
 
-  getSubjectById =(subjectId)=>{
+  updateSubjectLyricById = (subjectId, lyric) => {
     return fetch(
-      this.API_URL +'/subject/'+subjectId, //album with add intro field
+      this.API_URL + "/subject/" + subjectId, // track with add lyric field
+      {
+        method: "PUT",
+        body: JSON.stringify(lyric),
+        headers: new Headers({ "Content-type": "application/json" }),
+        credentials: "include"
+      }
+    )
+      .then(res => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then(res => {
+        return res.json();
+      });
+  };
+
+  getSubjectById = subjectId => {
+    return fetch(
+      this.API_URL + "/subject/" + subjectId, //album with add intro field
       {
         method: "GET",
         headers: new Headers({ "Content-type": "application/json" }),
@@ -49,16 +70,13 @@ class SubjectService {
       })
       .then(res => {
         return res.json();
-      })
-  }
+      });
+  };
 
   findTopSubjects = () => {
-    return fetch(
-      this.API_URL + "/subject/top",
-      {
-        credentials: "include"
-      }
-    )
+    return fetch(this.API_URL + "/subject/top", {
+      credentials: "include"
+    })
       .then(res => {
         if (!res.ok) {
           throw Error(res.statusText);
@@ -72,7 +90,7 @@ class SubjectService {
         console.log(err);
         alert("findTopSubjects error");
       });
-  }
+  };
 
   findCommentsBySubjectId = (type, id) => {
     return fetch(this.API_URL + "/subject/" + type + "/" + id + "/comments", {
@@ -202,7 +220,9 @@ class SubjectService {
       credentials: "include"
     }).catch(err => {
       console.log(err);
-      alert("likeComment error/ you may need to log in to comment, will refresh");
+      alert(
+        "likeComment error/ you may need to log in to comment, will refresh"
+      );
       window.location.reload();
     });
   };
@@ -223,7 +243,9 @@ class SubjectService {
       })
       .catch(err => {
         console.log(err);
-        alert("findCommentLikesByCurrentUser error/ you may need to log in to comment, will refresh");
+        alert(
+          "findCommentLikesByCurrentUser error/ you may need to log in to comment, will refresh"
+        );
         window.location.reload();
       });
   };

@@ -13,7 +13,6 @@ let userService = UserService.getInstance();
 let searchService = SearchService.getInstance();
 let subjectService = SubjectService.getInstance();
 
-
 class Album extends Component {
   constructor(props) {
     super(props);
@@ -29,18 +28,21 @@ class Album extends Component {
       commentLikes: [],
       showTracks: false,
       showIntro: true,
-      intro:"",
-      type:1,
+      intro: "",
+      type: 1,
       editing: false
     };
   }
 
   componentDidMount() {
-    subjectService.getSubjectById(this.props.match.params.id).then(res=>{this.setState({intro: res.intro})})
-    .catch((err)=>alert("cannot find intro"))
-      
+    subjectService
+      .getSubjectById(this.props.match.params.id)
+      .then(res => {
+        this.setState({ intro: res.intro });
+      })
+      .catch(err => alert("cannot find intro"));
+
     const callback = res => {
-      
       subjectService
         .findCommentsBySubjectId("album", this.props.match.params.id)
         .then(comments => {
@@ -84,7 +86,8 @@ class Album extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) { //may not be neccessary in our case
+  componentWillReceiveProps(nextProps) {
+    //may not be neccessary in our case
     const callback = res => {
       subjectService
         .findCommentsBySubjectId("album", this.props.match.params.id)
@@ -151,38 +154,39 @@ class Album extends Component {
   onCommentLikeClicked = e => {
     const commentId = e.currentTarget.getAttribute("value");
     // console.log(commentId);
-    subjectService.likeComment(commentId).then( ()=>{
+    subjectService.likeComment(commentId).then(() => {
+      subjectService.findCommentLikesByCurrentUser().then(res => {
+        // console.log(res);
+        this.setState({
+          commentLikes: res
+        });
+      });
 
-  subjectService.findCommentLikesByCurrentUser().then(res => {
-    // console.log(res);
-    this.setState({
-      commentLikes: res,
-    });
-  });
-
-  subjectService
+      subjectService
         .findCommentsBySubjectId("album", this.props.match.params.id)
         .then(comments => {
           // console.log("get", comments);
           this.setState({
-            comments: comments,
+            comments: comments
           });
         });
-
-
-})
-  
+    });
   };
 
-  changeIntro=()=>{
-    subjectService.updateSubjectIntroById(this.props.match.params.id, {intro: this.state.intro, type: "album"}).then((res)=>this.setState({editing: !this.state.editing}))
-      .catch((err)=>alert('edit error/ you may not be an editor'))
+  changeIntro = () => {
+    subjectService
+      .updateSubjectIntroById(this.props.match.params.id, {
+        intro: this.state.intro,
+        type: "album"
+      })
+      .then(res => this.setState({ editing: !this.state.editing }))
+      .catch(err => alert("edit error/ you may not be an editor"));
     // subjectService.updateIntro
-  }
+  };
   render() {
     // console.log('likes', this.state.commentLikes.map(x=>x._id))
     // console.log('rendered asd', this.state.isLoggedIn)
-    console.log('rendered asd', this.state.intro)
+    console.log("rendered asd", this.state.intro);
     return (
       ((this.state.isLoggedIn === true && this.state.loaded === 4) ||
         (this.state.isLoggedIn === false &&
@@ -213,7 +217,7 @@ class Album extends Component {
 
                 {/* like-show tracks-show intro buttons here */}
                 {this.state.displayName !== null ? (
-                  <span style={{margin:"3px"}} className="my-2">
+                  <span style={{ margin: "3px" }} className="my-2">
                     <button
                       className="btn btn-light"
                       onClick={this.onLikeClicked}
@@ -231,93 +235,172 @@ class Album extends Component {
                   </span>
                 ) : (
                   <span>
-                    <a href="#" style={{margin:"3px"}} data-toggle="modal" data-target="#login">
+                    <a
+                      href="#"
+                      style={{ margin: "3px" }}
+                      data-toggle="modal"
+                      data-target="#login"
+                    >
                       Log in to like and save
                     </a>
                   </span>
                 )}
 
-                {this.state.showTracks
-                  ?<h4 className='btn btn-light' style={{cursor: "pointer", margin:"3px"}}
-                
-                  onClick={() => this.setState({ showTracks: !this.state.showTracks })}>hide tracks</h4>
-                  :<h4 className='btn btn-light' style={{cursor: "pointer",margin:"3px"}}
-                
-                  onClick={() => this.setState({ showTracks: !this.state.showTracks })}>more tracks</h4>}
+                {this.state.showTracks ? (
+                  <h4
+                    className="btn btn-light"
+                    style={{ cursor: "pointer", margin: "3px" }}
+                    onClick={() =>
+                      this.setState({ showTracks: !this.state.showTracks })
+                    }
+                  >
+                    hide tracks
+                  </h4>
+                ) : (
+                  <h4
+                    className="btn btn-light"
+                    style={{ cursor: "pointer", margin: "3px" }}
+                    onClick={() =>
+                      this.setState({ showTracks: !this.state.showTracks })
+                    }
+                  >
+                    more tracks
+                  </h4>
+                )}
 
-                  {this.state.showIntro
-                  ?<h4 className='btn btn-light' style={{cursor: "pointer", margin:"3px"}}
-                
-                  onClick={() => this.setState({ showIntro: !this.state.showIntro })}>hide Intro</h4>
-                  :<h4 className='btn btn-light' style={{cursor: "pointer",margin:"3px"}}
-                
-                  onClick={() => this.setState({ showIntro: !this.state.showIntro })}>see/edit Intro</h4>} 
-              
-              {this.state.showIntro? //show/hide intro info
-              <div>
-              <p>{!this.state.intro?"No intro yet, you can edit one!":this.state.intro}</p>
-              {/* editor view */}
-              {this.state.type !==2    //is this user logged in as a type 2?(editor)
-              ?   
-                ( this.state.isLoggedIn ===true ?<a href={`/profile`} target="_blank">Switch to editor then refresh this page to edit </a> //is logged in another user type
-                :  <a href="#" style={{margin:"3px"}} data-toggle="modal" data-target="#login">Login and be an editor to edit </a>
-                )
-              :
-                (this.state.editing===true
-                  ?<div>
-                      <textarea placeholder="Add an Intro..." onChange={
-                        (event)=>this.setState({intro: event.target.value})
-                      }
-                            rows="2" value={this.state.intro} className="form-control"/>
-                      <button style={{margin: "2px"}} onClick={this.changeIntro} className="btn btn-light"> update</button>
-                      <button style={{margin: "2px"}} onClick={()=>this.setState({editing: !this.state.editing})} 
-                      className="btn btn-light"> cancel</button>
-                  </div>
-                  :
+                {this.state.showIntro ? (
+                  <h4
+                    className="btn btn-light"
+                    style={{ cursor: "pointer", margin: "3px" }}
+                    onClick={() =>
+                      this.setState({ showIntro: !this.state.showIntro })
+                    }
+                  >
+                    hide Intro
+                  </h4>
+                ) : (
+                  <h4
+                    className="btn btn-light"
+                    style={{ cursor: "pointer", margin: "3px" }}
+                    onClick={() =>
+                      this.setState({ showIntro: !this.state.showIntro })
+                    }
+                  >
+                    see/edit Intro
+                  </h4>
+                )}
+
+                {this.state.showIntro ? ( //show/hide intro info
                   <div>
-                      <button onClick={()=>this.setState({editing: !this.state.editing})} style={{margin:"1px"}}
-                        
-                        className="btn btn-light"
-                        >edit</button>
-                  </div>)
-              }
-              </div>
-              :null
-            }
-                  
+                    <p>
+                      {!this.state.intro
+                        ? "No intro yet, you can edit one!"
+                        : this.state.intro}
+                    </p>
+                    {/* editor view */}
+                    {this.state.type !== 2 ? ( //is this user logged in as a type 2?(editor)
+                      this.state.isLoggedIn === true ? (
+                        <a href={`/profile`} target="_blank">
+                          Switch to editor then refresh this page to edit{" "}
+                        </a> //is logged in another user type
+                      ) : (
+                        <a
+                          href="#"
+                          style={{ margin: "3px" }}
+                          data-toggle="modal"
+                          data-target="#login"
+                        >
+                          Login and be an editor to edit{" "}
+                        </a>
+                      )
+                    ) : this.state.editing === true ? (
+                      <div>
+                        <textarea
+                          placeholder="Add an Intro..."
+                          onChange={event =>
+                            this.setState({ intro: event.target.value })
+                          }
+                          rows="2"
+                          value={this.state.intro}
+                          className="form-control"
+                        />
+                        <button
+                          style={{ margin: "2px" }}
+                          onClick={this.changeIntro}
+                          className="btn btn-light"
+                        >
+                          {" "}
+                          update
+                        </button>
+                        <button
+                          style={{ margin: "2px" }}
+                          onClick={() =>
+                            this.setState({ editing: !this.state.editing })
+                          }
+                          className="btn btn-light"
+                        >
+                          {" "}
+                          cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <div>
+                        <button
+                          onClick={() =>
+                            this.setState({ editing: !this.state.editing })
+                          }
+                          style={{ margin: "1px" }}
+                          className="btn btn-light"
+                        >
+                          edit
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ) : null}
               </div>
 
               {/* iframe to listen */}
               <div className="col-md-6">
                 Can listen if in spotify session ( try refresh )
-                { this.state.showTracks
-                  ?
-                  <Yangframe size={"show"} src={"https://embed.spotify.com/?uri=spotify:album:" +
-                  this.state.album.id}/>
-                  : 
-                <Yangframe size={"hide"} src={"https://embed.spotify.com/?uri=spotify:album:" +
-                this.state.album.id}/>
-                }
+                {this.state.showTracks ? (
+                  <Yangframe
+                    size={"show"}
+                    src={
+                      "https://embed.spotify.com/?uri=spotify:album:" +
+                      this.state.album.id
+                    }
+                  />
+                ) : (
+                  <Yangframe
+                    size={"hide"}
+                    src={
+                      "https://embed.spotify.com/?uri=spotify:album:" +
+                      this.state.album.id
+                    }
+                  />
+                )}
               </div>
             </div>
-            
 
             {/* hide/ show track links and even lyrics*/}
             <div className="row comments my-5">
               <div className="col">
-                
-
                 {this.state.showTracks
-                    ? this.state.album.tracks.items.map(track => (
-                  <span key={track.id}>
-                    <Link style={{whiteSpace:"nowrap"}} to={`/track/${track.id}`}>&middot;{track.name}</Link> &nbsp;&nbsp;&nbsp;
-                  </span>
-                ))
-                    : null}
+                  ? this.state.album.tracks.items.map(track => (
+                      <span key={track.id}>
+                        <Link
+                          style={{ whiteSpace: "nowrap" }}
+                          to={`/track/${track.id}`}
+                        >
+                          &middot;{track.name}
+                        </Link>{" "}
+                        &nbsp;&nbsp;&nbsp;
+                      </span>
+                    ))
+                  : null}
               </div>
             </div>
-
-
 
             <div className="row comments my-5">
               <div className="col">
@@ -405,7 +488,9 @@ class Album extends Component {
                           value={comment._id}
                         >
                           {comment.likeCount}&nbsp;
-                          {this.state.commentLikes.map(x=>x._id).includes(comment._id) ? (
+                          {this.state.commentLikes
+                            .map(x => x._id)
+                            .includes(comment._id) ? (
                             <i className="fas fa-thumbs-up" />
                           ) : (
                             <i className="far fa-thumbs-up" />
