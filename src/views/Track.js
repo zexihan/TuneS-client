@@ -23,7 +23,7 @@ class Track extends Component {
       comment: "",
       isLiked: false,
       commentLikes: [],
-      showLyric: false,
+      showLyric: true,
       lyric: "",
       type: 1,
       editing: false
@@ -262,7 +262,7 @@ class Track extends Component {
                   </h4>
                 )}
 
-                {this.state.showLyric ? ( //show/hide intro info
+                {this.state.showLyric ? ( //show/hide lyric info
                   <div>
                     <p>
                       {!this.state.lyric
