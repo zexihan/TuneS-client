@@ -7,8 +7,6 @@ import "../static/views/Subject.css";
 import UserService from "../services/UserService";
 import SearchService from "../services/SearchService";
 import SubjectService from "../services/SubjectService";
-import Yangframe from "./frame";
-
 let userService = UserService.getInstance();
 let searchService = SearchService.getInstance();
 let subjectService = SubjectService.getInstance();
@@ -57,7 +55,6 @@ class Album extends Component {
 
     userService.getCurrentUser().then(user => {
       if (user._id !== -1) {
-        console.log(user);
         this.setState({
           displayName: user.displayName,
           photo: user.photo,
@@ -182,10 +179,8 @@ class Album extends Component {
       .catch(err => alert("edit error/ you may not be an editor"));
     // subjectService.updateIntro
   };
+
   render() {
-    // console.log('likes', this.state.commentLikes.map(x=>x._id))
-    // console.log('rendered asd', this.state.isLoggedIn)
-    console.log("rendered asd", this.state.intro);
     return (
       ((this.state.isLoggedIn === true && this.state.loaded === 4) ||
         (this.state.isLoggedIn === false &&
@@ -240,7 +235,7 @@ class Album extends Component {
                       data-toggle="modal"
                       data-target="#login"
                     >
-                      Log in to like and save
+                      Log in to like
                     </a>
                   </span>
                 )}
@@ -279,11 +274,7 @@ class Album extends Component {
                           Switch to editor and refresh this page to edit{" "}
                         </a> //is logged in another user type
                       ) : (
-                        <a
-                          href="#"
-                          data-toggle="modal"
-                          data-target="#login"
-                        >
+                        <a href="#" data-toggle="modal" data-target="#login">
                           Login and be an editor to edit{" "}
                         </a>
                       )

@@ -37,6 +37,7 @@ class Track extends Component {
         this.setState({ lyric: res.lyric });
       })
       .catch(err => alert("cannot find lyric"));
+
     const callback = res => {
       subjectService
         .findCommentsBySubjectId("track", this.props.match.params.id)
@@ -52,7 +53,6 @@ class Track extends Component {
     searchService.getSubject("track", this.props.match.params.id, callback);
 
     userService.getCurrentUser().then(user => {
-      console.log(user);
       if (user._id !== -1) {
         this.setState({
           displayName: user.displayName,
@@ -82,6 +82,7 @@ class Track extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    //may not be neccessary in our case
     const callback = res => {
       subjectService
         .findCommentsBySubjectId("track", this.props.match.params.id)
@@ -114,7 +115,7 @@ class Track extends Component {
         comment: ""
       });
       this.props.history.push("/track/" + this.props.match.params.id);
-    }; //to render new reviews
+    }; // to render new reviews
     const subject = {
       _id: this.props.match.params.id,
       type: "track",
@@ -193,7 +194,7 @@ class Track extends Component {
                 ")"
             }}
           />
-          <div className="subject-content mt-md-5 mt-sm-3">
+          <div className="content subject-content mt-md-5 mt-sm-3">
             <div className="row">
               <div className="col-sm-12 col-md-6">
                 <h1 className="title">{this.state.track.name}</h1>
@@ -211,8 +212,9 @@ class Track extends Component {
                 </div>
                 <div>Released: {this.state.track.album.release_date}</div>
                 <div>Popularity: {this.state.track.popularity}/100</div>
+
                 {this.state.displayName !== null ? (
-                  <div className="my-2">
+                  <span style={{ margin: "3px" }} className="my-2">
                     <button
                       className="btn btn-light"
                       onClick={this.onLikeClicked}
@@ -227,7 +229,7 @@ class Track extends Component {
                         </span>
                       )}
                     </button>
-                  </div>
+                  </span>
                 ) : (
                   <span>
                     <a
@@ -240,10 +242,10 @@ class Track extends Component {
                     </a>
                   </span>
                 )}
-                
+
                 {this.state.showLyric ? (
                   <button
-                    className="btn btn-light my-2"
+                    className="btn btn-light m-2"
                     onClick={() =>
                       this.setState({ showLyric: !this.state.showLyric })
                     }
@@ -252,7 +254,7 @@ class Track extends Component {
                   </button>
                 ) : (
                   <button
-                    className="btn btn-light my-2"
+                    className="btn btn-light m-2"
                     onClick={() =>
                       this.setState({ showLyric: !this.state.showLyric })
                     }
@@ -262,7 +264,7 @@ class Track extends Component {
                 )}
 
                 {this.state.showLyric ? ( // show/hide lyric info
-                  <div>
+                  <div className="my-3">
                     <p>
                       {!this.state.lyric
                         ? "No lyric yet, you can create one!"
@@ -275,11 +277,7 @@ class Track extends Component {
                           Switch to editor then refresh this page to edit{" "}
                         </a> // is logged in another user type
                       ) : (
-                        <a
-                          href="#"
-                          data-toggle="modal"
-                          data-target="#login"
-                        >
+                        <a href="#" data-toggle="modal" data-target="#login">
                           Login and be an editor to edit{" "}
                         </a>
                       )

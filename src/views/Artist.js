@@ -22,11 +22,22 @@ class Artist extends Component {
       comments: [],
       comment: "",
       isLiked: false,
-      commentLikes: []
+      commentLikes: [],
+      showIntro: true,
+      intro: "",
+      type: 1,
+      editing: false
     };
   }
 
   componentDidMount() {
+    subjectService
+      .getSubjectById(this.props.match.params.id)
+      .then(res => {
+        this.setState({ intro: res.intro });
+      })
+      .catch(err => alert("cannot find intro"));
+
     const callback = res => {
       subjectService
         .findCommentsBySubjectId("artist", this.props.match.params.id)
@@ -42,13 +53,13 @@ class Artist extends Component {
     searchService.getSubject("artist", this.props.match.params.id, callback);
 
     userService.getCurrentUser().then(user => {
-      console.log(user);
       if (user._id !== -1) {
         this.setState({
           displayName: user.displayName,
           photo: user.photo,
           isLoggedIn: true,
-          loaded: this.state.loaded + 1
+          loaded: this.state.loaded + 1,
+          type: user.type
         });
         subjectService
           .findSubjectIsLiked("artist", this.props.match.params.id)
@@ -71,6 +82,7 @@ class Artist extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    //may not be neccessary in our case
     const callback = res => {
       subjectService
         .findCommentsBySubjectId("artist", this.props.match.params.id)
@@ -137,27 +149,34 @@ class Artist extends Component {
   onCommentLikeClicked = e => {
     const commentId = e.currentTarget.getAttribute("value");
     // console.log(commentId);
-    subjectService.likeComment(commentId).then( ()=>{
+    subjectService.likeComment(commentId).then(() => {
+      subjectService.findCommentLikesByCurrentUser().then(res => {
+        // console.log(res);
+        this.setState({
+          commentLikes: res
+        });
+      });
 
-  subjectService.findCommentLikesByCurrentUser().then(res => {
-    // console.log(res);
-    this.setState({
-      commentLikes: res,
-    });
-  });
-
-  subjectService
+      subjectService
         .findCommentsBySubjectId("album", this.props.match.params.id)
         .then(comments => {
           // console.log("get", comments);
           this.setState({
-            comments: comments,
+            comments: comments
           });
         });
+    });
+  };
 
-
-})
-  
+  changeIntro = () => {
+    subjectService
+      .updateSubjectIntroById(this.props.match.params.id, {
+        intro: this.state.intro,
+        type: "artist"
+      })
+      .then(res => this.setState({ editing: !this.state.editing }))
+      .catch(err => alert("edit error/ you may not be an editor"));
+    // subjectService.updateIntro
   };
 
   render() {
@@ -187,8 +206,9 @@ class Artist extends Component {
                     <div key={genre}>&middot; {genre}</div>
                   ))}
                 </div>
+
                 {this.state.displayName !== null ? (
-                  <div className="my-2">
+                  <span style={{ margin: "3px" }} className="my-2">
                     <button
                       className="btn btn-light"
                       onClick={this.onLikeClicked}
@@ -203,15 +223,100 @@ class Artist extends Component {
                         </span>
                       )}
                     </button>
-                  </div>
+                  </span>
                 ) : (
-                  <div>
-                    <a href="#" data-toggle="modal" data-target="#login">
+                  <span>
+                    <a
+                      href="#"
+                      style={{ margin: "3px" }}
+                      data-toggle="modal"
+                      data-target="#login"
+                    >
                       Log in to like
                     </a>
-                  </div>
+                  </span>
                 )}
+
+                {this.state.showIntro ? (
+                  <button
+                    className="btn btn-light m-2"
+                    onClick={() =>
+                      this.setState({ showIntro: !this.state.showIntro })
+                    }
+                  >
+                    Hide Intro
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-light m-2"
+                    onClick={() =>
+                      this.setState({ showIntro: !this.state.showIntro })
+                    }
+                  >
+                    Show Intro
+                  </button>
+                )}
+
+                {this.state.showIntro ? ( // show/hide intro info
+                  <div className="my-3">
+                    <p>
+                      {!this.state.intro
+                        ? "No intro yet, you can create one!"
+                        : this.state.intro}
+                    </p>
+                    {/* editor view */}
+                    {this.state.type !== 2 ? ( //is this user logged in as a type 2?(editor)
+                      this.state.isLoggedIn === true ? (
+                        <a href={`/profile`} target="_blank">
+                          Switch to editor and refresh this page to edit{" "}
+                        </a> //is logged in another user type
+                      ) : (
+                        <a href="#" data-toggle="modal" data-target="#login">
+                          Login and be an editor to edit{" "}
+                        </a>
+                      )
+                    ) : this.state.editing === true ? (
+                      <div>
+                        <textarea
+                          className="form-control"
+                          placeholder="Add an Intro..."
+                          onChange={event =>
+                            this.setState({ intro: event.target.value })
+                          }
+                          rows={5}
+                          value={this.state.intro}
+                        />
+                        <button
+                          className="btn btn-light my-2 mr-2"
+                          onClick={this.changeIntro}
+                        >
+                          Save
+                        </button>
+                        <button
+                          className="btn btn-light mr-2"
+                          onClick={() =>
+                            this.setState({ editing: !this.state.editing })
+                          }
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <div>
+                        <button
+                          className="btn btn-light my-2 mr-2"
+                          onClick={() =>
+                            this.setState({ editing: !this.state.editing })
+                          }
+                        >
+                          Edit
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ) : null}
               </div>
+
               <div className="col-md-6">
                 <div className="text-center embed-container">
                   <iframe
