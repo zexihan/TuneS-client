@@ -350,7 +350,7 @@ class Track extends Component {
             </div>
 
             <div className="row my-3 d-md-none">
-              {/* <div className="col-12">
+              <div className="col-12">
                 <div className="text-center embed-container">
                   <iframe
                     src={
@@ -364,14 +364,12 @@ class Track extends Component {
                     allow="encrypted-media"
                   />
                 </div>
-              </div> */}
-              {this.state.showLyric ? (
+              </div>
+              {/* {this.state.showLyric ? (
                 <p class="text-center" style={{ color: "white" }}>
                   {this.state.lyric}
                 </p>
-              ) : (
-                ""
-              )}
+              ) : null} */}
             </div>
 
             <div className="row comments my-md-5 my-sm-3">
