@@ -26,7 +26,6 @@ class Album extends Component {
       comment: "",
       isLiked: false,
       commentLikes: [],
-      showTracks: false,
       showIntro: true,
       intro: "",
       type: 1,
@@ -246,67 +245,42 @@ class Album extends Component {
                   </span>
                 )}
 
-                {this.state.showTracks ? (
-                  <h4
-                    className="btn btn-light"
-                    style={{ cursor: "pointer", margin: "3px" }}
-                    onClick={() =>
-                      this.setState({ showTracks: !this.state.showTracks })
-                    }
-                  >
-                    hide tracks
-                  </h4>
-                ) : (
-                  <h4
-                    className="btn btn-light"
-                    style={{ cursor: "pointer", margin: "3px" }}
-                    onClick={() =>
-                      this.setState({ showTracks: !this.state.showTracks })
-                    }
-                  >
-                    more tracks
-                  </h4>
-                )}
-
                 {this.state.showIntro ? (
-                  <h4
-                    className="btn btn-light"
-                    style={{ cursor: "pointer", margin: "3px" }}
+                  <button
+                    className="btn btn-light m-2"
                     onClick={() =>
                       this.setState({ showIntro: !this.state.showIntro })
                     }
                   >
-                    hide Intro
-                  </h4>
+                    Hide Intro
+                  </button>
                 ) : (
-                  <h4
-                    className="btn btn-light"
-                    style={{ cursor: "pointer", margin: "3px" }}
+                  <button
+                    className="btn btn-light m-2"
                     onClick={() =>
                       this.setState({ showIntro: !this.state.showIntro })
                     }
                   >
-                    see/edit Intro
-                  </h4>
+                    Show Intro
+                  </button>
                 )}
 
-                {this.state.showIntro ? ( //show/hide intro info
-                  <div>
+                {this.state.showIntro ? ( // show/hide intro info
+                  <div className="my-3">
                     <p>
                       {!this.state.intro
-                        ? "No intro yet, you can edit one!"
+                        ? "No intro yet, you can create one!"
                         : this.state.intro}
                     </p>
                     {/* editor view */}
                     {this.state.type !== 2 ? ( //is this user logged in as a type 2?(editor)
                       this.state.isLoggedIn === true ? (
                         <a href={`/profile`} target="_blank">
-                          Switch to editor then refresh this page to edit{" "}
+                          Switch to editor and refresh this page to edit{" "}
                         </a> //is logged in another user type
                       ) : (
                         <a
                           href="#"
-                          style={{ margin: "3px" }}
                           data-toggle="modal"
                           data-target="#login"
                         >
@@ -316,43 +290,38 @@ class Album extends Component {
                     ) : this.state.editing === true ? (
                       <div>
                         <textarea
+                          className="form-control"
                           placeholder="Add an Intro..."
                           onChange={event =>
                             this.setState({ intro: event.target.value })
                           }
-                          rows="2"
+                          rows={5}
                           value={this.state.intro}
-                          className="form-control"
                         />
                         <button
-                          style={{ margin: "2px" }}
+                          className="btn btn-light my-2 mr-2"
                           onClick={this.changeIntro}
-                          className="btn btn-light"
                         >
-                          {" "}
-                          update
+                          Save
                         </button>
                         <button
-                          style={{ margin: "2px" }}
+                          className="btn btn-light mr-2"
                           onClick={() =>
                             this.setState({ editing: !this.state.editing })
                           }
-                          className="btn btn-light"
                         >
-                          {" "}
-                          cancel
+                          Cancel
                         </button>
                       </div>
                     ) : (
                       <div>
                         <button
+                          className="btn btn-light my-2 mr-2"
                           onClick={() =>
                             this.setState({ editing: !this.state.editing })
                           }
-                          style={{ margin: "1px" }}
-                          className="btn btn-light"
                         >
-                          edit
+                          Edit
                         </button>
                       </div>
                     )}
@@ -362,43 +331,37 @@ class Album extends Component {
 
               {/* iframe to listen */}
               <div className="col-md-6">
-                Can listen if in spotify session ( try refresh )
-                {this.state.showTracks ? (
-                  <Yangframe
-                    size={"show"}
+                <div className="text-center embed-container">
+                  <iframe
                     src={
                       "https://embed.spotify.com/?uri=spotify:album:" +
                       this.state.album.id
                     }
+                    width="350px"
+                    height="350px"
+                    frameBorder="0"
+                    allowtransparency="true"
+                    allow="encrypted-media"
                   />
-                ) : (
-                  <Yangframe
-                    size={"hide"}
-                    src={
-                      "https://embed.spotify.com/?uri=spotify:album:" +
-                      this.state.album.id
-                    }
-                  />
-                )}
+                </div>
               </div>
             </div>
 
             {/* hide/ show track links and even lyrics*/}
             <div className="row comments my-5">
               <div className="col">
-                {this.state.showTracks
-                  ? this.state.album.tracks.items.map(track => (
-                      <span key={track.id}>
-                        <Link
-                          style={{ whiteSpace: "nowrap" }}
-                          to={`/track/${track.id}`}
-                        >
-                          &middot;{track.name}
-                        </Link>{" "}
-                        &nbsp;&nbsp;&nbsp;
-                      </span>
-                    ))
-                  : null}
+                <h4>Tracks</h4>
+                {this.state.album.tracks.items.map(track => (
+                  <span key={track.id}>
+                    <Link
+                      style={{ whiteSpace: "nowrap" }}
+                      to={`/track/${track.id}`}
+                    >
+                      &middot;{track.name}
+                    </Link>{" "}
+                    &nbsp;&nbsp;&nbsp;
+                  </span>
+                ))}
               </div>
             </div>
 
@@ -421,7 +384,7 @@ class Album extends Component {
                           onChange={this.onCommentChanged}
                           className="form-control"
                           id="commentTextarea"
-                          rows="2"
+                          rows={2}
                           placeholder="Add a comment..."
                           value={this.state.comment}
                         />

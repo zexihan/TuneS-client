@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-export default class Yangframe extends Component {
+
+class Yangframe extends Component {
   render() {
     if (this.props.size === "hide") {
       //unit 2 frames' play progress
@@ -27,3 +28,5 @@ export default class Yangframe extends Component {
     );
   }
 }
+
+export default Yangframe;

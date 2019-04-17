@@ -72,7 +72,7 @@ class Landing extends Component {
       return;
     }
 
-    let resList = await searchService.query(this.state.searchText, this.state.searchType);
+    let resList = await searchService.query(this.state.searchText, this.state.searchType, 0);
     console.log(await resList);
     var subjects = [];
     switch(this.state.searchType) {
@@ -103,7 +103,7 @@ class Landing extends Component {
   onSearchKeyPressed = (e) => {
     if(e.charCode === 13){
       this.search();
-      this.props.history.push({pathname: "/subject_search", search: "?query=" + this.state.searchText + "&type=" + this.state.searchType});
+      this.props.history.push({pathname: "/subject_search", search: "?query=" + this.state.searchText + "&type=" + this.state.searchType + "&offset=" + 0});
     }
   }
 
@@ -140,7 +140,9 @@ class Landing extends Component {
                         "?query=" +
                         this.state.searchText +
                         "&type=" +
-                        this.state.searchType
+                        this.state.searchType +
+                        "&offset=" +
+                        0
                     }}
                   >
                     <button

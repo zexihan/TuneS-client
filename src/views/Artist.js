@@ -212,25 +212,7 @@ class Artist extends Component {
                   </div>
                 )}
               </div>
-              <div className="col-6 d-none d-md-block">
-                <div className="float-right embed-container">
-                  <iframe
-                    src={
-                      "https://embed.spotify.com/?uri=spotify:artist:" +
-                      this.state.artist.id
-                    }
-                    width="350px"
-                    height="350px"
-                    frameBorder="0"
-                    allowtransparency="true"
-                    allow="encrypted-media"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="row my-3 d-md-none">
-              <div className="col-12">
+              <div className="col-md-6">
                 <div className="text-center embed-container">
                   <iframe
                     src={
@@ -246,6 +228,7 @@ class Artist extends Component {
                 </div>
               </div>
             </div>
+
             <div className="row comments my-md-5 my-sm-3">
               <div className="col">
                 <h4>Comment</h4>
@@ -331,7 +314,9 @@ class Artist extends Component {
                           value={comment._id}
                         >
                           {comment.likeCount}&nbsp;
-                          {this.state.commentLikes.map(x=>x._id).includes(comment._id) ? (
+                          {this.state.commentLikes
+                            .map(x => x._id)
+                            .includes(comment._id) ? (
                             <i className="fas fa-thumbs-up" />
                           ) : (
                             <i className="far fa-thumbs-up" />

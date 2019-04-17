@@ -240,45 +240,43 @@ class Track extends Component {
                     </a>
                   </span>
                 )}
+                
                 {this.state.showLyric ? (
-                  <h4
-                    className="btn btn-light"
-                    style={{ cursor: "pointer", margin: "3px" }}
+                  <button
+                    className="btn btn-light my-2"
                     onClick={() =>
                       this.setState({ showLyric: !this.state.showLyric })
                     }
                   >
-                    hide Lyric
-                  </h4>
+                    Hide Lyric
+                  </button>
                 ) : (
-                  <h4
-                    className="btn btn-light"
-                    style={{ cursor: "pointer", margin: "3px" }}
+                  <button
+                    className="btn btn-light my-2"
                     onClick={() =>
                       this.setState({ showLyric: !this.state.showLyric })
                     }
                   >
-                    see/edit Lyric
-                  </h4>
+                    Show Lyric
+                  </button>
                 )}
 
-                {this.state.showLyric ? ( //show/hide lyric info
+                {this.state.showLyric ? ( // show/hide lyric info
                   <div>
                     <p>
                       {!this.state.lyric
-                        ? "No lyric yet, you can edit one!"
+                        ? "No lyric yet, you can create one!"
                         : this.state.lyric}
                     </p>
                     {/* editor view */}
-                    {this.state.type !== 2 ? ( //is this user logged in as a type 2?(editor)
+                    {this.state.type !== 2 ? ( // is this user logged in as a type 2?(editor)
                       this.state.isLoggedIn === true ? (
                         <a href={`/profile`} target="_blank">
                           Switch to editor then refresh this page to edit{" "}
-                        </a> //is logged in another user type
+                        </a> // is logged in another user type
                       ) : (
                         <a
                           href="#"
-                          style={{ margin: "3px" }}
                           data-toggle="modal"
                           data-target="#login"
                         >
@@ -288,43 +286,38 @@ class Track extends Component {
                     ) : this.state.editing === true ? (
                       <div>
                         <textarea
+                          className="form-control"
                           placeholder="Add an Lyric..."
                           onChange={event =>
                             this.setState({ lyric: event.target.value })
                           }
                           rows="2"
                           value={this.state.lyric}
-                          className="form-control"
                         />
                         <button
-                          style={{ margin: "2px" }}
+                          className="btn btn-light my-2 mr-2"
                           onClick={this.changeLyric}
-                          className="btn btn-light"
                         >
-                          {" "}
-                          update
+                          Save
                         </button>
                         <button
-                          style={{ margin: "2px" }}
+                          className="btn btn-light my-2 mr-2"
                           onClick={() =>
                             this.setState({ editing: !this.state.editing })
                           }
-                          className="btn btn-light"
                         >
-                          {" "}
-                          cancel
+                          Cancel
                         </button>
                       </div>
                     ) : (
                       <div>
                         <button
+                          className="btn btn-light my-2 mr-2"
                           onClick={() =>
                             this.setState({ editing: !this.state.editing })
                           }
-                          style={{ margin: "1px" }}
-                          className="btn btn-light"
                         >
-                          edit
+                          Edit
                         </button>
                       </div>
                     )}
@@ -332,25 +325,7 @@ class Track extends Component {
                 ) : null}
               </div>
 
-              <div className="col-6 d-none d-md-block">
-                <div className="float-right embed-container">
-                  <iframe
-                    src={
-                      "https://embed.spotify.com/?uri=spotify:track:" +
-                      this.state.track.id
-                    }
-                    width="350px"
-                    height="350px"
-                    frameBorder="0"
-                    allowtransparency="true"
-                    allow="encrypted-media"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="row my-3 d-md-none">
-              <div className="col-12">
+              <div className="col-md-6">
                 <div className="text-center embed-container">
                   <iframe
                     src={
@@ -365,11 +340,6 @@ class Track extends Component {
                   />
                 </div>
               </div>
-              {/* {this.state.showLyric ? (
-                <p class="text-center" style={{ color: "white" }}>
-                  {this.state.lyric}
-                </p>
-              ) : null} */}
             </div>
 
             <div className="row comments my-md-5 my-sm-3">

@@ -14,17 +14,26 @@ const SubjectItem = ({subject, type}) => {
       return (
         <div className="row my-3">
           <div className="col-auto">
-            <img className="subject-image" src={imageURL} />
+            <Link to={`/${type}/${subject.id}`} className="subject-title">
+              <img className="subject-image" src={imageURL} />
+            </Link>
           </div>
           <div className="col m-2">
             <div className="row mb-3">
-              <Link to={`/${type}/${subject.id}`} className="subject-title">{subject.name}</Link>
+              <Link
+                to={`/${type}/${subject.id}`}
+                className="subject-title"
+              >
+                {subject.name}
+              </Link>
             </div>
             <div className="row">
-              <p className="subject-pop">{subject.popularity}</p>
+              <p className="subject-pop">{subject.popularity}/100</p>
             </div>
             <div className="row">
-              <p className="subject-detail">{subject.artists[0].name} / {subject.album.release_date}</p>
+              <p className="subject-detail">
+                {subject.artists[0].name} / {subject.album.release_date}
+              </p>
             </div>
           </div>
         </div>
@@ -42,11 +51,18 @@ const SubjectItem = ({subject, type}) => {
       return (
         <div className="row my-3">
           <div className="col-auto">
-            <img className="subject-image" src={imageURL}/>
+            <Link to={`/${type}/${subject.id}`} className="subject-title">
+              <img className="subject-image" src={imageURL} />
+            </Link>
           </div>
           <div className="col m-2">
             <div className="row mb-3">
-              <Link to={`/${type}/${subject.id}`} className="subject-title">{subject.name}</Link>
+              <Link
+                to={`/${type}/${subject.id}`}
+                className="subject-title"
+              >
+                {subject.name}
+              </Link>
             </div>
             <div className="row">
               <p className="subject-pop">Followers: {followers}</p>
@@ -63,17 +79,26 @@ const SubjectItem = ({subject, type}) => {
       return (
         <div className="row my-3">
           <div className="col-auto">
-            <img className="subject-image" src={imageURL}/>
+            <Link to={`/${type}/${subject.id}`} className="subject-title">
+              <img className="subject-image" src={imageURL} />
+            </Link>
           </div>
           <div className="col m-2">
             <div className="row mb-3">
-              <Link to={`/${type}/${subject.id}`} className="subject-title">{subject.name}</Link>
+              <Link
+                to={`/${type}/${subject.id}`}
+                className="subject-title"
+              >
+                {subject.name}
+              </Link>
             </div>
             <div className="row">
-              <p className="subject-pop">{subject.popularity}</p>
+              <p className="subject-pop">{subject.popularity}/100</p>
             </div>
             <div className="row">
-              <p className="subject-detail">{subject.artists[0].name} / {subject.release_date}</p>
+              <p className="subject-detail">
+                {subject.artists[0].name} / {subject.release_date}
+              </p>
             </div>
           </div>
         </div>
