@@ -225,32 +225,34 @@ class Searching extends Component {
           </div>
         ) : null}
 
-        <div className="row">
-          <div className="col mx-5 my-4">
-            {[...Array(10).keys()].map(i => (
-              <Link
-                to={{
-                  pathname: "/subject_search",
-                  search:
-                    "?query=" +
-                    this.state.searchText +
-                    "&type=" +
-                    this.state.searchType +
-                    "&offset=" +
-                    i * 20
-                }}
-              >
-                <button
-                  className="btn btn-outline-secondary mx-1"
-                  type="button"
-                  onClick={() => this.search(i * 20)}
+        {this.state.subjects.length ? (
+          <div className="row">
+            <div className="col mx-5 my-4">
+              {[...Array(10).keys()].map(i => (
+                <Link
+                  to={{
+                    pathname: "/subject_search",
+                    search:
+                      "?query=" +
+                      this.state.searchText +
+                      "&type=" +
+                      this.state.searchType +
+                      "&offset=" +
+                      i * 20
+                  }}
                 >
-                  {i + 1}
-                </button>
-              </Link>
-            ))}
+                  <button
+                    className="btn btn-outline-secondary mx-1"
+                    type="button"
+                    onClick={() => this.search(i * 20)}
+                  >
+                    {i + 1}
+                  </button>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     );
   }
