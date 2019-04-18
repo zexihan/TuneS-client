@@ -1,7 +1,7 @@
 import port from '../port.js';
 
 class UserService {
-  API_URL = port +'/';
+  API_URL = port + "/";
 
   static myInstance = null;
   static getInstance() {
@@ -21,16 +21,14 @@ class UserService {
         }
         return res;
       })
-      .then(res => {
-        return res.json();
-      })
+      .then(res => res.json())
       .catch(err => {
         console.log(err);
         alert("getUserCount error");
       });
-  }
+  };
 
-  createUser = user => {
+  register = user => {
     return fetch(this.API_URL + "register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -40,7 +38,22 @@ class UserService {
       .then(res => res.json())
       .catch(err => {
         console.log(err);
-        alert("createUser error")
+        alert("register error");
+      });
+  };
+
+  login = user => {
+    console.log(user);
+    return fetch(this.API_URL + "login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(user),
+      credentials: "include"
+    })
+      .then(res => res.json())
+      .catch(err => {
+        console.log(err);
+        alert("The username or password is incorrect.");
       });
   };
 
@@ -53,7 +66,7 @@ class UserService {
       .then(res => res.json())
       .catch(err => {
         console.log(err);
-        alert("getCurrentUser error")
+        alert("getCurrentUser error");
       });
   };
 
@@ -67,20 +80,6 @@ class UserService {
       .catch(error => {
         console.log(error);
         alert("findUserById error");
-      });
-  };
-
-  login = user => {
-    return fetch(this.API_URL + "login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(user),
-      credentials: "include"
-    })
-      .then(res => res.json())
-      .catch(err => {
-        console.log(err);
-        alert("logIn error");
       });
   };
 
@@ -127,17 +126,18 @@ class UserService {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
       credentials: "include"
-    }).then(res => {
-      if (!res.ok) {
-        throw Error(res.statusText);
-      }
-      return res;
     })
-      .then(res => res.json())
-      // .catch(err => {
-      //   // console.log(err);
-      //   alert("updateUser error");
-      // });
+      .then(res => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res;
+      })
+      .then(res => res.json());
+    // .catch(err => {
+    //   // console.log(err);
+    //   alert("updateUser error");
+    // });
   };
 }
 

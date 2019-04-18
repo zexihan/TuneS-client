@@ -46,11 +46,46 @@ class RouterBoard extends Component {
   };
 
   loginWithUP = () => {
+    if (this.state.username === "" || this.state.password === "") {
+      return alert("Username and password cannot be empty.");
+    }
 
+    const user = {
+      _id: this.state.username,
+      password: this.state.password,
+    };
+    userService.login(user).then(res => {
+      console.log(res);
+      if (res !== undefined) {
+        window.location.reload();
+      }
+    });
   }
 
   register = () => {
-
+    if (this.state.username === "" || this.state.password === "") {
+      return alert("Username and password cannot be empty.");
+    }
+    
+    const user = {
+      _id: this.state.username,
+      password: this.state.password,
+      authType: "LOCAL",
+      displayName: this.state.displayName === "" ? this.state.username : this.state.displayName,
+      email: this.state.email,
+      photo:
+        "https://northmemorial.com/wp-content/uploads/2016/10/PersonPlaceholder.png",
+      type: "MEMBER"
+    };
+    userService.register(user).then(res => {
+      console.log(res);
+      if (res.message !== undefined) {
+        alert(res.message);
+      } else {
+        alert("Registration successful. Please login into your new account.");
+        this.setState({ isRegistering: false });
+      }
+    });
   }
 
   render() {
@@ -156,7 +191,7 @@ class RouterBoard extends Component {
                   data-dismiss="modal"
                   aria-label="Close"
                 >
-                  <i class="fas fa-times" />
+                  <i className="fas fa-times" />
                 </button>
               </div>
               <div className="modal-body">
@@ -164,7 +199,7 @@ class RouterBoard extends Component {
                   {!this.state.isRegistering ? (
                     <div className="col">
                       <div className="form-group">
-                        <label for="login-username">Username</label>
+                        <label htmlFor="login-username">Username</label>
                         <input
                           type="text"
                           className="form-control"
@@ -176,7 +211,7 @@ class RouterBoard extends Component {
                         />
                       </div>
                       <div className="form-group">
-                        <label for="login-password">Password</label>
+                        <label htmlFor="login-password">Password</label>
                         <input
                           type="password"
                           className="form-control"
@@ -191,21 +226,25 @@ class RouterBoard extends Component {
                         className="btn btn-primary btn-block"
                         onClick={() => this.loginWithUP()}
                       >
-                        Log In
+                        Log in
                       </button>
-                      <button
-                        className="btn btn-primary btn-block"
-                        onClick={() =>
-                          this.setState({ isRegistering: true })
-                        }
-                      >
-                        Register for TuneS
-                      </button>
+                      <div className="mt-2">
+                        Don't have an account?{" "}
+                        <a
+                          href="#"
+                          onClick={() =>
+                            this.setState({ isRegistering: true })
+                          }
+                          style={{ color: "rgb(20, 146, 103)" }}
+                        >
+                          Register for TuneS
+                        </a>
+                      </div>
                     </div>
                   ) : (
                     <div className="col">
                       <div className="form-group">
-                        <label for="register-username">Username</label>
+                        <label htmlFor="register-username">Username*</label>
                         <input
                           id="register-username"
                           type="text"
@@ -217,7 +256,7 @@ class RouterBoard extends Component {
                         />
                       </div>
                       <div className="form-group">
-                        <label for="register-display-name">
+                        <label htmlFor="register-display-name">
                           Display Name
                         </label>
                         <input
@@ -231,7 +270,7 @@ class RouterBoard extends Component {
                         />
                       </div>
                       <div className="form-group">
-                        <label for="register-email">Email</label>
+                        <label htmlFor="register-email">Email</label>
                         <input
                           id="register-email"
                           type="email"
@@ -243,7 +282,7 @@ class RouterBoard extends Component {
                         />
                       </div>
                       <div className="form-group">
-                        <label for="register-password">Password</label>
+                        <label htmlFor="register-password">Password*</label>
                         <input
                           id="register-password"
                           type="password"
@@ -260,25 +299,30 @@ class RouterBoard extends Component {
                       >
                         Register
                       </button>
-                      <button
-                        className="btn btn-primary btn-block"
-                        onClick={() =>
-                          this.setState({ isRegistering: false })
-                        }
-                      >
-                        Log In with TuneS
-                      </button>
+                      
+                      <div className="mt-2">
+                        Have an account already?{" "}
+                        <a
+                          href="#"
+                          onClick={() =>
+                            this.setState({ isRegistering: false })
+                          }
+                          style={{ color: "rgb(20, 146, 103)" }}
+                        >
+                          Log in with TuneS
+                        </a>
+                      </div>
                     </div>
                   )}
                 </div>
 
-                <div className="row m-3">
+                <div className="row m-2">
                   <div className="col text-center">Or</div>
                 </div>
 
                 <div className="row m-3">
                   <div className="col">
-                    <a href={port + "/login/spotify-auth"} target="_blank">
+                    <a href={port + "/login/spotify-auth"}>
                       <button
                         type="button"
                         className="btn btn-success btn-block"
@@ -286,12 +330,6 @@ class RouterBoard extends Component {
                         <i className="fab fa-spotify" /> Log in with Spotify
                       </button>
                     </a>
-                  </div>
-                </div>
-                <div className="row m-3">
-                  <div className="col text-center">
-                    Refresh me to be logged in after logging in with Spotify
-                    {/* Don't have an account? <a id="sign-up" href="https://www.spotify.com/us/signup/?forward_url=https%3A%2F%2Faccounts.spotify.com%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A5000%252Flogin%252Fspotify-auth%252Fcallback%26scope%3Duser-read-email%2520user-read-private%26client_id%3Da1e8617e0c7648d99634ae3a3d192590">Sign up for Spotify</a> */}
                   </div>
                 </div>
               </div>

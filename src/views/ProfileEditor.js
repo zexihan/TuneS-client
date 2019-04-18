@@ -141,6 +141,7 @@ class ProfileEditor extends Component {
                   id="displayName"
                   name="displayName"
                   value={this.state.displayName}
+                  onChange={this.onChange}
                 />
               </div>
             </div>
@@ -207,6 +208,7 @@ class ProfileEditor extends Component {
                   value={this.state.country}
                   onChange={this.onChange}
                 >
+                  <option value="">Please select your country</option>
                   <option value="AF">Afghanistan</option>
                   <option value="AX">Åland Islands</option>
                   <option value="AL">Albania</option>
@@ -499,8 +501,8 @@ class ProfileEditor extends Component {
                   value={this.state.type}
                   onChange={this.onChange}
                 >
-                  <option value="1">Member</option>
-                  <option value="2">Editor</option>
+                  <option value="MEMBER">Member</option>
+                  <option value="EDITOR">Editor</option>
                 </select>
               </div>
             </div>
