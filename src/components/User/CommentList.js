@@ -19,7 +19,8 @@ const CommentList = ({ comments, deleteComment, isMyself }) => {
         <div key={comment._id}>
           <div className="comment-content">"{comment.content}"</div>
           <div className="comment-info" align="right">
-            <i>
+{typeof comment.subject.type==="string"
+            ?<i>
               &mdash;{" "}
               {comment.subject.type.charAt(0).toUpperCase() +
                 comment.subject.type.slice(1)}
@@ -37,6 +38,9 @@ const CommentList = ({ comments, deleteComment, isMyself }) => {
                 </a>
               )}
             </i>
+            : <i>-subject {comment.subject._id} has no str type in db</i>
+}
+
           </div>
         </div>
       ))}
