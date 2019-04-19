@@ -11,6 +11,50 @@ class UserService {
     return this.myInstance;
   }
 
+  followUser=(fid)=>{
+    return fetch(this.API_URL + "user/"+String(fid) +'/follow', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include"
+    })
+      .then(res => res.json())
+  }
+
+  unfollowUser=(fid)=>{
+    return fetch(this.API_URL + "user/"+String(fid) +'/unfollow', {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include"
+    })
+      .then(res => res.json())
+  }
+
+  findFollowersById=(fid)=>{
+    return fetch(this.API_URL + "user/"+String(fid) +'/followers', {
+      headers: { "Content-Type": "application/json" },
+      credentials: "include"
+    })
+      .then(res => res.json())
+  }
+
+  findFolloweesById=(fid)=>{
+    return fetch(this.API_URL + "user/"+String(fid) +'/followees', {
+      headers: { "Content-Type": "application/json" },
+      credentials: "include"
+    })
+      .then(res => res.json())
+  }
+
+  checkFollowing=(fid)=>{
+    return fetch(this.API_URL + "user/"+String(fid) +'/checkfollow', {
+      headers: { "Content-Type": "application/json" },
+      credentials: "include"
+    })
+      .then(res => res.json())
+  }
+
+
+
   getUserCount = () => {
     return fetch(this.API_URL + "usercount", {
       credentials: "include"

@@ -271,7 +271,7 @@ class Track extends Component {
                         : this.state.lyric}
                     </p>
                     {/* editor view */}
-                    {this.state.type !== 2 ? ( // is this user logged in as a type 2?(editor)
+                    {this.state.type !== "EDITOR" ? ( // is this user logged in as a type 2?(editor)
                       this.state.isLoggedIn === true ? (
                         <a href={`/profile`} target="_blank">
                           Switch to editor then refresh this page to edit{" "}

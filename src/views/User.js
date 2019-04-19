@@ -27,11 +27,150 @@ class User extends Component {
       artistLikes: [],
       trackLikes: [],
       commentLikes: [],
-      loaded: 0
+      loaded: 0, 
+      following: false, //current user in session is following the user page or not
+      followers: [],     //someone who is following the user page
+      followees: []
     };
   }
+  toggleFollowUser=()=>{ //follow or unfollow user, better than toggling since it always gives user a correct in case of user async
+    if(this.state.following===false){ 
+    userService.followUser(this.props.match.params.id).then(
+      res=>this.setState( {following:!this.state.following} ) ).catch(err=>
+        this.setState({following: null })//show err on button to imply user to refresh
+      ).then( ()=>{
+        userService.findFollowersById(this.props.match.params.id).then(res=> this.setState({followers:res})).catch(
+          err=>this.setState({followers:null})  //to show  to imply user to refresh
+        )
+      })
+    }
 
-  componentDidMount() {
+    else if(this.state.following===true){
+      userService.unfollowUser(this.props.match.params.id).then(
+        res=>this.setState( {following:!this.state.following} ) ).catch(err=>
+          this.setState({following: null } ) )//show err on button to imply user to refresh
+          .then( ()=>{
+            userService.findFollowersById(this.props.match.params.id).then(res=> this.setState({followers:res})).catch(
+              err=>this.setState({followers:null})  //to show  to imply user to refresh
+            )
+          })
+        }
+      
+    }
+  
+  componentWillReceiveProps(nextProps){
+    this.state={
+      country: "",
+      displayName: "",
+      userId: null,
+      pageId: nextProps.match.params.id,
+      isMyself: false,
+      isLoggedIn: false,
+      photo: "",
+      comments: [],
+      albumLikes: [],
+      artistLikes: [],
+      trackLikes: [],
+      commentLikes: [],
+      loaded: 0, 
+      following: false, //current user in session is following the user page or not
+      followers: [],     //someone who is following the user page
+      followees: []
+    }
+
+    userService.findFollowersById(nextProps.match.params.id).then(res=> this.setState({followers:res})).catch(
+      err=>this.setState({followers:null})  //to show  to imply user to refresh
+    )
+
+    userService.findFolloweesById(nextProps.match.params.id).then(res=> this.setState({followees:res}) ).catch(
+      err=>this.setState({followees:null})  // show  to imply user to refresh
+     ) 
+
+    userService.checkFollowing(nextProps.match.params.id).then(res=>
+      this.setState( {following:res.following} )).catch(  err=>
+        this.setState({following: null }) )
+
+    userService.getCurrentUser().then(user => {
+      // user loggedin and it's the user's page
+      if (user._id !== -1 && user._id === nextProps.match.params.id) {
+        console.log("myself");
+        this.setState({
+          isLoggedIn: true,
+          isMyself: true
+        });
+        // user loggedin but it's not the user's page
+      } else if (user._id !== -1 && user._id !== nextProps.match.params.id) {
+        this.setState({
+          isLoggedIn: true
+        });
+      }
+      // find user profile by id
+      userService.findUserById(nextProps.match.params.id).then(user => {
+        console.log("others");
+        this.setState({
+          userId: user._id,
+          displayName: user.displayName,
+          photo: user.photo,
+          country: user.country,
+          bio: user.bio,
+          loaded: this.state.loaded + 1
+        });
+      });
+      subjectService
+        .findCommentsByUserId(nextProps.match.params.id)
+        .then(comments => {
+          // console.log(comments);
+          this.setState({
+            comments,
+            loaded: this.state.loaded + 1
+          });
+        });
+      subjectService
+        .findCommentLikesByUserId(nextProps.match.params.id)
+        .then(commentLikes => {
+          var comments = [];
+          for (var i = 0; i < commentLikes.length; i++) {
+            comments.push(commentLikes[i].comment);
+          }
+          console.log(comments);
+          this.setState({
+            commentLikes: comments,
+            loaded: this.state.loaded + 1
+          });
+        });
+      subjectService
+        .findSubjectLikesByUserId(nextProps.match.params.id)
+        .then(subjectLikes => {
+          for (var i = 0; i < subjectLikes.length; i++) {
+            if (subjectLikes[i].subject.type === "album") {
+              this.state.albumLikes.push(subjectLikes[i]);
+            } else if (subjectLikes[i].subject.type === "artist") {
+              this.state.artistLikes.push(subjectLikes[i]);
+            } else if (subjectLikes[i].subject.type === "track") {
+              this.state.trackLikes.push(subjectLikes[i]);
+            }
+          }
+          console.log(subjectLikes);
+          this.setState({
+            loaded: this.state.loaded + 1
+          });
+        });
+    });
+
+  }
+  componentDidMount() { //we had better load info async for user experience
+    userService.findFollowersById(this.props.match.params.id).then(res=> this.setState({followers:res})).catch(
+      err=>this.setState({followers:null})  //to show  to imply user to refresh
+    )
+
+    userService.findFolloweesById(this.props.match.params.id).then(res=> this.setState({followees:res}) ).catch(
+      err=>this.setState({followees:null})  // show  to imply user to refresh
+     ) 
+
+    userService.checkFollowing(this.props.match.params.id).then(res=>
+      this.setState( {following:res.following} )).catch(  err=>
+        this.setState({following: null }) )
+
     userService.getCurrentUser().then(user => {
       // user loggedin and it's the user's page
       if (user._id !== -1 && user._id === this.props.match.params.id) {
@@ -124,6 +263,8 @@ class User extends Component {
   };
 
   render() {
+    console.log("followees",this.state.followees)
+    console.log("followers",this.state.followers)
     return (
       this.state.loaded === 4 && (
         <div className="container">
@@ -171,9 +312,18 @@ class User extends Component {
                     <button
                       type="button"
                       className="btn btn-light mt-2"
-                      onClick={this.followHandler}
+                      onClick={this.toggleFollowUser}
                     >
-                      <i className="fas fa-plus" /> Follow
+                  {(function(state) {
+        switch(true) {
+          case state.following===true:
+            return <div> <i className="fas fa-minus" /> unfollow</div>;
+          case state.following===false:
+            return <div> <i className="fas fa-minus" /> follow</div>;
+          default:
+            return <div> <i className="fas fa-times" /> error, refresh</div>;
+        }
+      })( this.state)}
                     </button>
                   </div>
                 ) : null}
@@ -191,7 +341,49 @@ class User extends Component {
               </div>
             </div>
           </div>
+          
+          <div id="followers">
+            <div className="row mt-2">
+              <div className="col">
+                <span>Followed By</span>
+              </div>
+            </div>
+            <hr className="user-hr" />
+            <div className="row m-2">
+            { this.state.followers ? this.state.followers.map( (follower)=>
+            <div>
+            {follower.follower? //follower found in database (or not)
+            <div>
+            <span style={{whiteSpace:"nowrap", marginTop:"3px"}}> &middot;<Link to={"/user/"+follower.follower._id}>{follower.follower.displayName}</Link>&nbsp;
+            <img src={follower.follower.photo} width="25px" height="25px"></img>
+            </span>
+</div>
+            
+            :null} 
+            </div>) 
+            :  <div>Cannot get followers, try refresh</div>}
+            </div>
+          </div>
 
+          <div id="followees">
+            <div className="row mt-2">
+              <div className="col">
+                <span>Following</span>
+              </div>
+            </div>
+            <hr className="user-hr" />
+            <div className="row m-2">
+            { this.state.followees ? this.state.followees.map(followee=>
+            followee.followee?
+            <span style={{whiteSpace:"nowrap", marginTop:"3px"}}>  &middot;<Link to={"/user/"+followee.followee._id}>{followee.followee.displayName}</Link> &nbsp;
+            <img src={followee.followee.photo} width="25px" height="25px"></img>
+            </span>
+            
+            :null ) 
+            :  <div>Cannot get followees, try refresh</div>}
+            </div>
+          </div>
+          
           <div id="my-comments">
             <div className="row mt-2">
               <div className="col">
@@ -255,7 +447,11 @@ class User extends Component {
               <ItemList subjectLikes={this.state.trackLikes} />
             </div>
           </div>
+
+
         </div>
+
+        
       )
     );
   }

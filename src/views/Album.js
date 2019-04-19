@@ -26,7 +26,7 @@ class Album extends Component {
       commentLikes: [],
       showIntro: true,
       intro: "",
-      type: 1,
+      type: "MEMBER",
       editing: false
     };
   }
@@ -268,7 +268,7 @@ class Album extends Component {
                         : this.state.intro}
                     </p>
                     {/* editor view */}
-                    {this.state.type !== 2 ? ( //is this user logged in as a type 2?(editor)
+                    {this.state.type !== "EDITOR" ? ( //is this user logged in as a type 2?(editor)
                       this.state.isLoggedIn === true ? (
                         <a href={`/profile`} target="_blank">
                           Switch to editor and refresh this page to edit{" "}
