@@ -2,7 +2,7 @@ npm install react-responsive-carousel --save
 please set port in port.js, before go to heroku prod
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-
+解决了subject可能无type的bug
 最新的部署有如下bug
 解决了editor type不能编辑的bug
 解决了 bug in userLocal and spotify login and make them transactional（两种登录duplicate key的bug）
