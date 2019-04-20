@@ -2,9 +2,10 @@
 
 TuneS is a music search and social website powered by Spotify Web API. Major features are:
 
-* Serch subject by track / album / artist.
+* Search track/album/artist and view details.
 * Like subject or comment.
 * Comment on the subject.
+* Edit album/artist introduction and track lyric.
 * Follow users.
 * View user profile.
 
