@@ -145,7 +145,7 @@ class RouterBoard extends Component {
                 )}
               />
               <Route
-                path="/user/:id"
+                path="/profile/:id"
                 exact
                 render={props => (
                   <User {...props} logoutStatus={this.state.logoutStatus} />
