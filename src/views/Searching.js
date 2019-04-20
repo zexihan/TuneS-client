@@ -242,7 +242,7 @@ class Searching extends Component {
                   }}
                 >
                   <button
-                    className="btn btn-outline-secondary mx-1"
+                    className="btn btn-outline-secondary m-1"
                     type="button"
                     onClick={() => this.search(i * 20)}
                   >
