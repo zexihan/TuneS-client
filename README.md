@@ -2,12 +2,14 @@ npm install react-responsive-carousel --save
 please set port in port.js, before go to heroku prod
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-
-resolve bug in userLocal and spotify login and make them transactional
-
-解决了从别人tab到自己的my tuns不会更新的bug，通过加入componentwillreceiveprops
-优化了若干后端不transactional，和不验证是否为json内容是否为string的不够robust的代码
+解决了subject可能无type的bug
+最新的部署有如下bug
+解决了editor type不能编辑的bug
+解决了 bug in userLocal and spotify login and make them transactional（两种登录duplicate key的bug）
+解决了从别人用户界面按navbar点到自己的my tuns，还停留在别人用户信息的bug，通过加入componentwillreceiveprops解决
+优化了若干后端不transactional，和不验证json内容是否为string的不够robust的代码
 完成了用户follow，unfollow，checkfollowing，看关注人，被关注人
+
 ## Available Scripts
 
 In the project directory, you can run:
