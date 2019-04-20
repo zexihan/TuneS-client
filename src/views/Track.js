@@ -207,7 +207,7 @@ class Track extends Component {
                 ")"
             }}
           />
-          <div className="content subject-content mt-md-5 mt-sm-3">
+          <div className="content subject-content mt-md-5 mt-sm-3 mt-2">
             <div className="row">
               <div className="col-sm-12 col-md-6">
                 <h1 className="title">{this.state.track.name}</h1>
