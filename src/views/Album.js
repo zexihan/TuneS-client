@@ -25,6 +25,7 @@ class Album extends Component {
       isLiked: false,
       commentLikes: [],
       showIntro: true,
+      prevIntro: "",
       intro: "",
       type: "MEMBER",
       editing: false
@@ -35,7 +36,7 @@ class Album extends Component {
     subjectService
       .getSubjectById(this.props.match.params.id)
       .then(res => {
-        this.setState({ intro: res.intro });
+        this.setState({ intro: res.intro, prevIntro: res.intro });
       })
       .catch(err => alert("cannot find intro"));
 
@@ -175,7 +176,12 @@ class Album extends Component {
         intro: this.state.intro,
         type: "album"
       })
-      .then(res => this.setState({ editing: !this.state.editing }))
+      .then(res =>
+        this.setState({
+          editing: !this.state.editing,
+          prevIntro: this.state.intro
+        })
+      )
       .catch(err => alert("edit error/ you may not be an editor"));
     // subjectService.updateIntro
   };
@@ -298,7 +304,10 @@ class Album extends Component {
                         <button
                           className="btn btn-light mr-2"
                           onClick={() =>
-                            this.setState({ editing: !this.state.editing })
+                            this.setState({
+                              editing: !this.state.editing,
+                              intro: this.state.prevIntro
+                            })
                           }
                         >
                           Cancel

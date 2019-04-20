@@ -24,6 +24,7 @@ class Track extends Component {
       isLiked: false,
       commentLikes: [],
       showLyric: true,
+      prevLyric: "",
       lyric: "",
       type: 1,
       editing: false
@@ -34,7 +35,7 @@ class Track extends Component {
     subjectService
       .getSubjectById(this.props.match.params.id)
       .then(res => {
-        this.setState({ lyric: res.lyric });
+        this.setState({ lyric: res.lyric, prevLyric: res.lyric });
       })
       .catch(err => alert("cannot find lyric"));
 
@@ -174,12 +175,24 @@ class Track extends Component {
         lyric: this.state.lyric,
         type: "track"
       })
-      .then(res => this.setState({ editing: !this.state.editing }))
+      .then(res =>
+        this.setState({
+          editing: !this.state.editing,
+          prevLyric: this.state.lyric
+        })
+      )
       .catch(err => alert("edit error/ you may not be an editor"));
     // subjectService.updateLyric
   };
 
   render() {
+    const lyrics = this.state.lyric.split(/\r\n|\r|\n/).map((line, index) => (
+      <p className="m-0" key={index}>
+        {line}
+        <br />
+      </p>
+    ));
+
     return (
       ((this.state.isLoggedIn === true && this.state.loaded === 4) ||
         (this.state.isLoggedIn === false &&
@@ -265,11 +278,11 @@ class Track extends Component {
 
                 {this.state.showLyric ? ( // show/hide lyric info
                   <div className="my-3">
-                    <p>
+                    <div className="text-center">
                       {!this.state.lyric
                         ? "No lyric yet, you can create one!"
-                        : this.state.lyric}
-                    </p>
+                        : lyrics}
+                    </div>
                     {/* editor view */}
                     {this.state.type !== "EDITOR" ? ( // is this user logged in as a type 2?(editor)
                       this.state.isLoggedIn === true ? (
@@ -301,7 +314,10 @@ class Track extends Component {
                         <button
                           className="btn btn-light my-2 mr-2"
                           onClick={() =>
-                            this.setState({ editing: !this.state.editing })
+                            this.setState({
+                              editing: !this.state.editing,
+                              lyric: this.state.prevLyric
+                            })
                           }
                         >
                           Cancel
