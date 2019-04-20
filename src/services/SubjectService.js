@@ -112,8 +112,8 @@ class SubjectService {
   };
 
   findCommentsByUserId = id => {
-    console.log(this.API_URL + "/profile/" + id + "/comments");
-    return fetch(this.API_URL + "/profile/" + id + "/comments", {
+    console.log(this.API_URL + "/user/" + id + "/comments");
+    return fetch(this.API_URL + "/user/" + id + "/comments", {
       credentials: "include"
     })
       .then(res => {
@@ -251,7 +251,7 @@ class SubjectService {
   };
 
   findSubjectLikesByUserId = id => {
-    return fetch(this.API_URL + "/profile/" + id + "/likes/subject", {
+    return fetch(this.API_URL + "/user/" + id + "/likes/subject", {
       method: "GET",
       credentials: "include"
     })
@@ -267,7 +267,7 @@ class SubjectService {
   };
 
   findCommentLikesByUserId = id => {
-    return fetch(this.API_URL + "/profile/" + id + "/likes/comment", {
+    return fetch(this.API_URL + "/user/" + id + "/likes/comment", {
       method: "GET",
       credentials: "include"
     })
