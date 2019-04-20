@@ -200,7 +200,7 @@ class Artist extends Component {
                 ")"
             }}
           />
-          <div className="content subject-content mt-md-5 mt-sm-3">
+          <div className="content subject-content mt-md-5 mt-sm-3 mt-2">
             <div className="row">
               <div className="col-sm-12 col-md-6">
                 <h1 className="title">{this.state.artist.name}</h1>
@@ -271,14 +271,14 @@ class Artist extends Component {
                         : this.state.intro}
                     </p>
                     {/* editor view */}
-                    {this.state.type !== "EDITOR" ? ( //is this user logged in as a type 2?(editor)
+                    {this.state.type !== "EDITOR" ? ( //is this user logged in as an EDITOR
                       this.state.isLoggedIn === true ? (
                         <a href={`/profile`} target="_blank">
                           Switch to editor and refresh this page to edit{" "}
                         </a> //is logged in another user type
                       ) : (
                         <a href="#" data-toggle="modal" data-target="#login">
-                          Login and be an editor to edit{" "}
+                          Log in and be an editor to edit{" "}
                         </a>
                       )
                     ) : this.state.editing === true ? (
@@ -343,7 +343,7 @@ class Artist extends Component {
               </div>
             </div>
 
-            <div className="row comments my-md-5 my-sm-3">
+            <div className="row comments my-4">
               <div className="col">
                 <h4>Comment</h4>
 
@@ -391,7 +391,7 @@ class Artist extends Component {
                 )}
 
                 <h5>Latest comments</h5>
-                {this.state.comments.map((comment, i) => (
+                {this.state.comments.length > 0 ? this.state.comments.map((comment, i) => (
                   <div className="comment-list-item" key={i}>
                     <hr className="comment-hr" />
 
@@ -439,7 +439,7 @@ class Artist extends Component {
                       </div>
                     </div>
                   </div>
-                ))}
+                )) : <div>No comment yet</div>}
               </div>
             </div>
           </div>

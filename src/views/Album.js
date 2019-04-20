@@ -201,7 +201,7 @@ class Album extends Component {
                 ")"
             }}
           />
-          <div className="content subject-content mt-md-5 mt-sm-3">
+          <div className="content subject-content mt-md-5 mt-sm-3 mt-2">
             <div className="row">
               <div className="col-md-6">
                 <h1 className="title">{this.state.album.name}</h1>
@@ -274,14 +274,14 @@ class Album extends Component {
                         : this.state.intro}
                     </p>
                     {/* editor view */}
-                    {this.state.type !== "EDITOR" ? ( //is this user logged in as a type 2?(editor)
+                    {this.state.type !== "EDITOR" ? ( //is this user logged in as an EDITOR
                       this.state.isLoggedIn === true ? (
                         <a href={`/profile`} target="_blank">
                           Switch to editor and refresh this page to edit{" "}
                         </a> //is logged in another user type
                       ) : (
                         <a href="#" data-toggle="modal" data-target="#login">
-                          Login and be an editor to edit{" "}
+                          Log in and be an editor to edit{" "}
                         </a>
                       )
                     ) : this.state.editing === true ? (
@@ -348,7 +348,7 @@ class Album extends Component {
             </div>
 
             {/* hide/ show track links and even lyrics*/}
-            <div className="row comments my-5">
+            <div className="row comments my-4">
               <div className="col">
                 <h4>Tracks</h4>
                 {this.state.album.tracks.items.map(track => (
@@ -365,7 +365,7 @@ class Album extends Component {
               </div>
             </div>
 
-            <div className="row comments my-5">
+            <div className="row comments my-4">
               <div className="col">
                 <h4>Comment</h4>
 
@@ -414,7 +414,7 @@ class Album extends Component {
                 )}
 
                 <h5>Latest comments</h5>
-                {this.state.comments.map((comment, i) => (
+                {this.state.comments.length > 0 ? this.state.comments.map((comment, i) => (
                   <div className="comment-list-item" key={i}>
                     <hr className="comment-hr" />
 
@@ -462,7 +462,7 @@ class Album extends Component {
                       </div>
                     </div>
                   </div>
-                ))}
+                )) : <div>No comment yet</div>}
               </div>
             </div>
           </div>

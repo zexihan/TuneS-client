@@ -280,18 +280,18 @@ class Track extends Component {
                   <div className="my-3">
                     <div className="text-center">
                       {!this.state.lyric
-                        ? "No lyric yet, you can create one!"
+                        ? "No lyric yet, you can add one!"
                         : lyrics}
                     </div>
                     {/* editor view */}
-                    {this.state.type !== "EDITOR" ? ( // is this user logged in as a type 2?(editor)
+                    {this.state.type !== "EDITOR" ? ( // is this user logged in as an EDITOR
                       this.state.isLoggedIn === true ? (
                         <a href={`/profile`} target="_blank">
                           Switch to editor then refresh this page to edit{" "}
                         </a> // is logged in another user type
                       ) : (
                         <a href="#" data-toggle="modal" data-target="#login">
-                          Login and be an editor to edit{" "}
+                          Log in and be an editor to edit{" "}
                         </a>
                       )
                     ) : this.state.editing === true ? (
@@ -356,7 +356,7 @@ class Track extends Component {
               </div>
             </div>
 
-            <div className="row comments my-md-5 my-sm-3">
+            <div className="row comments my-4">
               <div className="col">
                 <h4>Comment</h4>
 
@@ -404,7 +404,7 @@ class Track extends Component {
                 )}
 
                 <h5>Latest comments</h5>
-                {this.state.comments.map((comment, i) => (
+                {this.state.comments.length > 0 ? this.state.comments.map((comment, i) => (
                   <div className="comment-list-item" key={i}>
                     <hr className="comment-hr" />
 
@@ -452,7 +452,7 @@ class Track extends Component {
                       </div>
                     </div>
                   </div>
-                ))}
+                )) : <div>No comment yet</div>}
               </div>
             </div>
           </div>

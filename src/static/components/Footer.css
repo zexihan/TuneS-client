@@ -9,7 +9,7 @@ body {
 }
 
 .foot {
-    background-color: rgb(247, 247, 247);
+    background-color: rgba(247, 247, 247, 0.7);
     height: 40px;
     padding-left: 5vw;
     padding-top: 8px;

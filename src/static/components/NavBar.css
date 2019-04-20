@@ -7,7 +7,7 @@
 }
 
 .navbar-custom {
-    background-color: rgba(85, 87, 83, 1) !important;
+    background-color: rgba(85, 87, 83, 0.8) !important;
 }
 /* change the brand and text color */
 .navbar-custom .navbar-brand,
