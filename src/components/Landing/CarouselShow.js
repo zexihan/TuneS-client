@@ -12,10 +12,10 @@ const CarouselShow = () => (
         <img src={`/images/carousel-1.jpg`} className="d-block w-100" alt="..." />
       </div>
       <div className="carousel-item">
-        <img src={`/images/carousel-1.jpg`} className="d-block w-100" alt="..." />
+        <img src={`/images/carousel-2.jpg`} className="d-block w-100" alt="..." />
       </div>
       <div className="carousel-item">
-        <img src={`/images/carousel-1.jpg`} className="d-block w-100" alt="..." />
+        <img src={`/images/carousel-3.jpg`} className="d-block w-100" alt="..." />
       </div>
     </div>
     <a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">

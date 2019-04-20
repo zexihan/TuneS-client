@@ -3,15 +3,15 @@ import { Link } from "react-router-dom";
 
 import '../../static/components/TopCharts.css';
 
-const TopCharts = ({ topTracks, topAlbums, topArtists }) => (
-  <div className="my-2">
-      <ul className="nav nav-pills mb-2" id="pills-tab" role="tablist">
+const TopChartsMobile = ({ topTracks, topAlbums, topArtists }) => (
+  <div className="mx-3 my-2">
+      <ul className="nav nav-pills mb-2" id="pills-tab-m" role="tablist">
         <li className="nav-item">
           <a
             className="nav-link active"
-            id="pills-tracks-tab"
+            id="pills-tracks-tab-m"
             data-toggle="pill"
-            href="#pills-tracks"
+            href="#pills-tracks-m"
             role="tab"
             aria-selected="true"
           >
@@ -21,9 +21,9 @@ const TopCharts = ({ topTracks, topAlbums, topArtists }) => (
         <li className="nav-item">
           <a
             className="nav-link"
-            id="pills-artists-tab"
+            id="pills-artists-tab-m"
             data-toggle="pill"
-            href="#pills-artists"
+            href="#pills-artists-m"
             role="tab"
             aria-selected="false"
           >
@@ -33,9 +33,9 @@ const TopCharts = ({ topTracks, topAlbums, topArtists }) => (
         <li className="nav-item">
           <a
             className="nav-link"
-            id="pills-albums-tab"
+            id="pills-albums-tab-m"
             data-toggle="pill"
-            href="#pills-albums"
+            href="#pills-albums-m"
             role="tab"
             aria-selected="false"
           >
@@ -44,10 +44,10 @@ const TopCharts = ({ topTracks, topAlbums, topArtists }) => (
         </li>
       </ul>
     
-    <div className="tab-content" id="pills-tabContent">
+    <div className="tab-content" id="pills-tabContent-m">
       <div
         className="tab-pane fade show active"
-        id="pills-tracks"
+        id="pills-tracks-m"
         role="tabpanel"
         aria-labelledby="pills-tracks-tab"
       >
@@ -60,7 +60,7 @@ const TopCharts = ({ topTracks, topAlbums, topArtists }) => (
                     {track.title}
                   </Link>
                 </td>
-                <td className="ranking">{i + 1}</td>
+                <td className="ranking text-right">{i + 1}</td>
               </tr>
             ))}
           </tbody>
@@ -68,7 +68,7 @@ const TopCharts = ({ topTracks, topAlbums, topArtists }) => (
       </div>
       <div
         className="tab-pane fade"
-        id="pills-albums"
+        id="pills-albums-m"
         role="tabpanel"
         aria-labelledby="pills-albums-tab"
       >
@@ -81,7 +81,7 @@ const TopCharts = ({ topTracks, topAlbums, topArtists }) => (
                     {album.title}
                   </Link>
                 </td>
-                <td className="ranking text-center">{i + 1}</td>
+                <td className="ranking text-right">{i + 1}</td>
               </tr>
             ))}
           </tbody>
@@ -90,7 +90,7 @@ const TopCharts = ({ topTracks, topAlbums, topArtists }) => (
 
       <div
         className="tab-pane fade"
-        id="pills-artists"
+        id="pills-artists-m"
         role="tabpanel"
         aria-labelledby="pills-artists-tab"
       >
@@ -103,7 +103,7 @@ const TopCharts = ({ topTracks, topAlbums, topArtists }) => (
                     {artist.title}
                   </Link>
                 </td>
-                <td className="ranking">{i + 1}</td>
+                <td className="ranking text-right">{i + 1}</td>
               </tr>
             ))}
           </tbody>
@@ -113,4 +113,4 @@ const TopCharts = ({ topTracks, topAlbums, topArtists }) => (
   </div>
 );
 
-export default TopCharts;
+export default TopChartsMobile;

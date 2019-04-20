@@ -5,6 +5,7 @@ import '../static/views/Landing.css';
 
 import AlbumCardList from '../components/Landing/AlbumCardList';
 import TopCharts from '../components/Landing/TopCharts';
+import TopChartsMobile from '../components/Landing/TopChartsMobile';
 import CarouselShow from '../components/Landing/CarouselShow';
 import SearchService from '../services/SearchService';
 import UserService from '../services/UserService';
@@ -233,6 +234,17 @@ class Landing extends Component {
                   <div className="adv-1-content">
                     <CarouselShow />
                   </div>
+                </div>
+              </div>
+              <div className="row my-4 d-block d-sm-block d-md-none">
+                <div className="col">
+                  <h5>Top Charts</h5>
+                  <hr className="left-hr" />
+                  <TopChartsMobile
+                    topTracks={this.state.topTracks.slice(0,3)}
+                    topAlbums={this.state.topAlbums.slice(0, 3)}
+                    topArtists={this.state.topArtists.slice(0, 3)}
+                  />
                 </div>
               </div>
               <div className="row adv-2 my-4">
