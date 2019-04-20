@@ -186,13 +186,6 @@ class Track extends Component {
   };
 
   render() {
-    const lyrics = this.state.lyric.split(/\r\n|\r|\n/).map((line, index) => (
-      <p className="m-0" key={index}>
-        {line}
-        <br />
-      </p>
-    ));
-
     return (
       ((this.state.isLoggedIn === true && this.state.loaded === 4) ||
         (this.state.isLoggedIn === false &&
@@ -237,24 +230,24 @@ class Track extends Component {
                           <i className="fas fa-heart" />
                         </span>
                       ) : (
-                        <span style={{ color: "black" }}>
-                          <i className="far fa-heart" />
-                        </span>
-                      )}
+                          <span style={{ color: "black" }}>
+                            <i className="far fa-heart" />
+                          </span>
+                        )}
                     </button>
                   </span>
                 ) : (
-                  <span>
-                    <a
-                      href="#"
-                      style={{ margin: "3px" }}
-                      data-toggle="modal"
-                      data-target="#login"
-                    >
-                      Log in to like
+                    <span>
+                      <a
+                        href="#"
+                        style={{ margin: "3px" }}
+                        data-toggle="modal"
+                        data-target="#login"
+                      >
+                        Log in to like
                     </a>
-                  </span>
-                )}
+                    </span>
+                  )}
 
                 {this.state.showLyric ? (
                   <button
@@ -266,22 +259,27 @@ class Track extends Component {
                     Hide Lyric
                   </button>
                 ) : (
-                  <button
-                    className="btn btn-light m-2"
-                    onClick={() =>
-                      this.setState({ showLyric: !this.state.showLyric })
-                    }
-                  >
-                    Show Lyric
+                    <button
+                      className="btn btn-light m-2"
+                      onClick={() =>
+                        this.setState({ showLyric: !this.state.showLyric })
+                      }
+                    >
+                      Show Lyric
                   </button>
-                )}
+                  )}
 
                 {this.state.showLyric ? ( // show/hide lyric info
                   <div className="my-3">
                     <div className="text-center">
                       {!this.state.lyric
                         ? "No lyric yet, you can add one!"
-                        : lyrics}
+                        : this.state.lyric.split(/\r\n|\r|\n/).map((line, index) => (
+                          <p className="m-0" key={index}>
+                            {line}
+                            <br />
+                          </p>
+                        ))}
                     </div>
                     {/* editor view */}
                     {this.state.type !== "EDITOR" ? ( // is this user logged in as an EDITOR
@@ -290,10 +288,10 @@ class Track extends Component {
                           Switch to editor then refresh this page to edit{" "}
                         </a> // is logged in another user type
                       ) : (
-                        <a href="#" data-toggle="modal" data-target="#login">
-                          Log in and be an editor to edit{" "}
-                        </a>
-                      )
+                          <a href="#" data-toggle="modal" data-target="#login">
+                            Log in and be an editor to edit{" "}
+                          </a>
+                        )
                     ) : this.state.editing === true ? (
                       <div>
                         <textarea
@@ -324,17 +322,17 @@ class Track extends Component {
                         </button>
                       </div>
                     ) : (
-                      <div>
-                        <button
-                          className="btn btn-light my-2 mr-2"
-                          onClick={() =>
-                            this.setState({ editing: !this.state.editing })
-                          }
-                        >
-                          Edit
+                          <div>
+                            <button
+                              className="btn btn-light my-2 mr-2"
+                              onClick={() =>
+                                this.setState({ editing: !this.state.editing })
+                              }
+                            >
+                              Edit
                         </button>
-                      </div>
-                    )}
+                          </div>
+                        )}
                   </div>
                 ) : null}
               </div>
@@ -395,13 +393,13 @@ class Track extends Component {
                     </div>
                   </div>
                 ) : (
-                  <div>
-                    <a href="#" data-toggle="modal" data-target="#login">
-                      Log in to add a comment
+                    <div>
+                      <a href="#" data-toggle="modal" data-target="#login">
+                        Log in to add a comment
                     </a>
-                    <hr className="comment-hr" />
-                  </div>
-                )}
+                      <hr className="comment-hr" />
+                    </div>
+                  )}
 
                 <h5>Latest comments</h5>
                 {this.state.comments.length > 0 ? this.state.comments.map((comment, i) => (
@@ -444,10 +442,10 @@ class Track extends Component {
                           {this.state.commentLikes
                             .map(x => x._id)
                             .includes(comment._id) ? (
-                            <i className="fas fa-thumbs-up" />
-                          ) : (
-                            <i className="far fa-thumbs-up" />
-                          )}
+                              <i className="fas fa-thumbs-up" />
+                            ) : (
+                              <i className="far fa-thumbs-up" />
+                            )}
                         </button>
                       </div>
                     </div>

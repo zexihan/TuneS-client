@@ -29,7 +29,7 @@ class Searching extends Component {
       let resList = await searchService.query(this.state.searchText, this.state.searchType, this.state.offset);
       console.log(await resList);
       let subjects = [];
-      switch(this.state.searchType) {
+      switch (this.state.searchType) {
         case "track": {
           subjects = await resList.tracks.items;
           break;
@@ -100,9 +100,9 @@ class Searching extends Component {
   }
 
   onSearchKeyPressed = (e) => {
-    if(e.charCode === 13){
+    if (e.charCode === 13) {
       this.search(0);
-      this.props.history.push({pathname: "/subject_search", search: "?query=" + this.state.searchText + "&type=" + this.state.preSearchType + "&offset=" + 0});
+      this.props.history.push({ pathname: "/search", search: "?query=" + this.state.searchText + "&type=" + this.state.preSearchType + "&offset=" + 0 });
     }
   }
 
@@ -137,7 +137,7 @@ class Searching extends Component {
               <div className="input-group-append">
                 <Link
                   to={{
-                    pathname: "/subject_search",
+                    pathname: "/search",
                     search:
                       "?query=" +
                       this.state.searchText +
@@ -231,7 +231,7 @@ class Searching extends Component {
               {[...Array(10).keys()].map(i => (
                 <Link
                   to={{
-                    pathname: "/subject_search",
+                    pathname: "/search",
                     search:
                       "?query=" +
                       this.state.searchText +

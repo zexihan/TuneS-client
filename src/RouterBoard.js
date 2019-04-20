@@ -66,7 +66,7 @@ class RouterBoard extends Component {
     if (this.state.username === "" || this.state.password === "") {
       return alert("Username and password cannot be empty.");
     }
-    
+
     const user = {
       _id: this.state.username,
       password: this.state.password,
@@ -108,7 +108,7 @@ class RouterBoard extends Component {
                 )}
               />
               <Route
-                path="/subject_search"
+                path="/search"
                 exact
                 render={props => (
                   <Searching {...props} subjects={this.state.subjects} />
@@ -242,78 +242,78 @@ class RouterBoard extends Component {
                       </div>
                     </div>
                   ) : (
-                    <div className="col">
-                      <div className="form-group">
-                        <label htmlFor="register-username">Username*</label>
-                        <input
-                          id="register-username"
-                          type="text"
-                          className="form-control"
-                          placeholder="Enter username"
-                          onChange={e =>
-                            this.setState({ username: e.target.value })
-                          }
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="register-display-name">
-                          Display Name
+                      <div className="col">
+                        <div className="form-group">
+                          <label htmlFor="register-username">Username*</label>
+                          <input
+                            id="register-username"
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter username"
+                            onChange={e =>
+                              this.setState({ username: e.target.value })
+                            }
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label htmlFor="register-display-name">
+                            Display Name
                         </label>
-                        <input
-                          id="register-display-name"
-                          type="text"
-                          className="form-control"
-                          placeholder="Name"
-                          onChange={e =>
-                            this.setState({ displayName: e.target.value })
-                          }
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="register-email">Email</label>
-                        <input
-                          id="register-email"
-                          type="email"
-                          className="form-control"
-                          placeholder="Email"
-                          onChange={e =>
-                            this.setState({ email: e.target.value })
-                          }
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="register-password">Password*</label>
-                        <input
-                          id="register-password"
-                          type="password"
-                          className="form-control"
-                          placeholder="Password"
-                          onChange={e =>
-                            this.setState({ password: e.target.value })
-                          }
-                        />
-                      </div>
-                      <button
-                        className="btn btn-primary btn-block"
-                        onClick={() => this.register()}
-                      >
-                        Register
-                      </button>
-                      
-                      <div className="mt-2">
-                        Have an account already?{" "}
-                        <a
-                          href="#"
-                          onClick={() =>
-                            this.setState({ isRegistering: false })
-                          }
-                          style={{ color: "rgb(20, 146, 103)" }}
+                          <input
+                            id="register-display-name"
+                            type="text"
+                            className="form-control"
+                            placeholder="Name"
+                            onChange={e =>
+                              this.setState({ displayName: e.target.value })
+                            }
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label htmlFor="register-email">Email</label>
+                          <input
+                            id="register-email"
+                            type="email"
+                            className="form-control"
+                            placeholder="Email"
+                            onChange={e =>
+                              this.setState({ email: e.target.value })
+                            }
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label htmlFor="register-password">Password*</label>
+                          <input
+                            id="register-password"
+                            type="password"
+                            className="form-control"
+                            placeholder="Password"
+                            onChange={e =>
+                              this.setState({ password: e.target.value })
+                            }
+                          />
+                        </div>
+                        <button
+                          className="btn btn-primary btn-block"
+                          onClick={() => this.register()}
                         >
-                          Log in with TuneS
+                          Register
+                      </button>
+
+                        <div className="mt-2">
+                          Have an account already?{" "}
+                          <a
+                            href="#"
+                            onClick={() =>
+                              this.setState({ isRegistering: false })
+                            }
+                            style={{ color: "rgb(20, 146, 103)" }}
+                          >
+                            Log in with TuneS
                         </a>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                 </div>
 
                 <div className="row m-2">

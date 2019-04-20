@@ -35,7 +35,7 @@ class Landing extends Component {
 
   componentDidMount() {
     const callback = (res) => {
-      this.setState({playlist: res, loaded: this.state.loaded + 1});
+      this.setState({ playlist: res, loaded: this.state.loaded + 1 });
       console.log("playlistMount", this.state.playlist)
     };
     searchService.getSubject("playlist", "59ZbFPES4DQwEjBpWHzrtC", callback);
@@ -76,7 +76,7 @@ class Landing extends Component {
     let resList = await searchService.query(this.state.searchText, this.state.searchType, 0);
     console.log(await resList);
     var subjects = [];
-    switch(this.state.searchType) {
+    switch (this.state.searchType) {
       case "track": {
         subjects = await resList.tracks.items;
         break;
@@ -102,9 +102,9 @@ class Landing extends Component {
   }
 
   onSearchKeyPressed = (e) => {
-    if(e.charCode === 13){
+    if (e.charCode === 13) {
       this.search();
-      this.props.history.push({pathname: "/subject_search", search: "?query=" + this.state.searchText + "&type=" + this.state.searchType + "&offset=" + 0});
+      this.props.history.push({ pathname: "/search", search: "?query=" + this.state.searchText + "&type=" + this.state.searchType + "&offset=" + 0 });
     }
   }
 
@@ -136,7 +136,7 @@ class Landing extends Component {
                 <div className="input-group-append">
                   <Link
                     to={{
-                      pathname: "/subject_search",
+                      pathname: "/search",
                       search:
                         "?query=" +
                         this.state.searchText +
@@ -241,7 +241,7 @@ class Landing extends Component {
                   <h5>Top Charts</h5>
                   <hr className="left-hr" />
                   <TopChartsMobile
-                    topTracks={this.state.topTracks.slice(0,3)}
+                    topTracks={this.state.topTracks.slice(0, 3)}
                     topAlbums={this.state.topAlbums.slice(0, 3)}
                     topArtists={this.state.topArtists.slice(0, 3)}
                   />
