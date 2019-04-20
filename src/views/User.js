@@ -317,11 +317,11 @@ class User extends Component {
                   {(function(state) {
         switch(true) {
           case state.following===true:
-            return <div> <i className="fas fa-minus" /> unfollow</div>;
+            return <div> <i className="fas fa-minus" /> Unfollow</div>;
           case state.following===false:
-            return <div> <i className="fas fa-minus" /> follow</div>;
+            return <div> <i className="fas fa-plus" /> Follow</div>;
           default:
-            return <div> <i className="fas fa-times" /> error, refresh</div>;
+            return <div> <i className="fas fa-times" /> Error, refresh</div>;
         }
       })( this.state)}
                     </button>
