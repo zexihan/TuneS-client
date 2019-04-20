@@ -22,6 +22,10 @@ In src/port.js, you need to set the server url manually for testing. Currently, 
 
 In the project directory, you can run:
 
+### `npm install`
+
+Installs the dependencies in the local node_modules folder.
+
 ### `npm run start`
 
 Runs the app in the development mode.<br>
