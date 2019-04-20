@@ -421,7 +421,7 @@ class Track extends Component {
                         />
                       </div>
                       <div className="col">
-                        <Link to={`/user/${comment.user._id}`}>
+                        <Link to={`/profile/${comment.user._id}`}>
                           {comment.user.displayName}
                         </Link>
                         : {comment.content}

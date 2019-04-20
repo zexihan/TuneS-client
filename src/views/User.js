@@ -354,7 +354,7 @@ class User extends Component {
             <div>
             {follower.follower? //follower found in database (or not)
             <div>
-            <span style={{whiteSpace:"nowrap", marginTop:"3px"}}> &middot;<Link to={"/user/"+follower.follower._id}>{follower.follower.displayName}</Link>&nbsp;
+            <span style={{whiteSpace:"nowrap", marginTop:"3px"}}> &middot;<Link to={"/profile/"+follower.follower._id}>{follower.follower.displayName}</Link>&nbsp;
             <img src={follower.follower.photo} width="25px" height="25px"></img>
             </span>
 </div>
@@ -375,7 +375,7 @@ class User extends Component {
             <div className="row m-2">
             { this.state.followees ? this.state.followees.map(followee=>
             followee.followee?
-            <span style={{whiteSpace:"nowrap", marginTop:"3px"}}>  &middot;<Link to={"/user/"+followee.followee._id}>{followee.followee.displayName}</Link> &nbsp;
+            <span style={{whiteSpace:"nowrap", marginTop:"3px"}}>  &middot;<Link to={"/profile/"+followee.followee._id}>{followee.followee.displayName}</Link> &nbsp;
             <img src={followee.followee.photo} width="25px" height="25px"></img>
             </span>
             

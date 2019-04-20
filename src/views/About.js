@@ -49,19 +49,19 @@ const About = () => (
 
   //       <div className="col-6">
   //       <img src="https://media.licdn.com/dms/image/C4E03AQEI_Eu3rLYYeA/profile-displayphoto-shrink_200_200/0?e=1560988800&v=beta&t=u_ZneTnGOwyEbstsm_CbUtLLd4BIAwWXOIq9PpsNky0"></img>
-  //       <Link style={{color: "blue"}} to="/user/82i0hjusbye4l19l94bww4i02">Zhongheng Yang</Link>
+  //       <Link style={{color: "blue"}} to="/profile/82i0hjusbye4l19l94bww4i02">Zhongheng Yang</Link>
   //       <div>yang.zho@husky.neu.edu</div>
   //       </div>
 
   //       <div className="col-6">
   //       <img src="https://media.licdn.com/dms/image/C4E03AQHXSqn7Vzi23Q/profile-displayphoto-shrink_800_800/0?e=1560988800&v=beta&t=WgUdU0qc13qT7YnwR3RBg9vbDto0GhqAgifa-SQ3H2Q"></img>
-  //       <Link style={{color: "blue"}} to="/user/zexihan">Zexi Han</Link>
+  //       <Link style={{color: "blue"}} to="/profile/zexihan">Zexi Han</Link>
   //       <div>zexihan@outlook.com</div>
   //       </div>
 
   //       <div className="col-6">
   //       <img src="https://picsum.photos/200"></img>
-  //       <Link style={{color: "blue"}} to="/user/5els3kmgvakg7bj6vqzmkc2wb">Tao Ouyang</Link>
+  //       <Link style={{color: "blue"}} to="/profile/5els3kmgvakg7bj6vqzmkc2wb">Tao Ouyang</Link>
   //       <div>ouyang.ta@husky.neu.edu</div>
   //       </div>
 
@@ -79,7 +79,7 @@ const About = () => (
   //       <div className="card-body">
   //         <div className="card-title">
   //           <form>
-  //             <Link to="/user/zexihan">
+  //             <Link to="/profile/zexihan">
   //               <button
   //                 className="form-control btn btn-primary"
   //                 style={{ overflow: "hidden", whiteSpace: "nowrap" }}
@@ -108,7 +108,7 @@ const About = () => (
   //       <div className="card-body">
   //         <div className="card-title">
   //           <form>
-  //             <Link to="/user/82i0hjusbye4l19l94bww4i02">
+  //             <Link to="/profile/82i0hjusbye4l19l94bww4i02">
   //               <button
   //                 className="form-control btn btn-primary"
   //                 style={{ overflow: "hidden", whiteSpace: "nowrap" }}
@@ -137,7 +137,7 @@ const About = () => (
   //       <div className="card-body">
   //         <div className="card-title">
   //           <form>
-  //             <Link to="/user/5els3kmgvakg7bj6vqzmkc2wb">
+  //             <Link to="/profile/5els3kmgvakg7bj6vqzmkc2wb">
   //               <button
   //                 className="form-control btn btn-primary"
   //                 style={{ overflow: "hidden", whiteSpace: "nowrap" }}

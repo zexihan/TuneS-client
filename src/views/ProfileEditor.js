@@ -523,7 +523,7 @@ class ProfileEditor extends Component {
               <div className="col-sm-10">
                 <Link
                   className="btn btn-goto btn-block"
-                  to={`/user/${this.state.userId}`}
+                  to={`/profile/${this.state.userId}`}
                 >
                   Go to My TuneS
                 </Link>
