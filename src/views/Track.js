@@ -173,15 +173,15 @@ class Track extends Component {
     subjectService
       .updateSubjectLyricById(this.props.match.params.id, {
         lyric: this.state.lyric,
-        type: "track"
+        type: "track",
+        title: this.state.track.name,
+        image:
+          this.state.track.album.images.length > 0
+            ? this.state.track.album.images[0].url
+            : null,
       })
       .then(res =>
         this.setState({
-          title: this.state.track.name,
-          image:
-            this.state.track.album.images.length > 0
-              ? this.state.track.album.images[0].url
-              : null,
           editing: !this.state.editing,
           prevLyric: this.state.lyric
         })
