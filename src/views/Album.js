@@ -268,7 +268,7 @@ class Album extends Component {
 
                 {this.state.showIntro ? ( // show/hide intro info
                   <div className="my-3">
-                    <p>
+                    <p style={{whiteSpace:"pre"}}>
                       {!this.state.intro
                         ? "No intro yet, you can create one!"
                         : this.state.intro}

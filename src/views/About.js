@@ -14,8 +14,10 @@ const About = () => (
           <div className="card border-0 shadow about-card m-2">
             <img src={`/images/avatar1.png`} className="card-img-top" />
             <div className="card-body text-center">
-              <h5 className="card-title mb-0">Zhongheng Yang</h5>
-              <div className="card-text text-black-50">Web Developer</div>
+              <h5 className="card-title mb-0">
+              <Link to="/profile/mhfgbldv754yj6w3mp233viye">Zhongheng Yang</Link></h5>
+              <div className="card-text text-black-50">
+              </div>
               <hr className="about-hr" />
               <div className="card-text email">yang.zho@husky.neu.edu</div>
             </div>
@@ -25,7 +27,7 @@ const About = () => (
             <img src={`/images/avatar2.png`} className="card-img-top" />
             <div className="card-body text-center">
               <h5 className="card-title mb-0">Zexi Han</h5>
-              <div className="card-text text-black-50">Web Developer</div>
+              <div className="card-text text-black-50">Software Engineer</div>
               <hr className="about-hr" />
               <div className="card-text email">zexihan@outlook.com</div>
             </div>
@@ -35,7 +37,7 @@ const About = () => (
             <img src={`/images/avatar3.png`} className="card-img-top" />
             <div className="card-body text-center">
               <h5 className="card-title mb-0">Tao Ouyang</h5>
-              <div className="card-text text-black-50">Web Developer</div>
+              <div className="card-text text-black-50">Software Engineer</div>
               <hr className="about-hr" />
               <div className="card-text email">ouyang.ta@husky.neu.edu</div>
             </div>
