@@ -172,11 +172,17 @@ class Artist extends Component {
   changeIntro = () => {
     subjectService
       .updateSubjectIntroById(this.props.match.params.id, {
+
         intro: this.state.intro,
         type: "artist"
       })
       .then(res =>
         this.setState({
+          title: this.state.artist.name,
+          image:
+            this.state.artist.images.length > 0
+              ? this.state.artist.images[0].url
+              : null,
           editing: !this.state.editing,
           prevIntro: this.state.intro
         })

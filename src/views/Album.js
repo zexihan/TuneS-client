@@ -178,6 +178,11 @@ class Album extends Component {
       })
       .then(res =>
         this.setState({
+          title: this.state.album.name,
+          image:
+            this.state.album.images.length > 0
+              ? this.state.album.images[0].url
+              : null,
           editing: !this.state.editing,
           prevIntro: this.state.intro
         })
