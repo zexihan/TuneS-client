@@ -1,4 +1,4 @@
-export default "https://tune-server.herokuapp.com";
+export default "https://tunes-api.herokuapp.com";
 // "https://tune-server.herokuapp.com";
 // "https://tunes-api.herokuapp.com";
 // "http://localhost:5000"
