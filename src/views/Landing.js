@@ -72,31 +72,31 @@ class Landing extends Component {
     );
   }
 
-  search = async () => {
-    if (!this.state.searchText) {
-      return;
-    }
+  // search = async () => {
+  //   if (!this.state.searchText) {
+  //     return;
+  //   }
 
-    let resList = await searchService.query(this.state.searchText, this.state.searchType, 0);
-    console.log(await resList);
-    var subjects = [];
-    switch (this.state.searchType) {
-      case "track": {
-        subjects = await resList.tracks.items;
-        break;
-      }
-      case "artist": {
-        subjects = await resList.artists.items;
-        break;
-      }
-      case "album": {
-        subjects = await resList.albums.items;
-        break;
-      }
-    }
-    console.log(subjects);
-    this.props.search(subjects);
-  }
+  //   let resList = await searchService.query(this.state.searchText, this.state.searchType, 0);
+  //   console.log(await resList);
+  //   var subjects = [];
+  //   switch (this.state.searchType) {
+  //     case "track": {
+  //       subjects = await resList.tracks.items;
+  //       break;
+  //     }
+  //     case "artist": {
+  //       subjects = await resList.artists.items;
+  //       break;
+  //     }
+  //     case "album": {
+  //       subjects = await resList.albums.items;
+  //       break;
+  //     }
+  //   }
+  //   console.log(subjects);
+  //   this.props.search(subjects);
+  // }
 
   onSearchFieldChanged = (e) => {
     console.log(e.target.value);
@@ -107,7 +107,7 @@ class Landing extends Component {
 
   onSearchKeyPressed = (e) => {
     if (e.charCode === 13) {
-      this.search();
+      // this.search();
       this.props.history.push({ pathname: "/search", search: "?query=" + this.state.searchText + "&type=" + this.state.searchType + "&offset=" + 0 });
     }
   }
@@ -232,6 +232,8 @@ class Landing extends Component {
           {/*</div>*/}
 
           <div className="row landing-content my-3">
+
+          {/* mobile */}
             <div className="col-md-9 col-sm-12 left-area">
               <div className="row adv-1 my-1">
                 <div className="col">
@@ -270,6 +272,8 @@ class Landing extends Component {
               {/*</div>*/}
               {/*</div>*/}
             </div>
+            
+            {/* non-mobile */}
             <div className="col-3 right-area d-none d-md-block">
               <div className="row side-1">
                 <div className="col">

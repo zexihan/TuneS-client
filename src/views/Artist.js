@@ -172,6 +172,11 @@ class Artist extends Component {
   changeIntro = () => {
     subjectService
       .updateSubjectIntroById(this.props.match.params.id, {
+        title: this.state.artist.name,
+        image:
+          this.state.artist.images.length > 0
+            ? this.state.artist.images[0].url
+            : null,
         intro: this.state.intro,
         type: "artist"
       })
@@ -265,7 +270,7 @@ class Artist extends Component {
 
                 {this.state.showIntro ? ( // show/hide intro info
                   <div className="my-3">
-                    <p>
+                    <p style={{whiteSpace:"pre"}}>
                       {!this.state.intro
                         ? "No intro yet, you can create one!"
                         : this.state.intro}

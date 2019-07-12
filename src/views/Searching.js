@@ -13,7 +13,7 @@ class Searching extends Component {
     this.state = {
       query: queryString.parse(this.props.location.search).query,
       searchText: queryString.parse(this.props.location.search).query,
-      subjects: "",
+      subjects: [],
       preSearchType: queryString.parse(this.props.location.search).type,
       searchType: queryString.parse(this.props.location.search).type,
       offset: queryString.parse(this.props.location.search).offset
@@ -26,7 +26,9 @@ class Searching extends Component {
       if (!this.state.searchText) {
         return;
       }
+      try{
       let resList = await searchService.query(this.state.searchText, this.state.searchType, this.state.offset);
+      
       console.log(await resList);
       let subjects = [];
       switch (this.state.searchType) {
@@ -44,10 +46,17 @@ class Searching extends Component {
         }
       }
       // this.props.search(subjects);
+      
       this.setState({
         subjects
       });
     }
+    catch(error){
+      this.setState({
+        subjects: null
+      });
+    }
+  }
     console.log("!!!!!!!");
   }
 
@@ -69,6 +78,7 @@ class Searching extends Component {
       return;
     }
     console.log("search");
+    try{
     let resList = await searchService.query(this.state.searchText, this.state.preSearchType, offset);
     let subjects = [];
     switch (this.state.preSearchType) {
@@ -89,6 +99,13 @@ class Searching extends Component {
       subjects: subjects,
       searchType: this.state.preSearchType
     });
+  }
+  catch(error){
+    // alert("error/ try to use english to search")
+    this.setState({
+      subjects: null
+    });
+  }
     console.log(this.state.subjects);
   }
 
@@ -214,6 +231,12 @@ class Searching extends Component {
             </h2>
           </div>
         </div>
+        {!this.state.subjects? 
+        <div>
+        <h3 style={{margin:"15px"}}>   search error, try to use ENGLISH characters/ or pingyin(拼音) to search</h3>
+        <h3 style={{margin:"15px"}}>   For instance, search 周杰伦 by Jay Chou</h3>
+        </div>
+        :<div>
         {this.state.subjects.length ? (
           <div className="row">
             <div className="col mx-5">
@@ -224,8 +247,10 @@ class Searching extends Component {
             </div>
           </div>
         ) : null}
+        </div>
+        }
 
-        {this.state.subjects.length ? (
+        { ( this.state.subjects && this.state.subjects.length ) ? (
           <div className="row">
             <div className="col mx-5 my-4">
               {[...Array(10).keys()].map(i => (
