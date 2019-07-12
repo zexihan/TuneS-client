@@ -38,7 +38,11 @@ class Landing extends Component {
       this.setState({ playlist: res, loaded: this.state.loaded + 1 });
       console.log("playlistMount", this.state.playlist)
     };
-    searchService.getSubject("playlist", "59ZbFPES4DQwEjBpWHzrtC", callback);
+    searchService.getSubject(
+      "playlist",
+      "37i9dQZEVXbLRQDuF5jeBp",
+      callback
+    );
     subjectService.findTopSubjects().then(res => {
       console.log(res);
       this.setState({
